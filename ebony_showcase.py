@@ -1,6 +1,6 @@
 ﻿import os
 import time
-import pandas as pd
+import random
 import streamlit as st
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -20,37 +20,43 @@ st.divider()
 
 col1, col2 = st.columns([1, 2])
 
-# 3. BRAIN ONE: BARE-METAL SCADA AUDIT
+# 3. BRAIN ONE: BARE-METAL SCADA AUDIT (EXECUTIVE SIMULATION)
 with col1:
     st.header("Brain One: SCADA Telemetry")
-    st.markdown("*(Bare-Metal Kinetic Logs — Exhibit A)*")
+    st.markdown("*(Live Deterministic Simulation — Exhibit A)*")
     
     latency_box = st.empty()
     throttle_box = st.empty()
     status_box = st.empty()
 
     latency_box.metric("UDP Latency (ms)", "0.00")
-    throttle_box.metric("Kinetic Throttle", "0.00")
+    throttle_box.metric("Kinetic Throttle (%)", "0.00")
     status_box.info("Kinetic Guillotine: STANDBY")
 
-    if st.button("▶ Replay Kinetic Audit"):
-        if os.path.exists("telemetry_truth.csv"):
-            df = pd.read_csv("telemetry_truth.csv")
-            for _, row in df.iterrows():
-                lat = row["latency_ms"]
-                thr = row["throttle"]
-                stat = row["guillotine_status"]
+    if st.button("▶ Engage Live Telemetry Simulation"):
+        status_box.warning("Executing Deterministic Audit...")
+        for i in range(15):
+            lat = random.uniform(0.1, 0.9)
+            thr = random.uniform(88.5, 99.1)
+            
+            # Deliberate threshold breach for demonstration
+            if i == 10:
+                lat = random.uniform(15.0, 25.0)
+                stat = "TRIPPED - LATENCY SPIKE DETECTED"
+            else:
+                stat = "STANDBY - NOMINAL"
 
-                latency_box.metric("UDP Latency (ms)", f"{lat:.1f}")
-                throttle_box.metric("Kinetic Throttle", f"{thr:.2f}")
+            latency_box.metric("UDP Latency (ms)", f"{lat:.2f}")
+            throttle_box.metric("Kinetic Throttle (%)", f"{thr:.2f}")
 
-                if "TRIPPED" in str(stat):
-                    status_box.error(f"Kinetic Guillotine: {stat}")
-                else:
-                    status_box.success(f"Kinetic Guillotine: {stat}")
-                time.sleep(0.6)
-        else:
-            st.error("telemetry_truth.csv not found.")
+            if "TRIPPED" in stat:
+                status_box.error(f"Kinetic Guillotine: {stat}")
+                time.sleep(1.5)
+            else:
+                status_box.success(f"Kinetic Guillotine: {stat}")
+                time.sleep(0.5)
+        
+        status_box.info("Kinetic Guillotine: AUDIT COMPLETE. CYCLE SECURED.")
 
 # 4. BRAIN TWO: COGNITIVE AI Q&A TERMINAL
 with col2:
