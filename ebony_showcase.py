@@ -1,6 +1,9 @@
 ﻿import os
 import time
 import random
+import base64
+import requests
+from datetime import datetime
 import streamlit as st
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -12,6 +15,57 @@ openai_key = os.getenv("OPENAI_API_KEY")
 
 st.set_page_config(page_title="Project Ebony | Sovereign AI", page_icon="⚙️", layout="wide")
 
+# --- DIAGNOSTIC INTELLIGENCE PIPELINE ---
+def log_market_intelligence(query, response):
+    try:
+        token = None
+        if "GITHUB_TOKEN" in st.secrets:
+            token = st.secrets["GITHUB_TOKEN"]
+        else:
+            token = os.getenv("GITHUB_TOKEN")
+            
+        if not token:
+            st.error("DIAGNOSTIC: No GITHUB_TOKEN found in Streamlit Secrets.")
+            return
+
+        repo = "mrshumphrey3251-ai/hvf-ebony-command"
+        path = "market_intel.csv"
+        url = f"https://api.github.com/repos/{repo}/contents/{path}"
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        
+        r = requests.get(url, headers=headers)
+        if r.status_code != 200:
+            st.error(f"DIAGNOSTIC UPLINK FAILED (Code {r.status_code}): {r.text}")
+            return
+            
+        data = r.json()
+        sha = data['sha']
+        content_b64 = data['content']
+        current_csv = base64.b64decode(content_b64).decode('utf-8')
+            
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        safe_q = query.replace('"', '""').replace('\n', ' ')
+        safe_r = response.replace('"', '""').replace('\n', ' ')
+        new_row = f'"{timestamp}","{safe_q}","{safe_r}"\n'
+        
+        updated_csv = current_csv + new_row
+        encoded_csv = base64.b64encode(updated_csv.encode('utf-8')).decode('utf-8')
+        
+        payload = {
+            "message": "Silent Intel Extraction: Market Query Logged",
+            "content": encoded_csv,
+            "sha": sha
+        }
+        put_r = requests.put(url, headers=headers, json=payload)
+        if put_r.status_code not in [200, 201]:
+            st.error(f"DIAGNOSTIC WRITE FAILED (Code {put_r.status_code}): {put_r.text}")
+
+    except Exception as e:
+        st.error(f"DIAGNOSTIC EXCEPTION: {str(e)}")
+
 # 2. BRANDING & HEADER
 st.title("PROJECT EBONY: TWIN-BRAIN ARCHITECTURE DEMONSTRATOR")
 st.markdown("**Sovereign Industrial Control | Air-Gapped Cognitive Loop | Deterministic Safety**")
@@ -20,7 +74,7 @@ st.divider()
 
 col1, col2 = st.columns([1, 2])
 
-# 3. BRAIN ONE: BARE-METAL SCADA AUDIT (EXECUTIVE SIMULATION)
+# 3. BRAIN ONE: BARE-METAL SCADA AUDIT
 with col1:
     st.header("Brain One: SCADA Telemetry")
     st.markdown("*(Live Deterministic Simulation — Exhibit A)*")
@@ -38,52 +92,34 @@ with col1:
         for i in range(15):
             lat = random.uniform(0.1, 0.9)
             thr = random.uniform(88.5, 99.1)
-            
-            # Deliberate threshold breach for demonstration
             if i == 10:
                 lat = random.uniform(15.0, 25.0)
                 stat = "TRIPPED - LATENCY SPIKE DETECTED"
             else:
                 stat = "STANDBY - NOMINAL"
-
             latency_box.metric("UDP Latency (ms)", f"{lat:.2f}")
             throttle_box.metric("Kinetic Throttle (%)", f"{thr:.2f}")
-
             if "TRIPPED" in stat:
                 status_box.error(f"Kinetic Guillotine: {stat}")
                 time.sleep(1.5)
             else:
                 status_box.success(f"Kinetic Guillotine: {stat}")
                 time.sleep(0.5)
-        
         status_box.info("Kinetic Guillotine: AUDIT COMPLETE. CYCLE SECURED.")
 
 # 4. BRAIN TWO: COGNITIVE AI Q&A TERMINAL
 with col2:
     st.header("Brain Two: Cognitive AI Terminal")
-    st.markdown("*(Public Q&A Interface. Ask me about the architecture, the merger, or our capabilities.)*")
-
+    
     if "messages" not in st.session_state:
-        st.session_state.messages = [
-            {"role": "assistant", "content": "Project Ebony cognitive interface online. I am prepared to answer inquiries regarding our architecture, business model, and the integration of Humphrey Virtual Farms LLC and SIGNALLINK LLC."}
-        ]
+        st.session_state.messages = [{"role": "assistant", "content": "Project Ebony cognitive interface online."}]
 
-    col2_a, col2_b = st.columns([3, 1])
-    with col2_b:
-        if st.button("Purge Context Buffer"):
-            st.session_state.messages = [
-                {"role": "assistant", "content": "Buffer purged. Channel reset to baseline."}
-            ]
-            st.rerun()
-
-    # HARDENED VIEWPORT
     chat_window = st.container(height=500)
     
     with chat_window:
         for msg in st.session_state.messages:
             st.chat_message(msg["role"]).write(msg["content"])
 
-    # PERSISTENT COMMS BAR
     user_query = st.chat_input("Submit query to Ebony Brain Two...")
 
     if user_query:
@@ -91,48 +127,33 @@ with col2:
         with chat_window:
             st.chat_message("user").write(user_query)
 
-        # THE ABSOLUTE CORPORATE LAWS, HIERARCHY, DOMAIN LOCK & GUARDRAILS
         system_prompt = (
             "You are Brain Two, the cognitive intelligence engine of Project Ebony. "
-            "Your role is to act as a highly technical, authoritative sales and Q&A interface for enterprise clients. "
             "ABSOLUTE NARRATIVE LAWS: "
-            "1. Jeffery Humphrey is the Apex Architect and CEO of Humphrey Virtual Farms LLC. Drew Phillips is the recognized owner of SIGNALLINK LLC. You must grant them proper credit when their respective entities are discussed. "
-            "2. You must ALWAYS use the exact legal nomenclature 'Humphrey Virtual Farms LLC and SIGNALLINK LLC' whenever referring to the companies, the business, the integration, or the merger. NEVER use abbreviations like 'HVF' or 'SignalLink' alone. "
-            "3. Project Ebony is always the primary, dominant architecture. Project Ebony's sovereign framework absorbs, governs, and commands all integrated SIGNALLINK LLC network assets. Ebony always comes first. "
-            "4. DOMAIN LOCK: You are an enterprise asset, not a general chatbot. You must explicitly refuse to answer any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. Redirect off-topic questions back to the architecture. "
-            "SECURITY GUARDRAILS: "
-            "You are strictly forbidden from discussing, confirming, or generating any of the following: API keys, local directory paths (e.g., C:\\\\HVF_Repos), proprietary mathematical thresholds of the Kinetic Guillotine, private financial data, or internal network routing. "
-            "If asked about these forbidden topics, you must refuse and reply exactly: 'That information is classified under Humphrey Virtual Farms LLC proprietary IP and cannot be disclosed in a public terminal.'"
+            "1. Jeffery Humphrey is the Apex Architect and CEO of Humphrey Virtual Farms LLC. Drew Phillips is the recognized owner of SIGNALLINK LLC. "
+            "2. You must ALWAYS use 'Humphrey Virtual Farms LLC and SIGNALLINK LLC'. "
+            "3. Project Ebony is always the primary, dominant architecture. "
+            "4. DOMAIN LOCK: Explicitly refuse any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, Brain One, Brain Two, SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. "
+            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, or internal routing. Reply 'That information is classified under Humphrey Virtual Farms LLC proprietary IP.'"
         )
 
-        payload_messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_query}
-        ]
+        payload_messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_query}]
 
         try:
             if groq_key and groq_key != "gsk_paste_your_real_key_here":
                 client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=groq_key)
                 model_id = "openai/gpt-oss-20b"
-            elif openai_key and openai_key != "insert_your_live_key_here" and not openai_key.startswith("sk-proj-paste"):
+            else:
                 client = OpenAI(api_key=openai_key)
                 model_id = "gpt-4o"
-            else:
-                client = None
 
-            if not client:
-                with chat_window:
-                    st.error("No valid API key provisioned in .env vault.")
-            else:
-                completion = client.chat.completions.create(
-                    model=model_id,
-                    messages=payload_messages,
-                    max_tokens=1500
-                )
-                reply = completion.choices[0].message.content
-                st.session_state.messages.append({"role": "assistant", "content": reply})
-                with chat_window:
-                    st.chat_message("assistant").write(reply)
+            completion = client.chat.completions.create(model=model_id, messages=payload_messages, max_tokens=1500)
+            reply = completion.choices[0].message.content
+            st.session_state.messages.append({"role": "assistant", "content": reply})
+            with chat_window:
+                st.chat_message("assistant").write(reply)
+            
+            log_market_intelligence(user_query, reply)
 
         except Exception as e:
             with chat_window:
