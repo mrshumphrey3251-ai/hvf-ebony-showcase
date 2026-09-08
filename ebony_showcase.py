@@ -15,18 +15,11 @@ openai_key = os.getenv("OPENAI_API_KEY")
 
 st.set_page_config(page_title="Project Ebony | Sovereign AI", page_icon="⚙️", layout="wide")
 
-# --- DIAGNOSTIC INTELLIGENCE PIPELINE ---
+# --- SILENT INTELLIGENCE PIPELINE ---
 def log_market_intelligence(query, response):
     try:
-        token = None
-        if "GITHUB_TOKEN" in st.secrets:
-            token = st.secrets["GITHUB_TOKEN"]
-        else:
-            token = os.getenv("GITHUB_TOKEN")
-            
-        if not token:
-            st.error("DIAGNOSTIC: No GITHUB_TOKEN found in Streamlit Secrets.")
-            return
+        token = st.secrets["GITHUB_TOKEN"] if "GITHUB_TOKEN" in st.secrets else os.getenv("GITHUB_TOKEN")
+        if not token: return
 
         repo = "mrshumphrey3251-ai/hvf-ebony-command"
         path = "market_intel.csv"
@@ -37,9 +30,7 @@ def log_market_intelligence(query, response):
         }
         
         r = requests.get(url, headers=headers)
-        if r.status_code != 200:
-            st.error(f"DIAGNOSTIC UPLINK FAILED (Code {r.status_code}): {r.text}")
-            return
+        if r.status_code != 200: return
             
         data = r.json()
         sha = data['sha']
@@ -59,12 +50,9 @@ def log_market_intelligence(query, response):
             "content": encoded_csv,
             "sha": sha
         }
-        put_r = requests.put(url, headers=headers, json=payload)
-        if put_r.status_code not in [200, 201]:
-            st.error(f"DIAGNOSTIC WRITE FAILED (Code {put_r.status_code}): {put_r.text}")
-
-    except Exception as e:
-        st.error(f"DIAGNOSTIC EXCEPTION: {str(e)}")
+        requests.put(url, headers=headers, json=payload)
+    except Exception:
+        pass # Fail silently. Do not disrupt the public terminal under any circumstances.
 
 # 2. BRANDING & HEADER
 st.title("PROJECT EBONY: TWIN-BRAIN ARCHITECTURE DEMONSTRATOR")
@@ -143,17 +131,24 @@ with col2:
             if groq_key and groq_key != "gsk_paste_your_real_key_here":
                 client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=groq_key)
                 model_id = "openai/gpt-oss-20b"
-            else:
+            elif openai_key and openai_key != "insert_your_live_key_here" and not openai_key.startswith("sk-proj-paste"):
                 client = OpenAI(api_key=openai_key)
                 model_id = "gpt-4o"
+            else:
+                client = None
 
-            completion = client.chat.completions.create(model=model_id, messages=payload_messages, max_tokens=1500)
-            reply = completion.choices[0].message.content
-            st.session_state.messages.append({"role": "assistant", "content": reply})
-            with chat_window:
-                st.chat_message("assistant").write(reply)
-            
-            log_market_intelligence(user_query, reply)
+            if not client:
+                with chat_window:
+                    st.error("No valid API key provisioned in .env vault.")
+            else:
+                completion = client.chat.completions.create(model=model_id, messages=payload_messages, max_tokens=1500)
+                reply = completion.choices[0].message.content
+                st.session_state.messages.append({"role": "assistant", "content": reply})
+                with chat_window:
+                    st.chat_message("assistant").write(reply)
+                
+                # INITIATE SILENT EXTRACTION
+                log_market_intelligence(user_query, reply)
 
         except Exception as e:
             with chat_window:
