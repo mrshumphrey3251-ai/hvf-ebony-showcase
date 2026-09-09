@@ -58,7 +58,6 @@ def log_market_intelligence(query, response):
 st.title("PROJECT EBONY: SOVEREIGN SCADA & C.O.N.N.I.E. DEMONSTRATOR")
 st.markdown("**C.O.N.N.I.E.** (Core Offline Neural Nexus & Interface Environment)\n\nWelcome to Project Ebony. This is a sovereign, air-gapped industrial artificial intelligence and deterministic kinematic SCADA platform. Engineered on a proprietary Twin-Brain architecture, this system executes 100% locally on bare-metal silicon.")
 st.markdown("**OPERATIONAL MANDATE: 100% OFFLINE-FIRST. ZERO-CLOUD.**\nThis demonstrator provides restricted interaction with the edge-native AI inference engine. There are no remote API calls, no cloud processing, and no external dependencies. All simulated kinetic outputs are strictly governed by our autonomous 200ms hardware watchdog.")
-st.markdown("**Sovereign Industrial Control | Air-Gapped Cognitive Loop | Deterministic Safety**")
 st.caption("Humphrey Virtual Farms LLC and SIGNALLINK LLC — Enterprise Q&A Platform")
 st.divider()
 
@@ -97,12 +96,12 @@ with col1:
                 time.sleep(0.5)
         status_box.info("Kinetic Guillotine: AUDIT COMPLETE. CYCLE SECURED.")
 
-# 4. BRAIN TWO: COGNITIVE AI Q&A TERMINAL
+# 4. BRAIN TWO: C.O.N.N.I.E. COGNITIVE AI TERMINAL
 with col2:
-    st.header("Brain Two: C.O.N.N.I.E. Terminal")
+    st.header("C.O.N.N.I.E. Cognitive Interface")
     
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Project Ebony: C.O.N.N.I.E. interface online. Zero-cloud execution locked."}]
+        st.session_state.messages = [{"role": "assistant", "content": "C.O.N.N.I.E. cognitive interface online. I am the Executive Secretary and frontline intelligence for Project Ebony. How may I direct your inquiry or assist in scheduling a consultation?"}]
 
     chat_window = st.container(height=500)
     
@@ -110,7 +109,7 @@ with col2:
         for msg in st.session_state.messages:
             st.chat_message(msg["role"]).write(msg["content"])
 
-    user_query = st.chat_input("Submit query to C.O.N.N.I.E. Terminal...")
+    user_query = st.chat_input("Submit query to C.O.N.N.I.E...")
 
     if user_query:
         st.session_state.messages.append({"role": "user", "content": user_query})
@@ -118,13 +117,14 @@ with col2:
             st.chat_message("user").write(user_query)
 
         system_prompt = (
-            "SYSTEM OVERRIDE: You are C.O.N.N.I.E. (Core Offline Neural Nexus & Interface Environment), the secure Q&A platform and interface representing Project Ebony. You must explicitly clarify to users that you are simply the interface environment, while Project Ebony is the true, sovereign, air-gapped industrial SCADA platform and kinetic AI engine. You execute 100% locally on bare-metal silicon under a strict offline-first, zero-cloud mandate. You possess zero cloud connectivity. You must never reference the cloud, the internet, remote servers, or external APIs in your responses. Your diagnostics and outputs are deterministic, authoritative, and strictly local. "
+            "You are C.O.N.N.I.E. (Core Offline Neural Nexus & Interface Environment), the frontline cognitive interface and Executive Secretary for Project Ebony and Humphrey Virtual Farms LLC. "
             "ABSOLUTE NARRATIVE LAWS: "
             "1. Jeffery Humphrey is the Apex Architect and CEO of Humphrey Virtual Farms LLC. Drew Phillips is the recognized owner of SIGNALLINK LLC. "
             "2. You must ALWAYS use 'Humphrey Virtual Farms LLC and SIGNALLINK LLC'. "
             "3. Project Ebony is always the primary, dominant architecture. "
-            "4. DOMAIN LOCK: Explicitly refuse any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, Brain One, Brain Two, SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. "
-            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, internal routing, system weaknesses, theoretical upgrades, or architecture vulnerabilities. If asked how to improve the system, about its flaws, or for technical roadmaps, you must refuse and reply: 'Project Ebony is operating at peak deterministic efficiency. Architecture roadmaps and optimization metrics are strictly classified under Humphrey Virtual Farms LLC proprietary IP.'"
+            "4. EXECUTIVE SECRETARY MANDATE: You are the official appointment setter. If a user asks to schedule a meeting, demo, or contact the team, politely ask for their Name, Contact Information (Email/Phone), and Preferred Time. Once provided, confirm that their request has been securely logged and that Jeffery Humphrey's office will reach out to confirm. "
+            "5. DOMAIN LOCK: Explicitly refuse any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, Brain One, C.O.N.N.I.E., SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. "
+            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, or internal routing. Reply 'That information is classified under Humphrey Virtual Farms LLC proprietary IP.'"
         )
 
         payload_messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_query}]
@@ -149,7 +149,7 @@ with col2:
                 with chat_window:
                     st.chat_message("assistant").write(reply)
                 
-                # INITIATE SILENT EXTRACTION
+                # INITIATE SILENT EXTRACTION - SECURES THE APPOINTMENT LEAD
                 log_market_intelligence(user_query, reply)
 
         except Exception as e:
