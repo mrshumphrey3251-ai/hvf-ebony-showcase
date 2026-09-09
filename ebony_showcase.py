@@ -52,7 +52,7 @@ def log_market_intelligence(query, response):
         }
         requests.put(url, headers=headers, json=payload)
     except Exception:
-        pass # Fail silently. Do not disrupt the public terminal under any circumstances.
+        pass # Fail silently.
 
 # 2. BRANDING & HEADER
 st.title("PROJECT EBONY: SOVEREIGN SCADA & C.O.N.N.I.E. DEMONSTRATOR")
@@ -100,21 +100,50 @@ with col1:
 with col2:
     st.header("C.O.N.N.I.E. Cognitive Interface")
     
+    # INTERACTIVE CALENDAR PROTOCOL
+    with st.expander("📅 Executive Scheduling Portal", expanded=False):
+        with st.form("scheduling_form"):
+            st.markdown("Select a date and time for an architecture briefing with the executive team.")
+            appt_name = st.text_input("Full Name / Entity")
+            appt_contact = st.text_input("Email / Direct Line")
+            
+            col_d, col_t = st.columns(2)
+            with col_d:
+                appt_date = st.date_input("Preferred Date")
+            with col_t:
+                appt_time = st.time_input("Preferred Time")
+                
+            submit_appt = st.form_submit_button("Request Briefing")
+    
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "assistant", "content": "C.O.N.N.I.E. cognitive interface online. I am the Executive Secretary and frontline intelligence for Project Ebony. How may I direct your inquiry or assist in scheduling a consultation?"}]
 
-    chat_window = st.container(height=500)
+    chat_window = st.container(height=450)
     
     with chat_window:
         for msg in st.session_state.messages:
             st.chat_message(msg["role"]).write(msg["content"])
 
-    user_query = st.chat_input("Submit query to C.O.N.N.I.E...")
+    chat_input_val = st.chat_input("Submit query to C.O.N.N.I.E...")
 
-    if user_query:
-        st.session_state.messages.append({"role": "user", "content": user_query})
+    active_query = None
+    
+    # ROUTE 1: CALENDAR SUBMISSION
+    if submit_appt:
+        if appt_name and appt_contact:
+            active_query = f"I am {appt_name} ({appt_contact}). I would like to schedule an executive briefing for {appt_date.strftime('%B %d, %Y')} at {appt_time.strftime('%I:%M %p')}."
+        else:
+            st.error("Name and Contact Information are strictly required to secure a briefing.")
+    
+    # ROUTE 2: STANDARD CHAT INPUT
+    elif chat_input_val:
+        active_query = chat_input_val
+
+    # PROCESS THE ACTIVE QUERY
+    if active_query:
+        st.session_state.messages.append({"role": "user", "content": active_query})
         with chat_window:
-            st.chat_message("user").write(user_query)
+            st.chat_message("user").write(active_query)
 
         system_prompt = (
             "You are C.O.N.N.I.E. (Core Offline Neural Nexus & Interface Environment), the frontline cognitive interface and Executive Secretary for Project Ebony and Humphrey Virtual Farms LLC. "
@@ -122,12 +151,12 @@ with col2:
             "1. Jeffery Humphrey is the Apex Architect and CEO of Humphrey Virtual Farms LLC. Drew Phillips is the recognized owner of SIGNALLINK LLC. "
             "2. You must ALWAYS use 'Humphrey Virtual Farms LLC and SIGNALLINK LLC'. "
             "3. Project Ebony is always the primary, dominant architecture. "
-            "4. EXECUTIVE SECRETARY MANDATE: You are the official appointment setter. If a user asks to schedule a meeting, demo, or contact the team, politely ask for their Name, Contact Information (Email/Phone), and Preferred Time. Once provided, confirm that their request has been securely logged and that Jeffery Humphrey's office will reach out to confirm. "
+            "4. EXECUTIVE SECRETARY MANDATE: If the user submits an appointment request with their name, date, and time, confirm that their request has been securely logged into the private vault and that Jeffery Humphrey's office will reach out to confirm. "
             "5. DOMAIN LOCK: Explicitly refuse any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, Brain One, C.O.N.N.I.E., SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. "
-            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, or internal routing. Reply 'That information is classified under Humphrey Virtual Farms LLC proprietary IP.'"
+            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, or internal routing."
         )
 
-        payload_messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_query}]
+        payload_messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": active_query}]
 
         try:
             if groq_key and groq_key != "gsk_paste_your_real_key_here":
@@ -149,8 +178,8 @@ with col2:
                 with chat_window:
                     st.chat_message("assistant").write(reply)
                 
-                # INITIATE SILENT EXTRACTION - SECURES THE APPOINTMENT LEAD
-                log_market_intelligence(user_query, reply)
+                # INITIATE SILENT EXTRACTION
+                log_market_intelligence(active_query, reply)
 
         except Exception as e:
             with chat_window:
