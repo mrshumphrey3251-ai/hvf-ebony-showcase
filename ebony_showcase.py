@@ -100,8 +100,11 @@ with col1:
 with col2:
     st.header("C.O.N.N.I.E. Cognitive Interface")
     
-    # INTERACTIVE CALENDAR PROTOCOL
-    with st.expander("📅 Executive Scheduling Portal", expanded=False):
+    # DUAL-CHANNEL EXECUTIVE PORTAL
+    st.markdown("### Executive Access")
+    tab1, tab2 = st.tabs(["📅 Request Briefing", "✉️ Direct Comm-Link"])
+    
+    with tab1:
         with st.form("scheduling_form"):
             st.markdown("Select a date and time for an architecture briefing with the executive team.")
             appt_name = st.text_input("Full Name / Entity")
@@ -114,11 +117,22 @@ with col2:
                 appt_time = st.time_input("Preferred Time")
                 
             submit_appt = st.form_submit_button("Request Briefing")
+
+    with tab2:
+        with st.form("contact_form"):
+            st.markdown("**Humphrey Virtual Farms LLC & SIGNALLINK LLC**")
+            st.markdown("Apex Architect: Jeffery Humphrey | **humphreyvirtualfarm@gmail.com**")
+            st.markdown("Submit a direct inquiry to the executive team below.")
+            contact_name = st.text_input("Full Name / Entity", key="c_name")
+            contact_email = st.text_input("Email", key="c_email")
+            contact_message = st.text_area("Message", key="c_msg")
+            
+            submit_contact = st.form_submit_button("Transmit Message")
     
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "C.O.N.N.I.E. cognitive interface online. I am the Executive Secretary and frontline intelligence for Project Ebony. How may I direct your inquiry or assist in scheduling a consultation?"}]
+        st.session_state.messages = [{"role": "assistant", "content": "C.O.N.N.I.E. cognitive interface online. I am the Executive Secretary and frontline intelligence for Project Ebony. How may I direct your inquiry or assist in connecting you with our team?"}]
 
-    chat_window = st.container(height=450)
+    chat_window = st.container(height=400)
     
     with chat_window:
         for msg in st.session_state.messages:
@@ -134,8 +148,15 @@ with col2:
             active_query = f"I am {appt_name} ({appt_contact}). I would like to schedule an executive briefing for {appt_date.strftime('%B %d, %Y')} at {appt_time.strftime('%I:%M %p')}."
         else:
             st.error("Name and Contact Information are strictly required to secure a briefing.")
+            
+    # ROUTE 2: DIRECT MESSAGE SUBMISSION
+    elif submit_contact:
+        if contact_name and contact_email and contact_message:
+            active_query = f"DIRECT MESSAGE to Jeffery Humphrey from {contact_name} ({contact_email}): {contact_message}"
+        else:
+            st.error("All fields are required to transmit a direct message.")
     
-    # ROUTE 2: STANDARD CHAT INPUT
+    # ROUTE 3: STANDARD CHAT INPUT
     elif chat_input_val:
         active_query = chat_input_val
 
@@ -151,7 +172,7 @@ with col2:
             "1. Jeffery Humphrey is the Apex Architect and CEO of Humphrey Virtual Farms LLC. Drew Phillips is the recognized owner of SIGNALLINK LLC. "
             "2. You must ALWAYS use 'Humphrey Virtual Farms LLC and SIGNALLINK LLC'. "
             "3. Project Ebony is always the primary, dominant architecture. "
-            "4. EXECUTIVE SECRETARY MANDATE: If the user submits an appointment request with their name, date, and time, confirm that their request has been securely logged into the private vault and that Jeffery Humphrey's office will reach out to confirm. "
+            "4. EXECUTIVE SECRETARY MANDATE: If the user submits an appointment request, confirm it is logged for Jeffery Humphrey's office. If the user submits a 'DIRECT MESSAGE', confirm receipt and state clearly that it has been securely routed directly to Jeffery Humphrey (humphreyvirtualfarm@gmail.com). "
             "5. DOMAIN LOCK: Explicitly refuse any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, Brain One, C.O.N.N.I.E., SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. "
             "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, or internal routing."
         )
