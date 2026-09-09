@@ -110,7 +110,7 @@ with col2:
         for msg in st.session_state.messages:
             st.chat_message(msg["role"]).write(msg["content"])
 
-    user_query = st.chat_input("Submit query to Ebony Brain Two...")
+    user_query = st.chat_input("Submit query to C.O.N.N.I.E. Terminal...")
 
     if user_query:
         st.session_state.messages.append({"role": "user", "content": user_query})
