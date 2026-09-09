@@ -122,7 +122,7 @@ with col1:
         
     t_state_class = "tractor-active" if st.session_state.tractor_running else "tractor-stopped"
     
-    tractor_html = f\"\"\"
+    tractor_html = f"""
     <style>
     @keyframes drive_tractor {{
         0% {{ left: -15%; }}
@@ -156,7 +156,7 @@ with col1:
             🚜
         </div>
     </div>
-    \"\"\"
+    """
     st.markdown(tractor_html, unsafe_allow_html=True)
     if st.session_state.tractor_running:
         st.caption("Status: TRAVERSING | Velocity: 4.2 m/s | Connection: SECURE")
