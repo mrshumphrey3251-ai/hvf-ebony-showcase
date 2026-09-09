@@ -15,6 +15,18 @@ openai_key = os.getenv("OPENAI_API_KEY")
 
 st.set_page_config(page_title="Project Ebony | Sovereign AI", page_icon="⚙️", layout="wide")
 
+# --- UI BLACKOUT PROTOCOL ---
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            header {visibility: hidden;}
+            footer {visibility: hidden;}
+            .stDeployButton {display:none;}
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # --- SILENT INTELLIGENCE PIPELINE ---
 def log_market_intelligence(query, response):
     try:
@@ -142,25 +154,21 @@ with col2:
 
     active_query = None
     
-    # ROUTE 1: CALENDAR SUBMISSION
     if submit_appt:
         if appt_name and appt_contact:
             active_query = f"I am {appt_name} ({appt_contact}). I would like to schedule an executive briefing for {appt_date.strftime('%B %d, %Y')} at {appt_time.strftime('%I:%M %p')}."
         else:
             st.error("Name and Contact Information are strictly required to secure a briefing.")
             
-    # ROUTE 2: DIRECT MESSAGE SUBMISSION
     elif submit_contact:
         if contact_name and contact_email and contact_message:
             active_query = f"DIRECT MESSAGE to Jeffery Humphrey from {contact_name} ({contact_email}): {contact_message}"
         else:
             st.error("All fields are required to transmit a direct message.")
     
-    # ROUTE 3: STANDARD CHAT INPUT
     elif chat_input_val:
         active_query = chat_input_val
 
-    # PROCESS THE ACTIVE QUERY
     if active_query:
         st.session_state.messages.append({"role": "user", "content": active_query})
         with chat_window:
@@ -199,7 +207,6 @@ with col2:
                 with chat_window:
                     st.chat_message("assistant").write(reply)
                 
-                # INITIATE SILENT EXTRACTION
                 log_market_intelligence(active_query, reply)
 
         except Exception as e:
