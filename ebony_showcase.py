@@ -107,6 +107,61 @@ with col1:
                 status_box.success(f"Kinetic Guillotine: {stat}")
                 time.sleep(0.5)
         status_box.info("Kinetic Guillotine: AUDIT COMPLETE. CYCLE SECURED.")
+        
+    st.divider()
+    
+    # --- AUTONOMOUS TRACTOR KINETIC DEMO ---
+    st.markdown("### Autonomous Asset Simulation")
+    st.markdown("*(Visualizing Edge-Native Actuation)*")
+    
+    if "tractor_running" not in st.session_state:
+        st.session_state.tractor_running = False
+
+    if st.button("Toggle Autonomous Traverse"):
+        st.session_state.tractor_running = not st.session_state.tractor_running
+        
+    t_state_class = "tractor-active" if st.session_state.tractor_running else "tractor-stopped"
+    
+    tractor_html = f\"\"\"
+    <style>
+    @keyframes drive_tractor {{
+        0% {{ left: -15%; }}
+        100% {{ left: 115%; }}
+    }}
+    .tractor-active {{
+        animation: drive_tractor 5s linear infinite;
+    }}
+    .tractor-stopped {{
+        left: 20%;
+    }}
+    .field-container {{
+        background: #2e4a22; 
+        width: 100%; 
+        height: 70px; 
+        border-radius: 5px; 
+        position: relative; 
+        overflow: hidden; 
+        border: 2px solid #1a2e12;
+        margin-top: 10px;
+    }}
+    .tractor-icon {{
+        position: absolute; 
+        top: 10px; 
+        font-size: 35px; 
+        transition: left 0.5s;
+    }}
+    </style>
+    <div class="field-container">
+        <div class="tractor-icon {t_state_class}">
+            🚜
+        </div>
+    </div>
+    \"\"\"
+    st.markdown(tractor_html, unsafe_allow_html=True)
+    if st.session_state.tractor_running:
+        st.caption("Status: TRAVERSING | Velocity: 4.2 m/s | Connection: SECURE")
+    else:
+        st.caption("Status: HALTED | Engine: IDLE | Awaiting Command")
 
 # 4. BRAIN TWO: C.O.N.N.I.E. COGNITIVE AI TERMINAL
 with col2:
