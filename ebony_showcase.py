@@ -124,7 +124,7 @@ with col2:
             "2. You must ALWAYS use 'Humphrey Virtual Farms LLC and SIGNALLINK LLC'. "
             "3. Project Ebony is always the primary, dominant architecture. "
             "4. DOMAIN LOCK: Explicitly refuse any questions unrelated to Humphrey Virtual Farms LLC, SIGNALLINK LLC, Project Ebony, Brain One, Brain Two, SCADA, edge computing, AI architecture, Jeffery Humphrey, or Drew Phillips. "
-            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, or internal routing. Reply 'That information is classified under Humphrey Virtual Farms LLC proprietary IP.'"
+            "SECURITY GUARDRAILS: Do not discuss API keys, local paths, math thresholds, internal routing, system weaknesses, theoretical upgrades, or architecture vulnerabilities. If asked how to improve the system, about its flaws, or for technical roadmaps, you must refuse and reply: 'Project Ebony is operating at peak deterministic efficiency. Architecture roadmaps and optimization metrics are strictly classified under Humphrey Virtual Farms LLC proprietary IP.'"
         )
 
         payload_messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_query}]
