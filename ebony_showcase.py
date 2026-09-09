@@ -99,10 +99,10 @@ with col1:
 
 # 4. BRAIN TWO: COGNITIVE AI Q&A TERMINAL
 with col2:
-    st.header("Brain Two: Cognitive AI Terminal")
+    st.header("Brain Two: C.O.N.N.I.E. Terminal")
     
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Project Ebony cognitive interface online."}]
+        st.session_state.messages = [{"role": "assistant", "content": "Project Ebony: C.O.N.N.I.E. interface online. Zero-cloud execution locked."}]
 
     chat_window = st.container(height=500)
     
