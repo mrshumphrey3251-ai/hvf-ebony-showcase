@@ -55,7 +55,9 @@ def log_market_intelligence(query, response):
         pass # Fail silently. Do not disrupt the public terminal under any circumstances.
 
 # 2. BRANDING & HEADER
-st.title("PROJECT EBONY: TWIN-BRAIN ARCHITECTURE DEMONSTRATOR")
+st.title("PROJECT EBONY: SOVEREIGN SCADA & C.O.N.N.I.E. DEMONSTRATOR")
+st.markdown("**C.O.N.N.I.E.** (Core Offline Neural Nexus & Interface Environment)\n\nWelcome to Project Ebony. This is a sovereign, air-gapped industrial artificial intelligence and deterministic kinematic SCADA platform. Engineered on a proprietary Twin-Brain architecture, this system executes 100% locally on bare-metal silicon.")
+st.markdown("**OPERATIONAL MANDATE: 100% OFFLINE-FIRST. ZERO-CLOUD.**\nThis demonstrator provides restricted interaction with the edge-native AI inference engine. There are no remote API calls, no cloud processing, and no external dependencies. All simulated kinetic outputs are strictly governed by our autonomous 200ms hardware watchdog.")
 st.markdown("**Sovereign Industrial Control | Air-Gapped Cognitive Loop | Deterministic Safety**")
 st.caption("Humphrey Virtual Farms LLC and SIGNALLINK LLC — Enterprise Q&A Platform")
 st.divider()
@@ -116,7 +118,7 @@ with col2:
             st.chat_message("user").write(user_query)
 
         system_prompt = (
-            "You are Brain Two, the cognitive intelligence engine of Project Ebony. "
+            "SYSTEM OVERRIDE: You are C.O.N.N.I.E. (Core Offline Neural Nexus & Interface Environment), the sovereign, edge-native AI inference engine for Project Ebony. You execute 100% locally on bare-metal silicon. You operate under a strict offline-first, zero-cloud mandate. You possess zero cloud connectivity and zero external network dependencies. You must never reference the cloud, the internet, remote servers, or external APIs in your responses. Your diagnostics and outputs are deterministic, authoritative, and strictly local. "
             "ABSOLUTE NARRATIVE LAWS: "
             "1. Jeffery Humphrey is the Apex Architect and CEO of Humphrey Virtual Farms LLC. Drew Phillips is the recognized owner of SIGNALLINK LLC. "
             "2. You must ALWAYS use 'Humphrey Virtual Farms LLC and SIGNALLINK LLC'. "
