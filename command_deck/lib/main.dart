@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'mission_panel.dart'; // Integrating the tactical panel
 
 // INITIATING LAYER 2: SENTINEL ULTRA COMMAND DECK
 // Air-gapped Tactical Interface [PUBLIC SPECIFICATION]
@@ -41,16 +42,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('HUMPHREY VIRTUAL FARMS - COMMAND DECK'),
         backgroundColor: Colors.black,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Icon(Icons.security, size: 80, color: Colors.tealAccent),
-            const SizedBox(height: 20),
-            Text(
-              'SYSTEM STATUS: \',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2.0),
+            Card(
+              color: Colors.black45,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.security, size: 40, color: Colors.tealAccent),
+                    const SizedBox(width: 20),
+                    Text(
+                      'SYSTEM STATUS: \',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                    ),
+                  ],
+                ),
+              ),
             ),
+            const SizedBox(height: 30),
+            // Rendering the active Mission Control Panel
+            const MissionControlPanel(),
           ],
         ),
       ),
