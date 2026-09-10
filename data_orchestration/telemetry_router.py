@@ -4,14 +4,13 @@ logger = logging.getLogger(__name__)
 
 class TelemetryRouter:
     def __init__(self):
-        self.active_streams = 0
+        self.buffer_size_mb = 1024 
 
-    def optimize_bitrate(self, signal_strength_dbm: float, packet_loss_pct: float) -> str:
-        "\""Dynamic adaptive bitrate negotiation. [THRESHOLDS REDACTED FOR PUBLIC SPEC]"\""
-        # [INTERNAL THROTTLING LOGIC REDACTED]
-        return "OPTIMIZED_BANDWIDTH_PROFILE"
+    def apply_backpressure(self, drone_id: str) -> bool:
+        "\""Signals edge node to cache data locally to prevent server overruns. [PUBLIC SPEC]"\""
+        # [INTERNAL BACK-PRESSURE SIGNALING LOGIC REDACTED]
+        return True
 
     def route_stream(self, drone_id: str, payload: dict, signal_strength: float, packet_loss: float):
-        self.active_streams += 1
-        resolution = self.optimize_bitrate(signal_strength, packet_loss)
-        return {"status": "routed", "resolution": resolution}
+        # [INTERNAL STREAM ROUTING REDACTED]
+        return {"status": "routed"}

@@ -1,26 +1,17 @@
 import logging
-from typing import Dict, Any
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - IRRIGATION_CMD - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class ValveDispatcher:
     def __init__(self):
-        # [INTERNAL HARDWARE STATE TRACKING REDACTED FOR PUBLIC REPOSITORY]
-        pass
+        self.valves = {}
 
-    def verify_plc_heartbeat(self, plc_id: str) -> bool:
-        """
-        Executes a pre-command Modbus/TCP heartbeat check.
-        Ensures the field controller is actively listening before dispatching water.
-        [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        """
-        pass
+    def resolve_schedule_conflict(self, ai_schedule: dict, manual_override: dict) -> dict:
+        "\""
+        Ensures manual overrides supersede AI schedules. [PUBLIC SPEC]
+        "\""
+        # [INTERNAL CONFLICT RESOLUTION ALGORITHMS REDACTED]
+        return manual_override
 
-    def dispatch_ramp_up_command(self, zone_id: str, target_flow_rate: float) -> str:
-        """
-        Executes a staged valve opening sequence.
-        Eliminates destructive pressure spikes (water hammer) in large acreage zones.
-        [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        """
-        pass
+    def actuate_valve(self, valve_id: str, flow_rate: float, manual_override: dict = None):
+        return {"status": "SUCCESS", "valve": valve_id}
