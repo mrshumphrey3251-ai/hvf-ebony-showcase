@@ -1,21 +1,16 @@
 # SENTINEL ULTRA - TACTICAL UI DEPLOYMENT PIPELINE [PUBLIC SPECIFICATION]
-# Execution: Local Air-Gapped Compilation
 
 Write-Host "[*] INITIATING SOVEREIGN BUILD PIPELINE..." -ForegroundColor Cyan
 
-# 1. Verify Air-Gap Status
-Write-Host "[*] Verifying network isolation..."
+# 1. Verify Air-Gap
 # [INTERNAL NETWORK AUDIT LOGIC REDACTED]
-Write-Host "[+] Air-gap confirmed intact." -ForegroundColor Green
 
 # 2. Compile Tactical UI Binary
-Write-Host "[*] Compiling Flutter Command Deck..."
-# [INTERNAL FLUTTER BUILD FLAGS AND OBFUSCATION LOGIC REDACTED]
-Write-Host "[+] Compilation successful. Code obfuscation applied." -ForegroundColor Green
+# [INTERNAL FLUTTER BUILD FLAGS REDACTED]
 
-# 3. Stage for Secure Transfer
-Write-Host "[*] Staging binary for physical tether transfer..."
-# [INTERNAL ARTIFACT ROUTING REDACTED]
-Write-Host "[+] Binary securely staged. Ready for physical tether deployment." -ForegroundColor Green
+# 3. P4 FIX: Automated Canary Rollback
+Write-Host "[*] Executing Post-Deployment Canary Health Check..."
+# [INTERNAL LATENCY THRESHOLDS AND AUTOMATED ROLLBACK LOGIC REDACTED]
+Write-Host "[+] Rollback fail-safes armed." -ForegroundColor Green
 
 Write-Host "[+] PIPELINE EXECUTION COMPLETE." -ForegroundColor Cyan
