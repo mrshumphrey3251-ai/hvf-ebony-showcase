@@ -10,23 +10,23 @@ class RTHController:
         pass
 
     def evaluate_telemetry(self, mission_id: str, telemetry: Dict[str, Any]) -> str:
-        "\""
+        """
         Continuously evaluates incoming flight data against safety thresholds.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass
 
     def calculate_predictive_landing(self, telemetry: Dict[str, Any]) -> bool:
-        "\""
+        """
         Advanced predictive battery-reserve algorithm.
         Factors in current wind resistance to force an early landing if RTH margin is depleted.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass
 
     def trigger_rth(self, mission_id: str, reason: str) -> str:
-        "\""
+        """
         Executes the automated Return-to-Home sequence.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass

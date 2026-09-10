@@ -10,16 +10,16 @@ class AgronomicModels:
         self.supported_crops = ["corn", "soybeans", "wheat"]
 
     def calculate_gli_vigor(self, pixel_data: List[Dict[str, int]], enable_hdr: bool = False) -> float:
-        "\""
+        """
         Executes GPU-accelerated Green Leaf Index calculation.
         Includes HDR logic for sunrise/sunset light compensation.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass
 
     def execute_yield_forecast(self, crop_type: str, current_gli: float, moisture_trend: float) -> Dict[str, Any]:
-        "\""
+        """
         Applies LSTM-derived forecasting to predict end-of-season yield.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass

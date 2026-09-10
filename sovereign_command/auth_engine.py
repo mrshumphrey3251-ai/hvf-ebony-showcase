@@ -16,15 +16,15 @@ class Token(BaseModel):
     scopes: List[str]
 
 def create_sovereign_token(data: dict, expires_delta: Optional[timedelta] = None) -> Token:
-    "\""
+    """
     Generates a scoped JWT for downstream module authorization.
     [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-    "\""
+    """
     pass
 
 def verify_module_access(token: str, required_scope: str) -> bool:
-    "\""
+    """
     Validates token against specific module access requirements.
     [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-    "\""
+    """
     pass

@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 ROLE_PERMISSIONS: Dict[str, List[str]] = {}
 
 def evaluate_request(role: str, requested_scope: str, resource_id: str = "global") -> bool:
-    "\""
+    """
     Evaluates an access request against the RBAC matrix.
     Built to handle granular resource-level overrides in future iterations.
     [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-    "\""
+    """
     pass

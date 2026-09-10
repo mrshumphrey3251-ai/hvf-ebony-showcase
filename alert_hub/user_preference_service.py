@@ -11,16 +11,16 @@ class UserPreferenceService:
         pass
 
     def is_quiet_hour(self, current_hour: int, quiet_hours: Dict[str, int]) -> bool:
-        "\""
+        """
         Determines if the current time falls within the user's defined quiet hours.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass
 
     def get_delivery_channels(self, user_id: str, severity: str) -> List[str]:
-        "\""
+        """
         Determines appropriate delivery channels.
         CRITICAL alerts unconditionally bypass all quiet-hour suppressions.
         [INTERNAL LOGIC REDACTED FOR PUBLIC REPOSITORY]
-        "\""
+        """
         pass
