@@ -1081,6 +1081,34 @@ elif active_module == "🌐 Omni-Industry Matrix":
                         st.rerun()
                         
                 st.divider()
+            elif theater == "DEFENSE TACTICAL":
+                st.markdown("### 🪖 KINETIC TELEMETRY & COMMAND")
+                status_col, telemetry_col = st.columns(2)
+                with status_col:
+                    st.metric("Sector Status", st.session_state.kinetic_states[theater])
+                with telemetry_col:
+                    if "ONLINE" in st.session_state.kinetic_states[theater]:
+                        st.metric("Swarm UAVs / Anti-Spoof Nodes", "24 / 120")
+                    elif "REBOOT" in st.session_state.kinetic_states[theater]:
+                        st.metric("Swarm UAVs / Anti-Spoof Nodes", "0 / RECONNECTING...")
+                    else:
+                        st.metric("Swarm UAVs / Anti-Spoof Nodes", "0 / GROUNDED")
+                        
+                st.markdown("### 🔴 Kinetic Command Override")
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    if st.button("⚡ REBOOT TACTICAL", key=f"reb_def_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟡 REBOOTING CLUSTER..."
+                        st.rerun()
+                with c2:
+                    if st.button("🛑 HALT TACTICAL", key=f"hlt_def_{i}", type="primary", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🔴 HALTED - SWARM GROUNDED"
+                        st.rerun()
+                with c3:
+                    if st.button("🔄 RESTORE", key=f"res_def_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟢 ONLINE & SECURE"
+                        st.rerun()
+                st.divider()
             else:
                 st.markdown("### 🔴 Kinetic Command Override")
                 c1, c2 = st.columns(2)
