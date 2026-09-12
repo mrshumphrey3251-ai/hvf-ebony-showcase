@@ -1277,6 +1277,34 @@ elif active_module == "🌐 Omni-Industry Matrix":
                         st.session_state.kinetic_states[theater] = "🟢 ONLINE & SECURE"
                         st.rerun()
                 st.divider()
+            elif theater == "LEGAL ARBITRATION":
+                st.markdown("### ⚖️ KINETIC TELEMETRY & COMMAND")
+                status_col, telemetry_col = st.columns(2)
+                with status_col:
+                    st.metric("Sector Status", st.session_state.kinetic_states[theater])
+                with telemetry_col:
+                    if "ONLINE" in st.session_state.kinetic_states[theater]:
+                        st.metric("Active Escrows / Arbitrations", "15 / 3")
+                    elif "REBOOT" in st.session_state.kinetic_states[theater]:
+                        st.metric("Active Escrows / Arbitrations", "0 / RECONNECTING...")
+                    else:
+                        st.metric("Active Escrows / Arbitrations", "0 / FROZEN")
+                        
+                st.markdown("### 🔴 Kinetic Command Override")
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    if st.button("⚡ REBOOT ESCROWS", key=f"reb_leg_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟡 REBOOTING CLUSTER..."
+                        st.rerun()
+                with c2:
+                    if st.button("🛑 HALT ARBITRATION", key=f"hlt_leg_{i}", type="primary", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🔴 HALTED - ASSETS FROZEN"
+                        st.rerun()
+                with c3:
+                    if st.button("🔄 RESTORE", key=f"res_leg_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟢 ONLINE & SECURE"
+                        st.rerun()
+                st.divider()
             else:
                 st.markdown("### 🔴 Kinetic Command Override")
                 c1, c2 = st.columns(2)
