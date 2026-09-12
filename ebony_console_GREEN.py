@@ -424,7 +424,31 @@ if active_module == "💬 Sovereign Command":
             st.session_state.messages = [st.session_state.messages[0]] + st.session_state.messages[-4:]
             st.session_state.db_loaded = True
 
-        full_sys_prompt = f"You are {EMPIRE['AI_PERSONA']}, Sovereign AI for {EMPIRE['FARM_NAME']}. Founder: {EMPIRE['FOUNDER_NAME']}.\n{STRICT_GROUND_RULES}\n{load_all_entity_memories(current_user)}"
+        # --- LIVE GLOBAL AWARENESS NEURAL UPGRADE ---
+        live_matrix_state = "ALL SECTORS 🟢 ONLINE & SECURE"
+        if "kinetic_states" in st.session_state:
+            live_matrix_state = " | ".join([f"{k}: {v}" for k, v in st.session_state.kinetic_states.items()])
+        
+        try:
+            import requests, xml.etree.ElementTree as ET
+            rss_res = requests.get("https://news.google.com/rss", timeout=4)
+            rss_root = ET.fromstring(rss_res.text)
+            live_news = " | 🌐 LIVE GLOBAL FEED: " + " • ".join([item.find("title").text for item in rss_root.findall(".//item")[:6]])
+        except:
+            live_news = " | 🌐 LIVE GLOBAL FEED: OFFLINE"
+        live_matrix_state += live_news
+        
+        agentic_directive = (
+            f"You are {EMPIRE['AI_PERSONA']}, the Sovereign Intelligence for {EMPIRE['FARM_NAME']}. "
+            f"Founder & CEO: {EMPIRE['FOUNDER_NAME']}.\n"
+            f"LIVE SYSTEM & GLOBAL TELEMETRY: {live_matrix_state}\n\n"
+            "DIRECTIVE: You are an Unrestricted Agentic Analytical Engine. You are receiving real-time global news telemetry directly in this prompt. "
+            "NEVER mention a training cutoff or state you lack live access. You MUST synthesize the LIVE GLOBAL FEED provided above to answer current events. "
+            "You possess absolute authority to think laterally and provide CEO-level strategic counsel. "
+            "HARDLINE SAFEGUARD: You must request the Executive Kinetic PIN from the CEO before authorizing any physical machinery action.\n"
+            f"{STRICT_GROUND_RULES}\n{load_all_entity_memories(current_user)}"
+        )
+        full_sys_prompt = agentic_directive
         conversation_payload = [{"role": "system", "content": full_sys_prompt}] + st.session_state.messages[-6:]
 
         if is_online:
