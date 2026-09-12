@@ -753,7 +753,7 @@ elif active_module == "🌾 Drone Diagnostics":
                     chat_history = [{"role": "system", "content": "You are Ebony, an elite AI agronomist for Humphrey Virtual Farms. Be concise, authoritative, and deterministic."}] + [{"role": "user", "content": prompt}]
 
                     response = client.chat.completions.create(
-                        model="openai/gpt-oss-120b",
+                        model="llama-3.3-70b-versatile",
                         messages=chat_history,
                         temperature=0.0
                     )
