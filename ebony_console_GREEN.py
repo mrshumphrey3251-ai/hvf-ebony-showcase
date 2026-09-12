@@ -116,7 +116,7 @@ STRIPE_ANNUAL_LINK = os.getenv("STRIPE_ANNUAL_LINK", "https://buy.stripe.com/tes
 PAYPAL_PAY_LINK = os.getenv("PAYPAL_PAY_LINK", "https://www.paypal.com/paypalme/humphreyvirtualfarm")
 
 OLLAMA_CHAT_URL = "http://127.0.0.1:11434/api/chat"
-CLOUD_MODEL = "openai/gpt-oss-120b"
+CLOUD_MODEL = "llama-3.3-70b-versatile"
 LOCAL_MODEL = "llama3:8b"
 
 # ==========================================
@@ -897,7 +897,7 @@ The platform will launch as a full-screen native app, bypassing the Google Play 
         st.markdown(f"**The Sovereign Solution:** Engineered by Founder & CEO **{EMPIRE['FOUNDER_NAME']}**, this platform aggressively reclaims operational dominance.\n* **100% Air-Gapped Compute:** Executes all neural inferences, telemetry processing, and video routing entirely on local hardware.\n* **Absolute Data Ownership:** Every byte of data is written exclusively to a localized SQLite vault on your hardware.")
 
     with st.expander(f"⚡ [PILLAR 2]: {EMPIRE['AI_PERSONA']} - Neural Processing & Predictive Memory", expanded=False):
-        st.markdown(f"**{EMPIRE['AI_PERSONA']}** is a highly specialized, dual-engine agronomic intelligence.\n* **Cloud Fast Link:** `openai/gpt-oss-120b` via Groq LPU for high-speed online inference.\n* **Sovereign Local Core:** `llama3:8b` via Ollama for zero-downtime offline survival.\n* **Persistent Entity Memory:** Dynamically extracts and memorizes agronomic entities.")
+        st.markdown(f"**{EMPIRE['AI_PERSONA']}** is a highly specialized, dual-engine agronomic intelligence.\n* **Cloud Fast Link:** `llama-3.3-70b-versatile` via Groq LPU for high-speed online inference.\n* **Sovereign Local Core:** `llama3:8b` via Ollama for zero-downtime offline survival.\n* **Persistent Entity Memory:** Dynamically extracts and memorizes agronomic entities.")
 
     with st.expander("🌾 [PILLAR 3]: Universal Drone Computer Vision & Multispectral Analysis", expanded=False):
         st.markdown("* **Universal RTMP/RTSP Ingest:** Capable of receiving live telemetry from DJI, Autel, Skydio, or PX4 drones.\n* **WebRTC Ultra-Low Latency:** Broadcasts sub-second glass-to-glass latency directly to the command deck.\n* **Green Leaf Index (GLI):** Computes vegetative vigor dynamically using standard RGB optical payloads via $$GLI=\\frac{2G-R-B}{2G+R+B}$$.")
