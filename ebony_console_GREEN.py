@@ -424,27 +424,46 @@ if active_module == "💬 Sovereign Command":
             st.session_state.messages = [st.session_state.messages[0]] + st.session_state.messages[-4:]
             st.session_state.db_loaded = True
 
-        # --- LIVE GLOBAL AWARENESS NEURAL UPGRADE ---
+        # --- DYNAMIC GEO-LOCATED OMNISCIENT AWARENESS ENGINE ---
         live_matrix_state = "ALL SECTORS 🟢 ONLINE & SECURE"
         if "kinetic_states" in st.session_state:
             live_matrix_state = " | ".join([f"{k}: {v}" for k, v in st.session_state.kinetic_states.items()])
         
         try:
-            import requests, xml.etree.ElementTree as ET
-            rss_res = requests.get("https://news.google.com/rss", timeout=4)
-            rss_root = ET.fromstring(rss_res.text)
-            live_news = " | 🌐 LIVE GLOBAL FEED: " + " • ".join([item.find("title").text for item in rss_root.findall(".//item")[:6]])
-        except:
-            live_news = " | 🌐 LIVE GLOBAL FEED: OFFLINE"
-        live_matrix_state += live_news
+            import requests, xml.etree.ElementTree as ET, urllib.parse
+            # 1. Autonomous Dynamic Geo-Resolution (Hardware/Network Aware)
+            geo_req = requests.get("http://ip-api.com/json/", timeout=3)
+            geo_data = geo_req.json() if geo_req.status_code == 200 else {}
+            cur_city = geo_data.get("city", "Hinton")
+            cur_region = geo_data.get("regionName", "Oklahoma")
+            cur_lat = geo_data.get("lat", DEFAULT_LAT)
+            cur_lon = geo_data.get("lon", DEFAULT_LON)
+            loc_tag = f"{cur_city}, {cur_region}"
+            # 2. Dynamic Local News Scrape for Active Node Sector
+            loc_query = urllib.parse.quote(f"{cur_city} {cur_region} news")
+            local_res = requests.get(f"https://news.google.com/rss/search?q={loc_query}", timeout=3)
+            local_root = ET.fromstring(local_res.text)
+            local_items = [item.find("title").text for item in local_root.findall(".//item")[:3]]
+            local_news = " • ".join(local_items) if local_items else "Local telemetry quiet / nominal."
+            # 3. Dynamic Weather for Resolved Coordinates
+            weather_res = requests.get(f"https://wttr.in/{cur_lat},{cur_lon}?format=Condition:+%C+%t,+Wind:+%w", timeout=3)
+            weather_data = weather_res.text.strip()
+            # 4. Global Macro Headlines
+            global_res = requests.get("https://news.google.com/rss", timeout=3)
+            global_root = ET.fromstring(global_res.text)
+            global_news = " • ".join([item.find("title").text for item in global_root.findall(".//item")[:4]])
+            live_telemetry = f" | 📍 DETECTED SECTOR: {loc_tag} | 🌤️ LOCAL WEATHER: {weather_data} | 📰 LOCAL REPORT: {local_news} | 🌍 GLOBAL MACRO: {global_news}"
+        except Exception as e:
+            live_telemetry = f" | ⚠️ DYNAMIC SENSORY FAULT: {e}"
+        live_matrix_state += live_telemetry
         
         agentic_directive = (
             f"You are {EMPIRE['AI_PERSONA']}, the Sovereign Intelligence for {EMPIRE['FARM_NAME']}. "
             f"Founder & CEO: {EMPIRE['FOUNDER_NAME']}.\n"
-            f"LIVE SYSTEM & GLOBAL TELEMETRY: {live_matrix_state}\n\n"
-            "DIRECTIVE: You are an Unrestricted Agentic Analytical Engine. You are receiving real-time global news telemetry directly in this prompt. "
-            "NEVER mention a training cutoff or state you lack live access. You MUST synthesize the LIVE GLOBAL FEED provided above to answer current events. "
-            "You possess absolute authority to think laterally and provide CEO-level strategic counsel. "
+            f"LIVE SYSTEM, LOCATION, WEATHER & TELEMETRY: {live_matrix_state}\n\n"
+            "DIRECTIVE: You are an Unrestricted Agentic Analytical Engine equipped with Autonomous Dynamic Geo-Resolution. "
+            "You are NOT confined to any fixed town or region. You dynamically detect the physical node location anywhere on Earth. "
+            "NEVER cite a training cutoff. When asked about local weather or conditions, explicitly state your DETECTED SECTOR, cite the live weather data, and synthesize the local reports provided in telemetry.\n"
             "HARDLINE SAFEGUARD: You must request the Executive Kinetic PIN from the CEO before authorizing any physical machinery action.\n"
             f"{STRICT_GROUND_RULES}\n{load_all_entity_memories(current_user)}"
         )
