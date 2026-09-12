@@ -1165,6 +1165,34 @@ elif active_module == "🌐 Omni-Industry Matrix":
                         st.session_state.kinetic_states[theater] = "🟢 ONLINE & SECURE"
                         st.rerun()
                 st.divider()
+            elif theater == "ENTERPRISE FACILITIES":
+                st.markdown("### 🏢 KINETIC TELEMETRY & COMMAND")
+                status_col, telemetry_col = st.columns(2)
+                with status_col:
+                    st.metric("Sector Status", st.session_state.kinetic_states[theater])
+                with telemetry_col:
+                    if "ONLINE" in st.session_state.kinetic_states[theater]:
+                        st.metric("Biometric Scanners / HVAC Nodes", "120 / 450")
+                    elif "REBOOT" in st.session_state.kinetic_states[theater]:
+                        st.metric("Biometric Scanners / HVAC Nodes", "0 / RECONNECTING...")
+                    else:
+                        st.metric("Biometric Scanners / HVAC Nodes", "0 / LOCKDOWN")
+                        
+                st.markdown("### 🔴 Kinetic Command Override")
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    if st.button("⚡ REBOOT FACILITIES", key=f"reb_fac_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟡 REBOOTING CLUSTER..."
+                        st.rerun()
+                with c2:
+                    if st.button("🛑 HALT FACILITIES", key=f"hlt_fac_{i}", type="primary", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🔴 HALTED - FACILITY LOCKDOWN"
+                        st.rerun()
+                with c3:
+                    if st.button("🔄 RESTORE", key=f"res_fac_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟢 ONLINE & SECURE"
+                        st.rerun()
+                st.divider()
             else:
                 st.markdown("### 🔴 Kinetic Command Override")
                 c1, c2 = st.columns(2)
