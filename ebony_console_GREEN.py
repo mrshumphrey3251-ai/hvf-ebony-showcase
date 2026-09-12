@@ -477,67 +477,67 @@ if active_module == "💬 Sovereign Command":
                         "type": "function",
                         "function": {
                             "name": "get_global_weather",
-                            "description": "Fetch real-time weather for ANY city or location requested by the user.",
-                            "parameters": {"type": "object", "properties": {"location": {"type": "string", "description": "City and state/country"}}, "required": ["location"]}
+                            "description": "Fetch real-time weather for ANY location.",
+                            "parameters": {"type": "object", "properties": {"location": {"type": "string"}}, "required": ["location"]}
                         }
                     },
                     {
                         "type": "function",
                         "function": {
                             "name": "search_live_web",
-                            "description": "Search the live internet to find up-to-date facts, current events, or answer general knowledge questions outside your training data.",
-                            "parameters": {"type": "object", "properties": {"query": {"type": "string", "description": "The specific search query (e.g. current US president 2026)"}}, "required": ["query"]}
+                            "description": "Search live internet for current events, sports scores, and facts.",
+                            "parameters": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}
                         }
                     }
                 ]
-                res = groq_client.chat.completions.create(model=CLOUD_MODEL, messages=conversation_payload, tools=tools, temperature=0.0)
-                msg = res.choices[0].message
-                if getattr(msg, "tool_calls", None):
-                    import requests, json, urllib.parse, re
-                    tc_dicts = [{"id": t.id, "type": "function", "function": {"name": t.function.name, "arguments": t.function.arguments}} for t in msg.tool_calls]
-                    conversation_payload.append({"role": "assistant", "content": msg.content or "", "tool_calls": tc_dicts})
-                    for tc in msg.tool_calls:
-                        t_name = tc.function.name
-                        try: args = json.loads(tc.function.arguments)
-                        except: args = {}
-                        t_data = "Nominal"
-                        if t_name == "get_global_weather":
-                            loc = args.get("location", "")
-                            try:
-                                w_res = requests.get(f"https://wttr.in/{urllib.parse.quote(loc)}?format=Condition:+%C+%t,+Wind:+%w", timeout=3)
-                                t_data = f"Weather in {loc}: " + w_res.text.strip() if w_res.status_code == 200 else f"Could not fetch weather for {loc}."
-                            except Exception as e: t_data = f"Weather offline: {e}"
-                        elif t_name == "search_live_web":
-                            query = args.get("query", "")
-                            search_records = []
-                            headers = {"User-Agent": "HVF-SovereignMatrix/1.0"}
-                            try:
-                                w_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={urllib.parse.quote(query)}&utf8=&format=json"
-                                w_res = requests.get(w_url, headers=headers, timeout=3)
-                                if w_res.status_code == 200:
-                                    for itm in w_res.json().get("query", {}).get("search", [])[:2]:
-                                        search_records.append(f"VERIFIED RECORD [{itm.get('title')}]: {re.sub(r'<[^>]+>', '', itm.get('snippet', '')).strip()}")
-                            except: pass
-                            try:
-                                g_url = f"https://news.google.com/rss/search?q={urllib.parse.quote(query)}"
-                                g_res = requests.get(g_url, timeout=3)
-                                if g_res.status_code == 200:
-                                    import xml.etree.ElementTree as ET
-                                    for itm in ET.fromstring(g_res.text).findall(".//item")[:2]:
-                                        search_records.append(f"LIVE DISPATCH: {itm.find('title').text}")
-                            except: pass
-                            t_data = " | ".join(search_records) if search_records else f"Direct telemetry for '{query}' verified nominal."
-                        else:
-                            t_data = "Unrecognized command."
-                        conversation_payload.append({"role": "tool", "tool_call_id": tc.id, "name": t_name, "content": t_data})
-                    conversation_payload.append({"role": "system", "content": "Tool data retrieved. You MUST now answer the user directly. DO NOT call any more tools."})
-                    res2 = groq_client.chat.completions.create(model=CLOUD_MODEL, messages=conversation_payload, tools=tools, temperature=0.0)
-                    bot_reply = sanitize_deterministic_output(res2.choices[0].message.content or "⚠️ SYNTHESIS HALTED: The API attempted an unauthorized recursive tool chain. Partial data retrieved.")
-                else:
-                    bot_reply = sanitize_deterministic_output(msg.content)
+                import requests, json, urllib.parse, re
+                bot_reply = ""
+                for loop_idx in range(3):
+                    active_tools = tools if loop_idx < 2 else None
+                    if active_tools:
+                        res = groq_client.chat.completions.create(model=CLOUD_MODEL, messages=conversation_payload, tools=active_tools, temperature=0.0)
+                    else:
+                        conversation_payload.append({"role": "system", "content": "Tool reconnaissance complete. Deliver your final strategic assessment to the CEO now using the gathered data. DO NOT call further tools."})
+                        res = groq_client.chat.completions.create(model=CLOUD_MODEL, messages=conversation_payload, temperature=0.0)
+                    msg = res.choices[0].message
+                    if getattr(msg, "tool_calls", None) and active_tools:
+                        tc_dicts = [{"id": t.id, "type": "function", "function": {"name": t.function.name, "arguments": t.function.arguments}} for t in msg.tool_calls]
+                        conversation_payload.append({"role": "assistant", "content": msg.content or "", "tool_calls": tc_dicts})
+                        for tc in msg.tool_calls:
+                            t_name = tc.function.name
+                            try: args = json.loads(tc.function.arguments)
+                            except: args = {}
+                            t_data = "Nominal"
+                            if t_name == "get_global_weather":
+                                loc = args.get("location", "")
+                                try:
+                                    w_res = requests.get(f"https://wttr.in/{urllib.parse.quote(loc)}?format=Condition:+%C+%t,+Wind:+%w", timeout=3)
+                                    t_data = f"Weather in {loc}: " + w_res.text.strip() if w_res.status_code == 200 else "Weather offline."
+                                except Exception as e: t_data = f"Weather offline: {e}"
+                            elif t_name == "search_live_web":
+                                query = args.get("query", "")
+                                search_records = []
+                                try:
+                                    w_res = requests.get(f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={urllib.parse.quote(query)}&utf8=&format=json", timeout=3)
+                                    if w_res.status_code == 200:
+                                        for itm in w_res.json().get("query", {}).get("search", [])[:2]:
+                                            search_records.append(f"VERIFIED [{itm.get('title')}]: {re.sub(r'<[^>]+>', '', itm.get('snippet', '')).strip()}")
+                                except: pass
+                                try:
+                                    g_res = requests.get(f"https://news.google.com/rss/search?q={urllib.parse.quote(query)}", timeout=3)
+                                    if g_res.status_code == 200:
+                                        import xml.etree.ElementTree as ET
+                                        for itm in ET.fromstring(g_res.text).findall(".//item")[:2]:
+                                            title_txt = itm.find("title").text if itm.find("title") is not None else ""
+                                            if title_txt: search_records.append(f"LIVE DISPATCH: {title_txt}")
+                                except: pass
+                                t_data = " | ".join(search_records) if search_records else "No additional data found."
+                            conversation_payload.append({"role": "tool", "tool_call_id": tc.id, "name": t_name, "content": t_data})
+                    else:
+                        bot_reply = sanitize_deterministic_output(msg.content or "")
+                        break
             except Exception as e:
-                st.session_state.messages = [st.session_state.messages[0], {"role": "user", "content": user_input}]
-                bot_reply = f"⚠️ SYSTEM FAULT INTERCEPTED: {str(e)} | Verify API rate limits or syntax."
+                bot_reply = f"⚠️ SYSTEM FAULT INTERCEPTED: {str(e)}"
         else:
             bot_reply = query_local_ollama_chat(conversation_payload)
 
