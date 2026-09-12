@@ -268,10 +268,10 @@ def get_tailscale_or_local_ip_cached() -> str:
         return ip
     except: return "192.168.1.175"
 
-ACTIVE_IP = "100.87.162.117"
+ACTIVE_IP = get_tailscale_or_local_ip_cached()
 UPLINK_URL = f"http://{ACTIVE_IP}:8501"
-WEBRTC_STREAM_URL = f"http://192.168.1.175:8889/live/stream"
-RTMP_INGEST_URL = f"rtmp://192.168.1.175:1935/live/stream"
+WEBRTC_STREAM_URL = f"http://{ACTIVE_IP}:8889/live/stream"
+RTMP_INGEST_URL = f"rtmp://{ACTIVE_IP}:1935/live/stream"
 
 st.set_page_config(page_title=f"{EMPIRE['FARM_NAME']} | {EMPIRE['AI_PERSONA']}", page_icon="⚡", layout="wide", initial_sidebar_state="expanded")
 
@@ -315,7 +315,10 @@ def query_local_ollama_chat(messages_payload: list) -> str:
         res = requests.post(OLLAMA_CHAT_URL, json={"model": LOCAL_MODEL, "messages": messages_payload, "stream": False, "options": {"temperature": 0.0}}, timeout=45)
         if res.status_code == 200: return sanitize_deterministic_output(res.json().get("message", {}).get("content", ""))
         return f"⚠️ Local Node returned HTTP {res.status_code}."
-    except: return "⚠️ Local Engine fault."
+    except requests.exceptions.ConnectionError:
+        return "⚠️ Local Engine offline. Start Ollama with `ollama run llama3:8b`."
+    except Exception as e:
+        return f"⚠️ Local Engine fault: {str(e)}"
 
 # --- SIDEBAR ---
 with st.sidebar:
