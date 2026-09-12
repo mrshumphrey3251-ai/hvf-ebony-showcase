@@ -1019,17 +1019,51 @@ elif active_module == "🌐 Omni-Industry Matrix":
     for i, theater in enumerate(theaters):
         with tabs[i]:
             st.markdown(f"## 🛡️ {theater} MASTER NODE")
+            # --- SOVEREIGN STATE ENGINE ---
+            if "kinetic_states" not in st.session_state:
+                st.session_state.kinetic_states = {t: "🟢 ONLINE & SECURE" for t in theaters}
             
-            st.markdown("### 🔴 Kinetic Command Override")
-            c1, c2 = st.columns(2)
-            with c1:
-                if st.button(f"⚡ REBOOT {theater} EDGE NODES", key=f"reb_{i}", use_container_width=True):
-                    st.success(f"{theater} node reboot signal transmitted.")
-            with c2:
-                if st.button(f"🛑 HALT {theater} OPERATIONS", key=f"hlt_{i}", type="primary", use_container_width=True):
-                    st.error(f"{theater} OPERATIONS EMERGENCY HALTED.")
-                    
-            st.divider()
+            if theater == "AGRICULTURE":
+                st.markdown("### 🚜 KINETIC TELEMETRY & COMMAND")
+                
+                status_col, telemetry_col = st.columns(2)
+                with status_col:
+                    st.metric("Sector Status", st.session_state.kinetic_states[theater])
+                with telemetry_col:
+                    if "ONLINE" in st.session_state.kinetic_states[theater]:
+                        st.metric("Active Edge Drones / Soil Sensors", "14 / 850")
+                    elif "REBOOT" in st.session_state.kinetic_states[theater]:
+                        st.metric("Active Edge Drones / Soil Sensors", "0 / RECONNECTING...")
+                    else:
+                        st.metric("Active Edge Drones / Soil Sensors", "0 / OFFLINE (VALVES SHUT)")
+                        
+                st.markdown("### 🔴 Kinetic Command Override")
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    if st.button("⚡ REBOOT AG-NODES", key=f"reb_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟡 REBOOTING CLUSTER..."
+                        st.rerun()
+                with c2:
+                    if st.button("🛑 HALT AG-OPERATIONS", key=f"hlt_{i}", type="primary", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🔴 HALTED - VALVES CLOSED"
+                        st.rerun()
+                with c3:
+                    if st.button("🔄 RESTORE", key=f"res_{i}", use_container_width=True):
+                        st.session_state.kinetic_states[theater] = "🟢 ONLINE & SECURE"
+                        st.rerun()
+                        
+                st.divider()
+            else:
+                st.markdown("### 🔴 Kinetic Command Override")
+                c1, c2 = st.columns(2)
+                with c1:
+                    if st.button(f"⚡ REBOOT {theater} EDGE NODES", key=f"reb_{i}", use_container_width=True):
+                        st.success(f"{theater} node reboot signal transmitted.")
+                with c2:
+                    if st.button(f"🛑 HALT {theater} OPERATIONS", key=f"hlt_{i}", type="primary", use_container_width=True):
+                        st.error(f"{theater} OPERATIONS EMERGENCY HALTED.")
+                        
+                st.divider()
             
             st.markdown(f"### 🚀 {theater.title()} Quick-Deploy Distribution Link")
             st.info(f"Share this 1-click installer link with prospective clients or {theater.title()} managers to launch their local 7-Day Pilot:")
