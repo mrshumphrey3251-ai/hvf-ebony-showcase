@@ -22,6 +22,73 @@ def render_drone_layer():
     col2.metric("Mean GLI (Green Leaf Index)", "0.84", "+0.02")
     col3.metric("Soil Dielectric Permittivity", "26.1%", "-0.5%")
     st.success("LIVE FEED SECURE: Hyperspectral edge-processing nodes synchronized. Optical matrix online.")
+    
+    st.markdown("#### 📡 LIVE ARDUCAM OPTICAL INGEST")
+    
+    # Dynamic Hardware Port Selector
+    cam_index = st.number_input("Hardware Port (Camera Index)", min_value=0, max_value=5, value=0, step=1)
+    run_camera = st.checkbox("AUTHORIZE CEO KINETIC OVERRIDE: INITIATE ARDUCAM", value=False)
+    
+    if run_camera:
+        try:
+            import cv2
+            cap = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW) if "win" in __import__("sys").platform else cv2.VideoCapture(cam_index)
+            if not cap.isOpened():
+                st.error(f"⚠️ HARDWARE LOCK: Cannot access Camera Port {cam_index}. It is either unplugged or held hostage by another application. Close the conflicting app and try again, or change the port.")
+            else:
+                st.warning(f"⚠️ OPTICAL INGEST LIVE ON PORT {cam_index}. TRANSMITTING PHYSICAL SENSOR DATA.")
+                frame_placeholder = st.empty()
+                while run_camera:
+                    ret, frame = cap.read()
+                    if not ret:
+                        st.error("Hardware Failure: Arducam signal lost.")
+                        break
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    frame_placeholder.image(frame, channels="RGB", use_container_width=True)
+                cap.release()
+        except ImportError:
+            st.error("⚠️ SYSTEM FAULT: OpenCV library missing. Run `pip install opencv-python` in the terminal.")
+    else:
+        st.info("[!] OPTICAL PAYLOAD STANDBY. AWAITING CEO OVERRIDE TO ACTIVATE HARDWARE.")
+    st.markdown("---")
+    st.markdown("### 🛰️ VERTICAL 1: Drone Optical Ingest & GLI Telemetry")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("UAV Fleet Status", "3/3 ACTIVE (Airborne)", "Sector 7")
+    col2.metric("Mean GLI (Green Leaf Index)", "0.84", "+0.02")
+    col3.metric("Soil Dielectric Permittivity", "26.1%", "-0.5%")
+    st.success("LIVE FEED SECURE: Hyperspectral edge-processing nodes synchronized. Optical matrix online.")
+    
+    st.markdown("#### 📡 LIVE ARDUCAM OPTICAL INGEST")
+    run_camera = st.checkbox("AUTHORIZE CEO KINETIC OVERRIDE: INITIATE ARDUCAM", value=False)
+    
+    if run_camera:
+        try:
+            import cv2
+            cap = cv2.VideoCapture(0, cv2.CAP_DSHOW) if "win" in __import__("sys").platform else cv2.VideoCapture(0)
+            if not cap.isOpened():
+                st.error("⚠️ HARDWARE FAULT: Arducam not detected on physical node. Check USB/CSI connection.")
+            else:
+                st.warning("⚠️ OPTICAL INGEST LIVE. TRANSMITTING PHYSICAL SENSOR DATA.")
+                frame_placeholder = st.empty()
+                while run_camera:
+                    ret, frame = cap.read()
+                    if not ret:
+                        st.error("Hardware Failure: Arducam signal lost.")
+                        break
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    frame_placeholder.image(frame, channels="RGB", use_container_width=True)
+                cap.release()
+        except ImportError:
+            st.error("⚠️ SYSTEM FAULT: OpenCV library missing. Run `pip install opencv-python` in the terminal.")
+    else:
+        st.info("[!] OPTICAL PAYLOAD STANDBY. AWAITING CEO OVERRIDE TO ACTIVATE HARDWARE.")
+    st.markdown("---")
+    st.markdown("### 🛰️ VERTICAL 1: Drone Optical Ingest & GLI Telemetry")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("UAV Fleet Status", "3/3 ACTIVE (Airborne)", "Sector 7")
+    col2.metric("Mean GLI (Green Leaf Index)", "0.84", "+0.02")
+    col3.metric("Soil Dielectric Permittivity", "26.1%", "-0.5%")
+    st.success("LIVE FEED SECURE: Hyperspectral edge-processing nodes synchronized. Optical matrix online.")
     st.markdown("---")
 
 from dotenv import load_dotenv
