@@ -1007,6 +1007,34 @@ elif active_module == "🌐 Omni-Industry Matrix":
     st.subheader("🌐 EBONY SOVEREIGN NEXUS // MASTER COMMAND & EDUCATION")
     st.caption("SELECT A VERTICAL TO INITIATE KINETIC COMMAND AND REVIEW SECTOR ARCHITECTURE")
     st.markdown("---")
+    # --- KINETIC SECONDARY LOCK ---
+    if "kinetic_auth" not in st.session_state:
+        st.session_state.kinetic_auth = False
+    
+    if not st.session_state.kinetic_auth:
+        st.error("🛑 PHYSICAL MACHINERY CONTROLS LOCKED.")
+        st.info("The Omni-Industry Matrix controls live industrial hardware. Enter the Executive Kinetic PIN to arm the system.")
+        pin_col, btn_col = st.columns([3, 1])
+        with pin_col:
+            k_pin = st.text_input("Kinetic Authorization PIN", type="password", label_visibility="collapsed", placeholder="Enter Executive PIN...")
+        with btn_col:
+            if st.button("ARM SYSTEM", type="primary", use_container_width=True):
+                if k_pin == "HVF-OMEGA":
+                    st.session_state.kinetic_auth = True
+                    st.rerun()
+                else:
+                    st.error("ACCESS DENIED: Unauthorized.")
+        st.stop()  # This mechanically halts rendering of the machine controls
+    else:
+        col_arm1, col_arm2 = st.columns([4, 1])
+        with col_arm1:
+            st.success("🟢 KINETIC COMMAND ARMED. PHYSICAL CONTROLS ONLINE.")
+        with col_arm2:
+            if st.button("🔒 DISARM", use_container_width=True):
+                st.session_state.kinetic_auth = False
+                st.rerun()
+        st.markdown("---")
+    st.markdown("---")
     
     theaters = [
         "AGRICULTURE", "DEFENSE TACTICAL", "LOGISTICS & SUPPLY", 
