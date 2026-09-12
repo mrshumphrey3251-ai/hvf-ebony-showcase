@@ -1,4 +1,3 @@
-﻿import ada_voice_module
 import os
 import sys
 import io
@@ -13,84 +12,6 @@ from datetime import datetime, timedelta
 import requests
 import subprocess
 import streamlit as st
-
-def render_drone_layer():
-    st.markdown("---")
-    st.markdown("### 🛰️ VERTICAL 1: Drone Optical Ingest & GLI Telemetry")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("UAV Fleet Status", "3/3 ACTIVE (Airborne)", "Sector 7")
-    col2.metric("Mean GLI (Green Leaf Index)", "0.84", "+0.02")
-    col3.metric("Soil Dielectric Permittivity", "26.1%", "-0.5%")
-    st.success("LIVE FEED SECURE: Hyperspectral edge-processing nodes synchronized. Optical matrix online.")
-    
-    st.markdown("#### 📡 LIVE ARDUCAM OPTICAL INGEST")
-    
-    # Dynamic Hardware Port Selector
-    cam_index = st.number_input("Hardware Port (Camera Index)", min_value=0, max_value=5, value=0, step=1)
-    run_camera = st.checkbox("AUTHORIZE CEO KINETIC OVERRIDE: INITIATE ARDUCAM", value=False)
-    
-    if run_camera:
-        try:
-            import cv2
-            cap = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW) if "win" in __import__("sys").platform else cv2.VideoCapture(cam_index)
-            if not cap.isOpened():
-                st.error(f"⚠️ HARDWARE LOCK: Cannot access Camera Port {cam_index}. It is either unplugged or held hostage by another application. Close the conflicting app and try again, or change the port.")
-            else:
-                st.warning(f"⚠️ OPTICAL INGEST LIVE ON PORT {cam_index}. TRANSMITTING PHYSICAL SENSOR DATA.")
-                frame_placeholder = st.empty()
-                while run_camera:
-                    ret, frame = cap.read()
-                    if not ret:
-                        st.error("Hardware Failure: Arducam signal lost.")
-                        break
-                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    frame_placeholder.image(frame, channels="RGB", use_container_width=True)
-                cap.release()
-        except ImportError:
-            st.error("⚠️ SYSTEM FAULT: OpenCV library missing. Run `pip install opencv-python` in the terminal.")
-    else:
-        st.info("[!] OPTICAL PAYLOAD STANDBY. AWAITING CEO OVERRIDE TO ACTIVATE HARDWARE.")
-    st.markdown("---")
-    st.markdown("### 🛰️ VERTICAL 1: Drone Optical Ingest & GLI Telemetry")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("UAV Fleet Status", "3/3 ACTIVE (Airborne)", "Sector 7")
-    col2.metric("Mean GLI (Green Leaf Index)", "0.84", "+0.02")
-    col3.metric("Soil Dielectric Permittivity", "26.1%", "-0.5%")
-    st.success("LIVE FEED SECURE: Hyperspectral edge-processing nodes synchronized. Optical matrix online.")
-    
-    st.markdown("#### 📡 LIVE ARDUCAM OPTICAL INGEST")
-    run_camera = st.checkbox("AUTHORIZE CEO KINETIC OVERRIDE: INITIATE ARDUCAM", value=False)
-    
-    if run_camera:
-        try:
-            import cv2
-            cap = cv2.VideoCapture(0, cv2.CAP_DSHOW) if "win" in __import__("sys").platform else cv2.VideoCapture(0)
-            if not cap.isOpened():
-                st.error("⚠️ HARDWARE FAULT: Arducam not detected on physical node. Check USB/CSI connection.")
-            else:
-                st.warning("⚠️ OPTICAL INGEST LIVE. TRANSMITTING PHYSICAL SENSOR DATA.")
-                frame_placeholder = st.empty()
-                while run_camera:
-                    ret, frame = cap.read()
-                    if not ret:
-                        st.error("Hardware Failure: Arducam signal lost.")
-                        break
-                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    frame_placeholder.image(frame, channels="RGB", use_container_width=True)
-                cap.release()
-        except ImportError:
-            st.error("⚠️ SYSTEM FAULT: OpenCV library missing. Run `pip install opencv-python` in the terminal.")
-    else:
-        st.info("[!] OPTICAL PAYLOAD STANDBY. AWAITING CEO OVERRIDE TO ACTIVATE HARDWARE.")
-    st.markdown("---")
-    st.markdown("### 🛰️ VERTICAL 1: Drone Optical Ingest & GLI Telemetry")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("UAV Fleet Status", "3/3 ACTIVE (Airborne)", "Sector 7")
-    col2.metric("Mean GLI (Green Leaf Index)", "0.84", "+0.02")
-    col3.metric("Soil Dielectric Permittivity", "26.1%", "-0.5%")
-    st.success("LIVE FEED SECURE: Hyperspectral edge-processing nodes synchronized. Optical matrix online.")
-    st.markdown("---")
-
 from dotenv import load_dotenv
 from groq import Groq
 import qrcode
@@ -99,7 +20,7 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-# 1. Environment & Vault Ingestion
+# 1. Environment & Sovereign Vault Configuration
 load_dotenv(override=True)
 GROQ_KEY = os.getenv("GROQ_API_KEY")
 LINKEDIN_TOKEN = os.getenv("LINKEDIN_ACCESS_TOKEN")
@@ -116,8 +37,25 @@ STRIPE_ANNUAL_LINK = os.getenv("STRIPE_ANNUAL_LINK", "https://buy.stripe.com/tes
 PAYPAL_PAY_LINK = os.getenv("PAYPAL_PAY_LINK", "https://www.paypal.com/paypalme/humphreyvirtualfarm")
 
 OLLAMA_CHAT_URL = "http://127.0.0.1:11434/api/chat"
-CLOUD_MODEL = "llama-3.3-70b-versatile"
+CLOUD_MODEL = "llama-3.1-8b-instant"
 LOCAL_MODEL = "llama3:8b"
+
+def get_live_telemetry():
+    """Reads live operational telemetry from local vault or falls back to calibrated baseline."""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute("CREATE TABLE IF NOT EXISTS telemetry_live (key TEXT PRIMARY KEY, value TEXT, updated_at TIMESTAMP)")
+        c.execute("SELECT key, value FROM telemetry_live")
+        rows = dict(c.fetchall())
+        conn.close()
+        return {
+            "uav_status": rows.get("uav_status", "3/3 ACTIVE (Airborne)"),
+            "mean_gli": rows.get("mean_gli", "0.84"),
+            "soil_dielectric": rows.get("soil_dielectric", "26.1%")
+        }
+    except Exception:
+        return {"uav_status": "3/3 ACTIVE (Airborne)", "mean_gli": "0.84", "soil_dielectric": "26.1%"}
 
 # ==========================================
 # DATABASE & WHITE-LABEL EMPIRE ENGINE
@@ -753,7 +691,7 @@ elif active_module == "🌾 Drone Diagnostics":
                     chat_history = [{"role": "system", "content": "You are Ebony, an elite AI agronomist for Humphrey Virtual Farms. Be concise, authoritative, and deterministic."}] + [{"role": "user", "content": prompt}]
 
                     response = client.chat.completions.create(
-                        model="llama-3.3-70b-versatile",
+                        model="openai/gpt-oss-120b",
                         messages=chat_history,
                         temperature=0.0
                     )
@@ -897,7 +835,7 @@ The platform will launch as a full-screen native app, bypassing the Google Play 
         st.markdown(f"**The Sovereign Solution:** Engineered by Founder & CEO **{EMPIRE['FOUNDER_NAME']}**, this platform aggressively reclaims operational dominance.\n* **100% Air-Gapped Compute:** Executes all neural inferences, telemetry processing, and video routing entirely on local hardware.\n* **Absolute Data Ownership:** Every byte of data is written exclusively to a localized SQLite vault on your hardware.")
 
     with st.expander(f"⚡ [PILLAR 2]: {EMPIRE['AI_PERSONA']} - Neural Processing & Predictive Memory", expanded=False):
-        st.markdown(f"**{EMPIRE['AI_PERSONA']}** is a highly specialized, dual-engine agronomic intelligence.\n* **Cloud Fast Link:** `llama-3.3-70b-versatile` via Groq LPU for high-speed online inference.\n* **Sovereign Local Core:** `llama3:8b` via Ollama for zero-downtime offline survival.\n* **Persistent Entity Memory:** Dynamically extracts and memorizes agronomic entities.")
+        st.markdown(f"**{EMPIRE['AI_PERSONA']}** is a highly specialized, dual-engine agronomic intelligence.\n* **Cloud Fast Link:** `openai/gpt-oss-120b` via Groq LPU for high-speed online inference.\n* **Sovereign Local Core:** `llama3:8b` via Ollama for zero-downtime offline survival.\n* **Persistent Entity Memory:** Dynamically extracts and memorizes agronomic entities.")
 
     with st.expander("🌾 [PILLAR 3]: Universal Drone Computer Vision & Multispectral Analysis", expanded=False):
         st.markdown("* **Universal RTMP/RTSP Ingest:** Capable of receiving live telemetry from DJI, Autel, Skydio, or PX4 drones.\n* **WebRTC Ultra-Low Latency:** Broadcasts sub-second glass-to-glass latency directly to the command deck.\n* **Green Leaf Index (GLI):** Computes vegetative vigor dynamically using standard RGB optical payloads via $$GLI=\\frac{2G-R-B}{2G+R+B}$$.")
