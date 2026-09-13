@@ -11,8 +11,8 @@
 ### 1.1 Secure Internal Messaging Architecture
 To prevent local surveillance and secure proprietary field directives, all internal platform communications are cryptographically sealed before touching the disk. The `Sovereign Comms Deck` utilizes military-grade symmetric encryption.
 
-* **Cipher Standard:** Advanced Encryption Standard (AES-128-CBC) combined with SHA-256 HMAC authentication via the `[CLASSIFIED_ENCRYPTION]` specification.
-* **Storage Schema (`[REDACTED_SECURE_TABLE]`):**
+* **Cipher Standard:** Advanced Encryption Standard (AES-128-CBC) combined with SHA-256 HMAC authentication via the `Fernet` specification.
+* **Storage Schema (`encrypted_user_comms`):**
   * `sender_username`: Plaintext identifier for routing.
   * `encrypted_payload`: The AES-encrypted binary string of the message content.
   * `timestamp`: Local execution time of the directive.
@@ -54,13 +54,13 @@ For industry dominance and automated digital presence, the system leverages an a
 4. Verify the WebRTC stream renders frame data at >24fps.
 
 ### 4.2 Cryptographic Key Rotation Protocol
-1. Generate a new `[CLASSIFIED_ENCRYPTION]` symmetric key via standard Python cryptography libraries.
-2. Enter the Executive Kinetic PIN (`[REDACTED_EXECUTIVE_PIN]`) to unlock the database migration script.
-3. Decrypt all existing `[REDACTED_SECURE_TABLE]` with the legacy key, re-encrypt with the new key, and commit to `[REDACTED_VAULT_DB]`.
+1. Generate a new `Fernet` symmetric key via standard Python cryptography libraries.
+2. Enter the Executive Kinetic PIN (`HVF-OMEGA`) to unlock the database migration script.
+3. Decrypt all existing `encrypted_user_comms` with the legacy key, re-encrypt with the new key, and commit to `hvf_memory_vault.db`.
 
 ---
 
 ## 5. REVISION HISTORY & GOVERNANCE
-* **v1.0.0:** Established internal [CLASSIFIED_ENCRYPTION] comms matrix, MediaMTX RTMP ingest paths, and API aggregation pipelines.
+* **v1.0.0:** Established internal Fernet comms matrix, MediaMTX RTMP ingest paths, and API aggregation pipelines.
 * **Approved By:** Jeffery Humphrey, Founder & CEO
 * **Enforcement:** Sovereign Master Console Runtime Protocol

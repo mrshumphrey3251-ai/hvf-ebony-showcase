@@ -22,16 +22,16 @@ Ebony is architected as an air-gapped, zero-hallucination cognitive assistant op
 ## 2. THIRD BRAIN COGNITIVE CACHE & ZERO-TOKEN VAULT
 
 ### 2.1 SHA-256 Prompt Hashing Mechanics
-To eliminate redundant compute cycles and achieve real-time response speeds, Ebony implements a local SQLite cache vault (`[REDACTED_CACHE_VAULT]`):
+To eliminate redundant compute cycles and achieve real-time response speeds, Ebony implements a local SQLite cache vault (`third_brain_vault`):
 
 $$\text{Query Hash} = \text{SHA-256}(\text{Normalized Prompt Text})$$
 
 * **Execution Workflow:**
   1. Incoming prompt text is stripped of trailing whitespace and lowercase-normalized.
   2. SHA-256 hash is computed in under 1ms.
-  3. The local database executes an indexed lookup on `[REDACTED_CACHE_VAULT]`.
+  3. The local database executes an indexed lookup on `third_brain_vault`.
   4. **Cache Hit:** Pre-compiled response is served immediately (< 15ms latency) at **0 Tokens** consumed.
-  5. **Cache Miss:** The prompt routes to the active neural engine, streams to the UI, and commits to `[REDACTED_CACHE_VAULT]` with an asynchronous background worker.
+  5. **Cache Miss:** The prompt routes to the active neural engine, streams to the UI, and commits to `third_brain_vault` with an asynchronous background worker.
 
 ```
 [ User Prompt ] ───> [ SHA-256 Normalizer ] ───> [ Third Brain Vault Query ]
@@ -54,7 +54,7 @@ $$\text{Query Hash} = \text{SHA-256}(\text{Normalized Prompt Text})$$
 ## 3. ASYNCHRONOUS ENTITY EXTRACTION & LONG-TERM MEMORY
 
 ### 3.1 Memory Core Schema
-Ebony maintains persistent conversational memory across application restarts through the `[REDACTED_ENTITY_CORE]` table:
+Ebony maintains persistent conversational memory across application restarts through the `conversation_entity_memory` table:
 
 * **Extracted Entity Types:**
   * `FIELD_PARCEL`: Parcel identifiers, acreage boundaries, soil classification markers.
@@ -75,15 +75,15 @@ Prior to inference, the engine queries recent entity markers and injects a disti
    `ollama list`
 3. Test local inference independently:
    `ollama run llama3:8b "Summarize precision agriculture VWC thresholds."`
-4. Ensure port 11434 is open for local loopback connections (`[REDACTED_NODE_IP]:11434`).
+4. Ensure port 11434 is open for local loopback connections (`127.0.0.1:11434`).
 
 ### 4.2 Auditing the Third Brain Vault
 1. In the event of schema migration or system cache inspection, open the SQLite CLI:
-   `sqlite3 [REDACTED_VAULT_DB]`
+   `sqlite3 hvf_memory_vault.db`
 2. View total cached zero-token entries:
-   `SELECT COUNT(*) FROM [REDACTED_CACHE_VAULT];`
+   `SELECT COUNT(*) FROM third_brain_vault;`
 3. Audit recent cached queries:
-   `SELECT query_hash, SUBSTR(response_text, 1, 60), created_at FROM [REDACTED_CACHE_VAULT] ORDER BY id DESC LIMIT 5;`
+   `SELECT query_hash, SUBSTR(response_text, 1, 60), created_at FROM third_brain_vault ORDER BY id DESC LIMIT 5;`
 
 ---
 

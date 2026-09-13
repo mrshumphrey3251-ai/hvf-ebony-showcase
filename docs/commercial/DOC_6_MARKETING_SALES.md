@@ -17,7 +17,7 @@ In modern agriculture, yield data and operational telemetry are as valuable as t
 
 ### 2.1 The Cloud vs. The Sovereign Edge
 * **The Cloud Paradigm (Competitors):** Dependent on fragile rural broadband. High latency drone inference. Subject to third-party data breaches. Operational halts when AWS/Azure goes down.
-* **The Sovereign Edge (HVF):** Zero internet dependency. Sub-15ms local neural inference via bare-metal GPUs. Absolute cryptographic data ownership (`[CLASSIFIED_ENCRYPTION]` AES-128-CBC). Unstoppable kinetic interlocks during grid failures.
+* **The Sovereign Edge (HVF):** Zero internet dependency. Sub-15ms local neural inference via bare-metal GPUs. Absolute cryptographic data ownership (`Fernet` AES-128-CBC). Unstoppable kinetic interlocks during grid failures.
 
 ---
 

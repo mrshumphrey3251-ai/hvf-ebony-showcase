@@ -11,7 +11,7 @@
 ### 1.1 Physical & Network Prerequisites
 Before the HVF Edge Node arrives on-site, the environment must be hardened to strict enterprise standards:
 * **Power Redundancy:** The Master Edge Node and primary LoRaWAN gateways must be connected to an Uninterruptible Power Supply (UPS) capable of sustaining operations for a minimum of 4 hours during rural grid failure.
-* **Network Segregation:** A dedicated, air-gapped `[REDACTED_ISOLATED_SUBNET]` internal subnet must be established. Kinetic hardware must not share a VLAN with administrative or public-facing internet traffic.
+* **Network Segregation:** A dedicated, air-gapped `192.168.50.X` internal subnet must be established. Kinetic hardware must not share a VLAN with administrative or public-facing internet traffic.
 
 ---
 
@@ -22,7 +22,7 @@ Before the HVF Edge Node arrives on-site, the environment must be hardened to st
 2. **Daemon Verification:** Open the local terminal and verify the core service daemons are running:
    * `systemctl status ollama` (Neural Engine)
    * `systemctl status mediamtx` (Drone Vision Subsystem)
-3. **Database Check:** Confirm the instantiation of `[REDACTED_VAULT_DB]` in the root operating directory.
+3. **Database Check:** Confirm the instantiation of `hvf_memory_vault.db` in the root operating directory.
 
 ---
 
@@ -31,7 +31,7 @@ Before the HVF Edge Node arrives on-site, the environment must be hardened to st
 ### 3.1 Provisioning the Field Assets
 Every physical asset must be cryptographically bound to the Edge Node to authorize actuation commands.
 1. **LoRaWAN Soil Probes:** Input the DevEUI and AppKey into the console's **⚙️ Empire Config** module. Verify telemetry packets are intercepting locally via the MQTT broker.
-2. **UAV Hangars & Irrigation Valves:** Assign static IPs to the hardware and register their MAC addresses within the `[REDACTED_SECTOR_VAULT]`. The Ebony engine will immediately establish a heartbeat ping to verify interlock readiness.
+2. **UAV Hangars & Irrigation Valves:** Assign static IPs to the hardware and register their MAC addresses within the `kinetic_sector_vault`. The Ebony engine will immediately establish a heartbeat ping to verify interlock readiness.
 
 ---
 
@@ -39,7 +39,7 @@ Every physical asset must be cryptographically bound to the Edge Node to authori
 
 ### 4.1 Master Identity Establishment
 HVF operates on a Zero-Trust local identity model. The final step of deployment transfers absolute ownership to the site CEO.
-1. The integration engineer generates a new asymmetric key pair and a symmetric `[CLASSIFIED_ENCRYPTION]` `.env` key on the Edge Node.
+1. The integration engineer generates a new asymmetric key pair and a symmetric `Fernet` `.env` key on the Edge Node.
 2. The site CEO inputs their personal password, which the system immediately hashes using PBKDF2 and commits to the vault.
-3. The default Executive Kinetic PIN is overwritten and set by the CEO (replacing the factory `[REDACTED_EXECUTIVE_PIN]` default).
+3. The default Executive Kinetic PIN is overwritten and set by the CEO (replacing the factory `HVF-OMEGA` default).
 4. The integration engineer’s access is formally downgraded to TIER 2 (Super Admin) or completely revoked, establishing the site CEO as the sole Tier 1 Master Founder.

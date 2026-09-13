@@ -22,7 +22,7 @@ An offline, locally hosted Large Language Model (llama3:8b) that synthesizes dro
 Local RTMP video ingestion and Computer Vision (YOLOv8) processing. Drones patrol the airspace, streaming directly to the local edge node where crop health (NDVI) and localized blights are calculated on dedicated Nvidia Tensor cores.
 
 ### 2.3 Cyber-Physical Kinetic Control
-The console does not just analyze; it acts. The platform bridges neural logic with physical hardware, autonomously triggering IoT irrigation valves or grounding UAVs during severe NEXRAD weather events via the secure `[REDACTED_SECTOR_VAULT]`.
+The console does not just analyze; it acts. The platform bridges neural logic with physical hardware, autonomously triggering IoT irrigation valves or grounding UAVs during severe NEXRAD weather events via the secure `kinetic_sector_vault`.
 
 ---
 
@@ -32,7 +32,7 @@ The console does not just analyze; it acts. The platform bridges neural logic wi
 The entire software suite runs on a single, hardened enterprise workstation deployed on-site:
 * **Compute:** 16-Core / 32-Thread AMD or Intel CPU.
 * **Inference:** Nvidia RTX 3060 (minimum) or RTX 4090 for advanced neural modeling.
-* **Storage:** Mirrored NVMe RAID arrays housing the local `[REDACTED_VAULT_DB]`.
+* **Storage:** Mirrored NVMe RAID arrays housing the local `hvf_memory_vault.db`.
 * **Network:** Isolated local 10GbE network and LoRaWAN gateways. No WAN uplink is required for core operations.
 
 ---
@@ -40,4 +40,4 @@ The entire software suite runs on a single, hardened enterprise workstation depl
 ## 4. COMMERCIAL LICENSING & SECURITY GUARANTEE
 
 ### 4.1 Zero-Telemetry Guarantee
-HVF software contains zero involuntary outbound telemetry. Clients retain 100% cryptographic ownership of their operational data. All internal databases are secured via AES-128-CBC (`[CLASSIFIED_ENCRYPTION]`) encryption and protected by a mathematical 3-Tier Role-Based Access Control (RBAC) perimeter.
+HVF software contains zero involuntary outbound telemetry. Clients retain 100% cryptographic ownership of their operational data. All internal databases are secured via AES-128-CBC (`Fernet`) encryption and protected by a mathematical 3-Tier Role-Based Access Control (RBAC) perimeter.

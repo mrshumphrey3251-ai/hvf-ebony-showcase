@@ -21,7 +21,7 @@ Commercial social media scheduling tools farm metadata, track executive posting 
 ## 2. THE LINKEDIN API PIPELINE & SECURITY
 
 ### 2.1 Local Key Management
-API tokens are never stored in plaintext or exposed to the public internet. The LinkedIn OAuth 2.0 access token is encrypted via `[CLASSIFIED_ENCRYPTION]` and stored strictly within the `[REDACTED_CONFIG_TABLE]` table in `[REDACTED_VAULT_DB]`.
+API tokens are never stored in plaintext or exposed to the public internet. The LinkedIn OAuth 2.0 access token is encrypted via `Fernet` and stored strictly within the `empire_config` table in `hvf_memory_vault.db`.
 
 ### 2.2 Endpoint Isolation
 The edge node initiates outbound TLS 1.3 connections to `api.linkedin.com` exclusively. Inbound webhooks are strictly firewalled at the Tailscale perimeter to prevent reverse-shell attacks against the broadcast engine.
@@ -46,15 +46,15 @@ V(t) = \alpha \cdot e^{-\lambda t} \cdot \sum_{i=1}^{n} w_i I_i
 ### 4.1 Authorizing a Global Broadcast
 1. Navigate to the **📡 LinkedIn Engine** module natively on the console.
 2. Review the autonomously generated telemetry draft.
-3. Enter the Executive Kinetic PIN (`[REDACTED_EXECUTIVE_PIN]`) to unlock the local API vault.
+3. Enter the Executive Kinetic PIN (`HVF-OMEGA`) to unlock the local API vault.
 4. Click **DEPLOY TO NETWORK** to transmit the payload.
 
 ### 4.2 Emergency Token Revocation
-If corporate accounts are compromised or unauthorized access is suspected, navigate to **⚙️ Empire Config** and trigger the immediate deletion of all OAuth tokens from `[REDACTED_CONFIG_TABLE]`. This instantly severs the outbound connection.
+If corporate accounts are compromised or unauthorized access is suspected, navigate to **⚙️ Empire Config** and trigger the immediate deletion of all OAuth tokens from `empire_config`. This instantly severs the outbound connection.
 
 ---
 
 ## 5. REVISION HISTORY & GOVERNANCE
-* **v1.0.0:** Established local LinkedIn API pipelines, secure `[REDACTED_CONFIG_TABLE]` token storage, and autonomous telemetry drafting protocols.
+* **v1.0.0:** Established local LinkedIn API pipelines, secure `empire_config` token storage, and autonomous telemetry drafting protocols.
 * **Approved By:** Jeffery Humphrey, Founder & CEO
 * **Enforcement:** Sovereign Master Console Runtime Protocol

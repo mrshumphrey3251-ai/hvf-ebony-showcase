@@ -14,7 +14,7 @@ Standard precision agriculture relies on AWS IoT Core or Azure IoT Hub to aggreg
 ### 1.2 Isolated LoRaWAN Ingestion
 1. **Sensors:** Sub-surface dielectric probes transmit via encrypted LoRaWAN (915 MHz).
 2. **Edge Gateway:** A local LoRaWAN gateway receives the packets and forwards them exclusively to the `192.168.50.X` isolated subnet.
-3. **Ingestion Engine:** A local MQTT broker intercepts the packets, decodes the payload, and writes the raw telemetry directly into `[REDACTED_VAULT_DB]`.
+3. **Ingestion Engine:** A local MQTT broker intercepts the packets, decodes the payload, and writes the raw telemetry directly into `hvf_memory_vault.db`.
 
 ---
 
@@ -46,7 +46,7 @@ Every physical sensor must be registered in the system. The hardware's MAC addre
 2. Access the Master Console natively.
 3. Enter the cryptographic keys into the **⚙️ Empire Config** module to bind the sensor to the local LoRa network server.
 4. Physically install the probe at the designated GPS coordinates.
-5. Verify initial payload ingestion in `[REDACTED_VAULT_DB]`.
+5. Verify initial payload ingestion in `hvf_memory_vault.db`.
 
 ---
 

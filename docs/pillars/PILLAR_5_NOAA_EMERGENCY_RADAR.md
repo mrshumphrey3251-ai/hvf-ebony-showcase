@@ -30,7 +30,7 @@ Z = aR^b \quad \Rightarrow \quad R = \left( \frac{Z}{a} \right)^{\frac{1}{b}}
 *(Where $a = 200$ and $b = 1.6$ for standard stratiform precipitation).* 
 
 ### 2.2 Kinetic Hardware Halts
-* **UAV Grounding:** If Base Velocity indicates wind gusts exceeding 25 knots within a 5-mile radius, the system executes an automated `HALTED` state to the `[REDACTED_SECTOR_VAULT]`, instantly grounding all autonomous drone hangars.
+* **UAV Grounding:** If Base Velocity indicates wind gusts exceeding 25 knots within a 5-mile radius, the system executes an automated `HALTED` state to the `kinetic_sector_vault`, instantly grounding all autonomous drone hangars.
 * **Valve Closures:** If the rainfall rate ($R$) is predicted to exceed soil absorption thresholds, active irrigation valves are preemptively commanded to `CLOSED`.
 
 ---
@@ -38,7 +38,7 @@ Z = aR^b \quad \Rightarrow \quad R = \left( \frac{Z}{a} \right)^{\frac{1}{b}}
 ## 3. PREDICTIVE WEATHER CACHING
 
 ### 3.1 Local Vault Redundancy
-During severe weather, WAN uplinks may fail. The system caches the last 4 hours of NEXRAD sweeps into `[REDACTED_VAULT_DB]`. If external connectivity is lost, Ebony's local Ollama core uses the cached vector trajectory to extrapolate storm movement and maintain hardware safety interlocks completely offline.
+During severe weather, WAN uplinks may fail. The system caches the last 4 hours of NEXRAD sweeps into `hvf_memory_vault.db`. If external connectivity is lost, Ebony's local Ollama core uses the cached vector trajectory to extrapolate storm movement and maintain hardware safety interlocks completely offline.
 
 ---
 
@@ -48,7 +48,7 @@ During severe weather, WAN uplinks may fail. The system caches the last 4 hours 
 In the event of a false-positive radar return or emergency operational necessity:
 1. Log into the Master Console natively.
 2. Navigate to **🌐 Omni-Industry Matrix**.
-3. Input the Executive Kinetic PIN (`[REDACTED_EXECUTIVE_PIN]`).
+3. Input the Executive Kinetic PIN (`HVF-OMEGA`).
 4. Select **OVERRIDE ENVIRONMENTAL LOCK** to temporarily bypass the NOAA telemetry block and manually engage hardware.
 
 ---

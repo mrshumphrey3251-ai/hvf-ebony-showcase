@@ -13,7 +13,7 @@ The Ebony Neural Core operates locally. To ensure zero-latency inference and rea
 * **Processor (CPU):** 16-Core / 32-Thread Architecture (AMD Ryzen 9 or Intel Core i9 minimum).
 * **Memory (RAM):** 64GB DDR5 ECC RAM.
 * **Inference Engine (GPU):** Dedicated Nvidia GPU with minimum 12GB VRAM (RTX 3060 required; RTX 4090 recommended for advanced parallel visual processing).
-* **Storage Vault:** Dual 2TB NVMe SSDs in RAID 1 configuration. All data-at-rest is centralized in the local `[REDACTED_VAULT_DB]`.
+* **Storage Vault:** Dual 2TB NVMe SSDs in RAID 1 configuration. All data-at-rest is centralized in the local `hvf_memory_vault.db`.
 
 ---
 
@@ -21,9 +21,9 @@ The Ebony Neural Core operates locally. To ensure zero-latency inference and rea
 
 ### 2.1 The Air-Gapped Perimeter
 HVF mandates strict network isolation. The edge node acts as a fortress, completely independent of commercial cloud failovers.
-* **Internal Routing:** All kinetic assets (valves, UAV hangars) operate on an isolated `[REDACTED_ISOLATED_SUBNET]` subnet completely detached from public WAN.
+* **Internal Routing:** All kinetic assets (valves, UAV hangars) operate on an isolated `192.168.50.X` subnet completely detached from public WAN.
 * **External Access:** Master CEO remote access is facilitated exclusively via end-to-end encrypted Tailscale mesh networking.
-* **Cryptographic Standard:** All internal traffic and database payloads are secured using military-grade `[CLASSIFIED_ENCRYPTION]` (AES-128-CBC) symmetric encryption.
+* **Cryptographic Standard:** All internal traffic and database payloads are secured using military-grade `Fernet` (AES-128-CBC) symmetric encryption.
 
 ---
 

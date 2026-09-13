@@ -15,7 +15,7 @@ Streaming raw high-definition agricultural video to external hyperscalers for ob
 1. **Ingest:** Drone streams via RTMP to the local `MediaMTX` server.
 2. **Extraction:** A background Python worker uses `ffmpeg` and OpenCV to capture 1 frame per second (1 FPS) directly into local RAM.
 3. **Inference:** Frames are passed to a locally hosted object detection model (e.g., YOLOv8) optimized for TensorRT, running on the Edge Node's dedicated Nvidia GPU.
-4. **Reporting:** Bounding box coordinates and confidence scores are written directly into `[REDACTED_VAULT_DB]`.
+4. **Reporting:** Bounding box coordinates and confidence scores are written directly into `hvf_memory_vault.db`.
 
 ---
 

@@ -23,7 +23,7 @@ All physical hardware adheres to a strict Boolean safety interlock. If the Maste
 ## 2. THE KINETIC SECTOR VAULT
 
 ### 2.1 Hardware State Persistence
-The physical status of all 9 industrial theaters is logged in the `[REDACTED_SECTOR_VAULT]` table within `[REDACTED_VAULT_DB]`. This ensures that in the event of a power failure, the Edge Node instantly recognizes which valves were open and which UAVs were airborne upon reboot.
+The physical status of all 9 industrial theaters is logged in the `kinetic_sector_vault` table within `hvf_memory_vault.db`. This ensures that in the event of a power failure, the Edge Node instantly recognizes which valves were open and which UAVs were airborne upon reboot.
 
 * **Logged Telemetry:**
   * `asset_id`: MAC address or internal UUID of the hardware.
@@ -45,8 +45,8 @@ Drones execute pre-compiled mission files (e.g., QGroundControl `.plan` files) g
 In the event of an airspace incursion, extreme weather anomaly, or cyber threat:
 1. Access the Master Console locally.
 2. Navigate to the **🌐 Omni-Industry Matrix** module.
-3. Enter the Executive Kinetic PIN (`[REDACTED_EXECUTIVE_PIN]`).
-4. Trigger **🛑 HALT AG-OPERATIONS**. All active `[REDACTED_SECTOR_VAULT]` statuses will forcefully revert to `HALTED`.
+3. Enter the Executive Kinetic PIN (`HVF-OMEGA`).
+4. Trigger **🛑 HALT AG-OPERATIONS**. All active `kinetic_sector_vault` statuses will forcefully revert to `HALTED`.
 
 ### 4.2 Recovering from a Kinetic Halt
 Hardware cannot be re-engaged via software until a physical hardware reset is confirmed on-site or the Master CEO issues a signed cryptographic override key through the Sovereign Comms Deck.
@@ -54,6 +54,6 @@ Hardware cannot be re-engaged via software until a physical hardware reset is co
 ---
 
 ## 5. REVISION HISTORY & GOVERNANCE
-* **v1.0.0:** Established kinetic safety interlocks, `[REDACTED_SECTOR_VAULT]` integration, and global halt protocols.
+* **v1.0.0:** Established kinetic safety interlocks, `kinetic_sector_vault` integration, and global halt protocols.
 * **Approved By:** Jeffery Humphrey, Founder & CEO
 * **Enforcement:** Sovereign Master Console Runtime Protocol
