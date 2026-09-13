@@ -1,4 +1,4 @@
 # 🌍 DOC 3: HDT C2 OVERVIEW
 **Document ID:** HDT-COM-DOC-003
 
-Humphrey Defense Tactical commercial deployment specifications and bare-metal edge requirements.
+Humphrey Defense Tactical commercial deployment specifications.
