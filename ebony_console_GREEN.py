@@ -448,6 +448,14 @@ if is_master_founder:
 role = current_role  # Bind to legacy variable for downstream document sanitizers
 # ------------------------------------------
 
+# --- CLEARANCE LEVEL UI BOX ---
+if current_role == 'CEO':
+    st.success('🔐 **Clearance Level:** 🟢 TIER 1 - MASTER FOUNDER [UNREDACTED]')
+elif current_role == 'SUPER_ADMIN':
+    st.warning('🔐 **Clearance Level:** 🟡 TIER 2 - SUPER ADMIN [OPERATIONAL]')
+else:
+    st.info('🔐 **Clearance Level:** 🔴 TIER 3 - GUEST / CLIENT [RESTRICTED]')
+# ------------------------------
 st.caption(f'Active User: **{current_name}** | 🛡️ *Mode: {st.session_state.operation_mode}*')
 if active_module == '💬 Sovereign Command':
     if current_user and current_cipher:
