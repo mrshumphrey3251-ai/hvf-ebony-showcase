@@ -617,7 +617,7 @@ elif active_module == '🌾 Drone Diagnostics':
                 try:
                     client = Groq(api_key=GROQ_KEY)
                     chat_history = [{'role': 'system', 'content': 'You are Ebony, an elite AI agronomist for Humphrey Virtual Farms. Be concise, authoritative, and deterministic.'}] + [{'role': 'user', 'content': prompt}]
-                    response = client.chat.completions.create(model='openai/gpt-oss-120b', messages=chat_history, temperature=0.0)
+                    response = client.chat.completions.create(model=CLOUD_MODEL, messages=chat_history, temperature=0.0)
                     ai_reply = response.choices[0].message.content
                     st.success('✅ OPTICAL TELEMETRY ANALYZED.')
                     st.markdown('#### 🌾 EBONY AGRONOMIC ASSESSMENT:')
@@ -700,7 +700,7 @@ elif active_module == '📖 System Overview':
             cur.execute('SELECT COUNT(*) FROM pilot_feedback_vault')
             feedback_count = cur.fetchone()[0]
             conn.close()
-            st.code(f"======================= SYSTEM TOPOLOGY =======================\nHost IP (Local LAN)      : {mask_secret('192.168.1.175', 'IP')}\nMesh Endpoint (Tailscale): {mask_secret(f'{ACTIVE_IP}:8501', 'IP')}\nMaster Database Vault    : {mask_secret(DB_PATH, 'PATH')}\n---------------------------------------------------------------\nActive Registered Users  : {user_count}\nSubmitted Pilot Reviews  : {feedback_count}\nUnused License Keys      : {unused_keys}\nEncrypted Comm Records   : {msg_count}\n---------------------------------------------------------------\nLocal Neural Engine      : Ollama REST API (Port 11434)\nCloud Fast Link          : Groq API (TLS 1.3)\nUniversal Drone Ingest   : MediaMTX (Port 1935 RTMP)\n===============================================================")
+            st.code(f"======================= SYSTEM TOPOLOGY =======================\nHost IP (Local LAN)      : {mask_secret(ACTIVE_IP, 'IP')}\nMesh Endpoint (Tailscale): {mask_secret(f'{ACTIVE_IP}:8501', 'IP')}\nMaster Database Vault    : {mask_secret(DB_PATH, 'PATH')}\n---------------------------------------------------------------\nActive Registered Users  : {user_count}\nSubmitted Pilot Reviews  : {feedback_count}\nUnused License Keys      : {unused_keys}\nEncrypted Comm Records   : {msg_count}\n---------------------------------------------------------------\nLocal Neural Engine      : Ollama REST API (Port 11434)\nCloud Fast Link          : Groq API (TLS 1.3)\nUniversal Drone Ingest   : MediaMTX (Port 1935 RTMP)\n===============================================================")
     st.markdown('### 🚀 Client Quick-Deploy Distribution Link')
     st.info('Share this 1-click installer link with prospective clients or ranch managers to launch their local 7-Day Pilot:')
     st.code('https://raw.githubusercontent.com/mrshumphrey3251-ai/hvf-media-matrix-public/main/Deploy_Ebony.bat', language='text')
