@@ -724,7 +724,7 @@ elif active_module == '📖 System Overview':
     if not os.path.exists(pillar_dir):
         st.error(f'Directory not found: {pillar_dir}')
     else:
-        pillar_files = sorted(glob.glob(os.path.join(pillar_dir, '*.md')))
+        pillar_files = sorted(glob.glob(os.path.join(pillar_dir, 'PILLAR_*.md')))
         if not pillar_files:
             st.info('No Pillar documentation found.')
         else:
@@ -1199,6 +1199,27 @@ elif active_module == '🌐 Omni-Industry Matrix':
             st.markdown('---')
             st.markdown(f'### 💼 {theater.title()} Enterprise Commercial Suite')
             st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
+
+            import glob
+            import os
+            commercial_dir = os.path.join('docs', 'commercial')
+            if not os.path.exists(commercial_dir):
+                st.info("Commercial vault is currently empty.")
+            else:
+                doc_files = sorted(glob.glob(os.path.join(commercial_dir, 'DOC_*.md')))
+                if not doc_files:
+                    st.info("No commercial documents found.")
+                else:
+                    for d_path in doc_files:
+                        try:
+                            with open(d_path, 'r', encoding='utf-8') as doc:
+                                raw_text = doc.read()
+                            first_line = raw_text.strip().split('\n')[0]
+                            expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(d_path)
+                            with st.expander(expander_title):
+                                st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
+                        except Exception as e:
+                            st.error(f'Failed to load {os.path.basename(d_path)}: {e}')
             with st.expander('⚙️ [DOC 2]: Technical Specification Sheet', expanded=False):
                 st.markdown(load_manual_doc('suite', 'DOC_2_TECHNICAL_SPECIFICATIONS.md', current_role, is_master_founder))
             with st.expander('🚀 [DOC 3]: Deployment Guide & Ops Manual', expanded=False):
