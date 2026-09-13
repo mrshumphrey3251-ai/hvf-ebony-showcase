@@ -41,9 +41,3 @@ The entire software suite runs on a single, hardened enterprise workstation depl
 
 ### 4.1 Zero-Telemetry Guarantee
 HVF software contains zero involuntary outbound telemetry. Clients retain 100% cryptographic ownership of their operational data. All internal databases are secured via AES-128-CBC (`[CLASSIFIED_ENCRYPTION]`) encryption and protected by a mathematical 3-Tier Role-Based Access Control (RBAC) perimeter.
-
----
-
-## 5. REVISION HISTORY & GOVERNANCE
-* **v1.0.0:** Initial commercial platform capabilities and hardware overview.
-* **Approved By:** Jeffery Humphrey, Founder & CEO
