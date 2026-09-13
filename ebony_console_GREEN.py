@@ -42,7 +42,7 @@ STRIPE_MONTHLY_LINK = os.getenv('STRIPE_MONTHLY_LINK', 'https://buy.stripe.com/t
 STRIPE_ANNUAL_LINK = os.getenv('STRIPE_ANNUAL_LINK', 'https://buy.stripe.com/test_annual_vip')
 PAYPAL_PAY_LINK = os.getenv('PAYPAL_PAY_LINK', 'https://www.paypal.com/paypalme/humphreyvirtualfarm')
 OLLAMA_CHAT_URL = 'http://127.0.0.1:11434/api/chat'
-CLOUD_MODEL = 'llama-3.1-8b-instant'
+CLOUD_MODEL = "openai/gpt-oss-120b"
 LOCAL_MODEL = 'llama3:8b'
 
 def get_live_telemetry():
