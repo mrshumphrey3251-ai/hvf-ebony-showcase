@@ -63,7 +63,7 @@ The platform discards complex, heavy external database engines in favor of high-
 * **Write-Ahead Logging (WAL):** Prevents writer-reader lock contention during high-frequency drone telemetry ingest.
 * **Tables Maintained:**
   * `system_users`: PBKDF2-HMAC hashed authentication credentials with role mapping.
-  * `encrypted_user_comms`: Symmetric Fernet-encrypted messaging records.
+  * `encrypted_user_comms`: Symmetric [CLASSIFIED_ENCRYPTION]-encrypted messaging records.
   * `third_brain_vault`: SHA-256 zero-token cached prompt-response memory.
   * `kinetic_sector_vault`: Persistent physical hardware state locks across 9 industrial theaters.
   * `empire_config`: White-label identity and dynamic operational configurations.
