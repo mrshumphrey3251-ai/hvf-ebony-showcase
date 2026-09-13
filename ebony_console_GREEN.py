@@ -734,21 +734,19 @@ elif active_module == '📖 System Overview':
     st.markdown('### 💼 Enterprise Commercial Suite')
     st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
     with st.expander('📄 [DOC 1]: Product Overview & Value Proposition', expanded=False):
-        st.markdown('**Humphrey Virtual Farms – AI-Powered Precision Agriculture Platform**\n*Version 1.0.0 (Commercial Release)*\n* **Core Value Proposition:** Real-time, AI-driven field intelligence from drone video (WebRTC/RTMP) and dielectric-permittivity soil-moisture sensors.\n* **Key Metrics:** Green Leaf Index (GLI) = $$\x0crac{2G - R - B}{2G + R + B}$$\n* **Target Customers:** Mid-size row-crop growers, specialty fruit orchards, agribusiness consultants.\n* **Revenue Model:** Subscription tiers (Basic / Pro / Enterprise) + optional per-acre data-ingest processing.')
+        st.markdown(load_manual_doc('suite', 'DOC_1_PRODUCT_OVERVIEW.md', current_role, is_master_founder))
     with st.expander('⚙️ [DOC 2]: Technical Specification Sheet', expanded=False):
-        st.markdown('* **Drone Telemetry:** WebRTC (SRTP) & RTMP, H.264/H.265/VP9, JSON payloads (GPS, altitude, battery).\n* **Processing Pipeline:** Real-time decoder (FFmpeg), frame-level RGB extraction, GLI calculation.\n* **Soil-Moisture:** Dielectric permittivity sensors (1-10 MHz), 1 Hz sampling rate.\n* **Data Storage:** S3-compatible cloud object store, InfluxDB for time-series, PostgreSQL for metadata.\n* **AI/Analytics Engine:** Python 3.11, PyTorch 2.4, LSTM predictor, Kubernetes (3-node cluster).\n* **Security:** TLS 1.3, JWT-based auth, AES-256 at-rest encryption.')
+        st.markdown(load_manual_doc('suite', 'DOC_2_TECHNICAL_SPECIFICATIONS.md', current_role, is_master_founder))
     with st.expander('🚀 [DOC 3]: Deployment Guide & Ops Manual', expanded=False):
-        st.markdown('**Infrastructure Setup (EKS)**')
-        st.code('eksctl create cluster --name hvf-prod --region us-west-2 --nodes 3 --node-type m5.large\nhelm repo add hvf https://charts.hvf.io\nhelm install hvf-platform hvf/hvf-platform -f values-prod.yaml', language='bash')
-        st.markdown('* **Monitoring:** Prometheus + Grafana. Automated alerts on ingest latency > 300ms.\n* **Backup:** Daily PostgreSQL/InfluxDB snapshots.\n* **CI/CD:** GitHub Actions to ECR, semantic versioning tag releases.')
+        st.markdown(load_manual_doc('suite', 'DOC_3_DEPLOYMENT_OPS_MANUAL.md', current_role, is_master_founder))
     with st.expander('🤝 [DOC 4]: Service Level Agreement (SLA)', expanded=False):
-        st.markdown('| Metric | Commitment | Measurement |\n|---|---|---|\n| **Uptime** | 99.5% monthly | Automated health checks |\n| **Ingest Latency** | <= 250ms (95%) | Measured at edge ingest node |\n| **Data Freshness** | <= 30s | Timestamp delta in InfluxDB |\n| **Support** | Tier 1: 2h | Dedicated ticketing system |')
+        st.markdown(load_manual_doc('suite', 'DOC_4_SLA_COMMITMENT.md', current_role, is_master_founder))
     with st.expander('⚖️ [DOC 5]: Regulatory & Compliance Checklist', expanded=False):
-        st.markdown('* ✅ **FCC Part 15:** Compliant (low-power, unlicensed UAV telemetry).\n* ✅ **USDA-APHIS:** Data sharing agreements active and in place.\n* ✅ **GDPR / CCPA:** Data-subject rights workflow and opt-out mechanisms operational.\n* ✅ **ISO 27001:** Controls mapped; certification audit scheduled for Q4 2026.')
+        st.markdown(load_manual_doc('suite', 'DOC_5_REGULATORY_COMPLIANCE.md', current_role, is_master_founder))
     with st.expander('📢 [DOC 6]: Marketing & Sales Collateral', expanded=False):
-        st.markdown('* **Headline:** "Turn every drone flight into a prescriptive farm-management plan."\n* **Key Benefits:** 30% water savings, 12% yield boost, < 5 min data-to-action time.\n* **Customer Quote:** *"We cut irrigation cycles from 4 per week to 2 per week without sacrificing yield."*\n* **Demo Script Structure:** Intro (2 min), Live Ingest (5 min), Soil Mesh (3 min), Insights (4 min), Q&A.')
+        st.markdown(load_manual_doc('suite', 'DOC_6_COMMERCIAL_SALES_DECK.md', current_role, is_master_founder))
     with st.expander('ℹ️ [DOC 7]: Customer-Facing FAQ', expanded=False):
-        st.markdown('**Q: What drones are supported?**\nA: Any UAV streaming via WebRTC or RTMP (DJI, senseFly, Parrot, custom Pixhawk rigs).\n**Q: Do I need a special camera?**\nA: No. Standard RGB is sufficient for GLI.\n**Q: Is my data private?**\nA: Yes. All data is encrypted in transit and at rest. We never sell raw data.\n**Q: What is the pricing?**\nA: Starts at $1.99/acre/month (Basic). Pro adds multispectral for $2.99/acre/month.')
+        st.markdown(load_manual_doc('suite', 'DOC_7_CUSTOMER_OPERATIONS_FAQ.md', current_role, is_master_founder))
     st.divider()
     st.markdown('### 🏛️ Executive Command Center & Active Frameworks')
     st.info('Live synchronized deployment of your unredacted sovereign architecture.')
