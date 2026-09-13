@@ -1,3 +1,12 @@
+try:
+    import ada_voice_module
+except ImportError:
+    class DummyAdaVoice:
+        @staticmethod
+        def render_voice_matrix():
+            pass
+    ada_voice_module = DummyAdaVoice()
+
 import os
 import sys
 import io
