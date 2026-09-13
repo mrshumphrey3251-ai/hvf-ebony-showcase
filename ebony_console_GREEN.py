@@ -293,9 +293,34 @@ if 'current_linkedin_draft' not in st.session_state:
     st.session_state.current_linkedin_draft = f"⚡ [{EMPIRE['FARM_NAME']} Intelligence Announcement]\n\nWe have deployed our on-premise universal aerial reconnaissance link..."
 current_user = st.session_state.user_session['username']
 current_name = st.session_state.user_session['full_name']
-current_role = st.session_state.user_session['role']
-# === SOVEREIGN IDENTITY RESOLUTION ===
-current_role = st.session_state.get('current_role', 'GUEST')
+# --- BULLETPROOF IDENTITY RESOLUTION ---
+_raw_role = st.session_state.get('role', st.session_state.get('current_role', 'GUEST'))
+_raw_user = st.session_state.get('username', st.session_state.get('logged_in_user', ''))
+_raw_name = st.session_state.get('full_name', st.session_state.get('current_name', '****'))
+
+current_role = str(_raw_role).strip().upper()
+current_user = str(_raw_user).strip()
+current_name = str(_raw_name).strip()
+
+is_master_founder = False
+if current_role == 'CEO' or current_user.lower() == 'ceo' or 'jeffery' in current_name.lower():
+    is_master_founder = True
+    current_role = 'CEO'  # Force role alignment for downstream sanitizers
+# --- END BULLETPROOF IDENTITY ---
+# --- BULLETPROOF IDENTITY RESOLUTION ---
+_raw_role = st.session_state.get('role', st.session_state.get('current_role', 'GUEST'))
+_raw_user = st.session_state.get('username', st.session_state.get('logged_in_user', ''))
+_raw_name = st.session_state.get('full_name', st.session_state.get('current_name', '****'))
+
+current_role = str(_raw_role).strip().upper()
+current_user = str(_raw_user).strip()
+current_name = str(_raw_name).strip()
+
+is_master_founder = False
+if current_role == 'CEO' or current_user.lower() == 'ceo' or 'jeffery' in current_name.lower():
+    is_master_founder = True
+    current_role = 'CEO'  # Force role alignment for downstream sanitizers
+# --- END BULLETPROOF IDENTITY ---
 current_name = st.session_state.get('current_name', st.session_state.get('user_name', ''))
 is_master_founder = bool(
     (current_role == 'CEO') or
@@ -404,6 +429,25 @@ with st.sidebar:
     st.markdown('### 🎛️ Command Modules')
     active_module = st.radio('Navigation', ['🌐 Omni-Industry Matrix', '💬 Sovereign Command', '📡 LinkedIn Engine', '🚨 NOAA Radar', '🌾 Drone Diagnostics', '📖 System Overview', '📡 Sovereign Comms Deck', '📝 Feedback Hub', '🧪 Sandbox', '⚙️ Empire Config', '⬛ Media Matrix', '🎨 Asset Synthesis'], label_visibility='collapsed')
 st.title(f"⚡ {EMPIRE['FARM_NAME']} Command Deck | {EMPIRE['AI_PERSONA']} AI")
+
+# --- SECURE SESSION EXTRACTION OVERRIDE ---
+if 'user_session' in st.session_state and isinstance(st.session_state.user_session, dict):
+    current_name = st.session_state.user_session.get('full_name', '****')
+    current_role = st.session_state.user_session.get('role', 'GUEST')
+    current_user = st.session_state.user_session.get('username', '')
+else:
+    current_name = st.session_state.get('current_name', '****')
+    current_role = st.session_state.get('current_role', 'GUEST')
+    current_user = st.session_state.get('username', '')
+
+current_role = str(current_role).strip().upper()
+is_master_founder = bool(current_role == 'CEO' or str(current_user).lower() == 'ceo' or 'jeffery' in str(current_name).lower())
+
+if is_master_founder:
+    current_role = 'CEO'
+role = current_role  # Bind to legacy variable for downstream document sanitizers
+# ------------------------------------------
+
 st.caption(f'Active User: **{current_name}** | 🛡️ *Mode: {st.session_state.operation_mode}*')
 if active_module == '💬 Sovereign Command':
     if current_user and current_cipher:
