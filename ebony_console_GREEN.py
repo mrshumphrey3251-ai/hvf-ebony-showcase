@@ -1250,42 +1250,49 @@ elif active_module == '🌐 Omni-Industry Matrix':
             st.markdown('---')
             st.markdown(f'### 📖 {theater.title()} Sovereign Knowledge Academy & Technical Directory')
             with st.expander(f"🏛️ [PILLAR 1]: The {EMPIRE['FARM_NAME']} Manifesto & {theater} Sovereign Architecture", expanded=False):
-                st.markdown(f'**100% Air-Gapped Compute:** Executes all neural inferences, telemetry processing, and routing locally for the {theater} sector to ensure zero external dependencies.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_1_MANIFESTO_SOVEREIGN_ARCHITECTURE.md', current_role, is_master_founder))
             with st.expander(f"⚡ [PILLAR 2]: {EMPIRE['AI_PERSONA']} - Neural Processing & Predictive Memory", expanded=False):
-                st.markdown(f'Dynamically extracts and memorizes {theater} entities utilizing a dual-engine AI architecture for zero-downtime survival.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_2_EBONY_NEURAL_CORE.md', current_role, is_master_founder))
             with st.expander(f'👁️ [PILLAR 3]: Universal Drone Computer Vision & Multispectral Analysis', expanded=False):
-                st.markdown('Ingesting WebRTC/RTMP feeds to calculate real-time deterministic outcomes and edge-based optical tracking.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_3_DRONE_SPECTRAL_CV.md', current_role, is_master_founder))
             with st.expander(f'📡 [PILLAR 4]: IoT Mesh & Capacitance Telemetry', expanded=False):
-                st.markdown(f'Cryptographically secure hardware sensor ingestion locked in the local SQLite vault for {theater} deployments.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_4_IOT_SOIL_TELEMETRY.md', current_role, is_master_founder))
             with st.expander(f'🚨 [PILLAR 5]: NOAA Emergency Radar & Hazard Protocols', expanded=False):
-                st.markdown('Live NEXRAD Doppler tracking with instant deterministic safety protocols for critical emergency containment.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_5_NOAA_EMERGENCY_RADAR.md', current_role, is_master_founder))
             with st.expander(f'📰 [PILLAR 6]: Executive Broadcast & Thought Leadership Engine', expanded=False):
-                st.markdown('Zero-hallucination dictation locked to a Temperature of 0.0 to prevent fabricated metrics in executive reporting.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_6_EXECUTIVE_BROADCAST.md', current_role, is_master_founder))
             with st.expander(f'🔐 [PILLAR 7]: Cryptographic Vault & Security Matrix', expanded=False):
-                st.markdown('Passwords hashed using SHA-256 and PBKDF2 with 100,000 iterations. Symmetric Encryption (Fernet) ensures data is locked at rest.')
+                st.markdown(load_manual_doc('pillars', 'PILLAR_7_CRYPTOGRAPHIC_SECURITY_VAULT.md', current_role, is_master_founder))
             st.markdown('---')
             st.markdown(f'### 💼 {theater.title()} Enterprise Commercial Suite')
             st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
             with st.expander('📄 [DOC 1]: Product Overview & Value Proposition', expanded=False):
-                st.markdown(f'**Core Value Proposition:** Real-time, AI-driven intelligence from optical payloads and localized sensors customized for {theater}.')
+                st.markdown(load_manual_doc('suite', 'DOC_1_PRODUCT_OVERVIEW.md', current_role, is_master_founder))
             with st.expander('⚙️ [DOC 2]: Technical Specification Sheet', expanded=False):
-                st.markdown('Real-time decoder (FFmpeg), JSON payloads, Kubernetes (3-node cluster), PyTorch 2.4.')
+                st.markdown(load_manual_doc('suite', 'DOC_2_TECHNICAL_SPECIFICATIONS.md', current_role, is_master_founder))
             with st.expander('🚀 [DOC 3]: Deployment Guide & Ops Manual', expanded=False):
-                st.markdown('Infrastructure Setup (EKS). Automated alerts on ingest latency > 300ms. Daily PostgreSQL/InfluxDB snapshots.')
+                st.markdown(load_manual_doc('suite', 'DOC_3_DEPLOYMENT_OPS_MANUAL.md', current_role, is_master_founder))
             with st.expander('🤝 [DOC 4]: Service Level Agreement (SLA)', expanded=False):
-                st.markdown('| Metric | Commitment |\n|---|---|\n| **Uptime** | 99.5% monthly |\n| **Ingest Latency** | <= 250ms (95%) |\n| **Data Freshness** | <= 30s |')
+                st.markdown(load_manual_doc('suite', 'DOC_4_SLA_COMMITMENT.md', current_role, is_master_founder))
             with st.expander('⚖️ [DOC 5]: Regulatory & Compliance Checklist', expanded=False):
-                st.markdown(f'✅ **FCC Part 15** Compliant\n✅ **GDPR / CCPA** Operational\n✅ **ISO 27001** Controls mapped for {theater}.')
+                st.markdown(load_manual_doc('suite', 'DOC_5_REGULATORY_COMPLIANCE.md', current_role, is_master_founder))
             with st.expander('📢 [DOC 6]: Marketing & Sales Collateral', expanded=False):
-                st.markdown('Turn every deployment into a prescriptive management plan. Unmatched ROI metrics and deterministic execution.')
+                st.markdown(load_manual_doc('suite', 'DOC_6_COMMERCIAL_SALES_DECK.md', current_role, is_master_founder))
             with st.expander('ℹ️ [DOC 7]: Customer-Facing FAQ', expanded=False):
-                st.markdown('**Q: Is my data private?**\nA: Yes. All data is encrypted in transit and at rest. We never sell raw data.')
+                st.markdown(load_manual_doc('suite', 'DOC_7_CUSTOMER_OPERATIONS_FAQ.md', current_role, is_master_founder))
             st.markdown('---')
             st.markdown(f'### 🔍 {theater} Source Code Transparency & Architectural Audit')
             st.info('Enterprise transparency mandates architectural visibility. You are viewing the **Publicly Cleared** source code. Proprietary cryptographic, database schemas, and routing logic have been aggressively redacted by order of the Founder.')
-            with st.expander('📄 Raw Code Review: ebony_console_GREEN.py'):
-                st.code('# [PROPRIETARY_FIELDS_REDACTED]\n# Sovereign Execution Active...', language='python')
-            with st.expander('📄 Raw Code Review: requirements.txt'):
-                st.code('streamlit\ncryptography\ngroq\nrequests\npython-dotenv', language='text')
-            with st.expander('📄 Raw Code Review: .gitignore'):
-                st.code('.env\n*.db\n*.json\n__pycache__/', language='text')
+            sec_files = ['ebony_console_GREEN.py', 'requirements.txt', '.gitignore']
+            for s_fn in sec_files:
+                s_fp = os.path.join(REPO_DIR, s_fn)
+                if os.path.exists(s_fp):
+                    with st.expander(f'📄 Raw Code Review: {s_fn}', expanded=False):
+                        try:
+                            with open(s_fp, 'r', encoding='utf-8') as s_f:
+                                raw_code = s_f.read()
+                            raw_code = sanitize_content_for_role(raw_code, current_role, is_master_founder)
+                            s_lang = 'python' if s_fn.endswith('.py') else 'text'
+                            st.code(raw_code, language=s_lang)
+                        except Exception as ex:
+                            st.error(f'⚠️ Unable to render {s_fn}: {ex}')
