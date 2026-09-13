@@ -724,7 +724,7 @@ elif active_module == '📖 System Overview':
     if not os.path.exists(pillar_dir):
         st.error(f'Directory not found: {pillar_dir}')
     else:
-        pillar_files = sorted(glob.glob(os.path.join(pillar_dir, 'PILLAR_*.md')))
+        pillar_files = sorted(glob.glob(os.path.join(pillar_dir, '*.md')))
         if not pillar_files:
             st.info('No Pillar documentation found.')
         else:
