@@ -913,7 +913,7 @@ elif active_module == '📡 Sovereign Comms Deck':
     with col_c1:
         st.markdown('### 🔴 LIVE // SWARM OPTICAL FEED')
         st.info('WebRTC Matrix streaming via Sovereign Tailscale Link.')
-        st.components.v1.html(f'<iframe src="http://100.87.162.117:8889/live/stream" width="100%" height="450" style="border:none;" allow="autoplay; fullscreen"></iframe>', height=470)
+        st.components.v1.html(f'<iframe src="{WEBRTC_STREAM_URL}" width="100%" height="450" style="border:none;" allow="autoplay; fullscreen"></iframe>', height=470)
     with col_c2:
         st.markdown('### 💬 Encrypted P2P Dispatch')
         import json
