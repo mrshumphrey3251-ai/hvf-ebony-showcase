@@ -972,7 +972,7 @@ elif active_module == '🌐 Omni-Industry Matrix':
         with tabs[i]:
             st.markdown(f'## 🛡️ {theater} MASTER NODE')
             if 'kinetic_states' not in st.session_state:
-                st.session_state.kinetic_states = {t: '🟢 ONLINE & SECURE' for t in theaters}
+                st.session_state.kinetic_states = get_persistent_kinetic_states(theaters)
             if theater == 'AGRICULTURE':
                 st.markdown('### 🚜 KINETIC TELEMETRY & COMMAND')
                 status_col, telemetry_col = st.columns(2)
