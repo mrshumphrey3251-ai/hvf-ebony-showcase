@@ -437,6 +437,13 @@ if active_module == "💬 Sovereign Command":
     if user_input := st.chat_input(f"Ask {EMPIRE['AI_PERSONA']} anything..."):
         if current_user and current_cipher: save_encrypted_message(current_user, "user", user_input, current_cipher)
         st.session_state.messages.append({"role": "user", "content": user_input})
+        cached_knowledge = query_third_brain_cache(user_input)
+        if cached_knowledge:
+            bot_reply = f"{cached_knowledge}\n\n*(⚡ Served from Sovereign Third Brain Vault - 0 Tokens)*"
+            if current_user and current_cipher:
+                save_encrypted_message(current_user, "assistant", bot_reply, current_cipher)
+            st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+            st.rerun()
 
         # 🧠 AUTONOMOUS MEMORY PRUNING (Prevents screen clutter & API limits)
         if len(st.session_state.messages) > 8:
@@ -583,6 +590,8 @@ if active_module == "💬 Sovereign Command":
         if current_user and current_cipher:
             save_encrypted_message(current_user, "assistant", bot_reply, current_cipher)
             store_entity_memory_async(current_user, user_input, bot_reply)
+            if not bot_reply.startswith("⚠️"):
+                store_third_brain_cache(user_input, bot_reply, "CHAT_VAULT")
         st.session_state.messages.append({"role": "assistant", "content": bot_reply})
         st.rerun()
 
