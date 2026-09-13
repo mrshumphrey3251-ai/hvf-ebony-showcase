@@ -1181,45 +1181,52 @@ elif active_module == '🌐 Omni-Industry Matrix':
                 st.markdown('#### 🤖 Android')
                 st.markdown("1. Ensure Master PC is running and Tailscale is active.\n2. Open **Google Chrome** to your **Mesh Endpoint URL**.\n3. Tap the browser menu (**⋮**).\n4. Select **'Add to Home screen'**.\n5. The platform launches as a native app, bypassing the Google Play Store.")
             st.markdown('---')
+            import glob
+            import os
             st.markdown(f'### 📖 {theater.title()} Sovereign Knowledge Academy & Technical Directory')
-            with st.expander(f"🏛️ [PILLAR 1]: The {EMPIRE['FARM_NAME']} Manifesto & {theater} Sovereign Architecture", expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_1_MANIFESTO_SOVEREIGN_ARCHITECTURE.md', current_role, is_master_founder))
-            with st.expander(f"⚡ [PILLAR 2]: {EMPIRE['AI_PERSONA']} - Neural Processing & Predictive Memory", expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_2_EBONY_NEURAL_CORE.md', current_role, is_master_founder))
-            with st.expander(f'👁️ [PILLAR 3]: Universal Drone Computer Vision & Multispectral Analysis', expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_3_DRONE_SPECTRAL_CV.md', current_role, is_master_founder))
-            with st.expander(f'📡 [PILLAR 4]: IoT Mesh & Capacitance Telemetry', expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_4_IOT_SOIL_TELEMETRY.md', current_role, is_master_founder))
-            with st.expander(f'🚨 [PILLAR 5]: NOAA Emergency Radar & Hazard Protocols', expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_5_NOAA_EMERGENCY_RADAR.md', current_role, is_master_founder))
-            with st.expander(f'📰 [PILLAR 6]: Executive Broadcast & Thought Leadership Engine', expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_6_EXECUTIVE_BROADCAST.md', current_role, is_master_founder))
-            with st.expander(f'🔐 [PILLAR 7]: Cryptographic Vault & Security Matrix', expanded=False):
-                st.markdown(load_manual_doc('pillars', 'PILLAR_7_CRYPTOGRAPHIC_SECURITY_VAULT.md', current_role, is_master_founder))
+            if theater == 'DEFENSE TACTICAL':
+                t_base = os.path.join('docs', 'defense_tactical')
+            else:
+                t_base = 'docs'
+            p_dir = os.path.join(t_base, 'pillars')
+            if os.path.exists(p_dir):
+                p_files = sorted(glob.glob(os.path.join(p_dir, '*.md')))
+                if p_files:
+                    for p_path in p_files:
+                        try:
+                            with open(p_path, 'r', encoding='utf-8') as pf:
+                                raw_text = pf.read()
+                            first_line = raw_text.strip().split('\n')[0]
+                            expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(p_path)
+                            with st.expander(expander_title, expanded=False):
+                                st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
+                        except Exception as e:
+                            st.error(f'Failed to load {os.path.basename(p_path)}')
+                else:
+                    st.info("Pillar vault is currently empty.")
+            else:
+                st.info("Pillar vault directory not found.")
             st.markdown('---')
             st.markdown(f'### 💼 {theater.title()} Enterprise Commercial Suite')
             st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
-
-            import glob
-            import os
-            commercial_dir = os.path.join('docs', 'defense_tactical', 'commercial')
-            if not os.path.exists(commercial_dir):
-                st.info("Commercial vault is currently empty.")
-            else:
-                doc_files = sorted(glob.glob(os.path.join(commercial_dir, 'DOC_*.md')))
-                if not doc_files:
-                    st.info("No commercial documents found.")
-                else:
-                    for d_path in doc_files:
+            c_dir = os.path.join(t_base, 'commercial')
+            if os.path.exists(c_dir):
+                c_files = sorted(glob.glob(os.path.join(c_dir, '*.md')))
+                if c_files:
+                    for c_path in c_files:
                         try:
-                            with open(d_path, 'r', encoding='utf-8') as doc:
-                                raw_text = doc.read()
+                            with open(c_path, 'r', encoding='utf-8') as cf:
+                                raw_text = cf.read()
                             first_line = raw_text.strip().split('\n')[0]
-                            expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(d_path)
-                            with st.expander(expander_title):
+                            expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(c_path)
+                            with st.expander(expander_title, expanded=False):
                                 st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
                         except Exception as e:
-                            st.error(f'Failed to load {os.path.basename(d_path)}: {e}')
+                            st.error(f'Failed to load {os.path.basename(c_path)}')
+                else:
+                    st.info("Commercial vault is currently empty.")
+            else:
+                st.info("Commercial vault directory not found.")
             st.markdown('---')
             st.markdown(f'### 🔍 {theater} Source Code Transparency & Architectural Audit')
             st.info('Enterprise transparency mandates architectural visibility. You are viewing the **Publicly Cleared** source code. Proprietary cryptographic, database schemas, and routing logic have been aggressively redacted by order of the Founder.')
