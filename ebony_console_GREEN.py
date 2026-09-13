@@ -1220,18 +1220,6 @@ elif active_module == '🌐 Omni-Industry Matrix':
                                 st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
                         except Exception as e:
                             st.error(f'Failed to load {os.path.basename(d_path)}: {e}')
-            with st.expander('⚙️ [DOC 2]: Technical Specification Sheet', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_2_TECHNICAL_SPECIFICATIONS.md', current_role, is_master_founder))
-            with st.expander('🚀 [DOC 3]: Deployment Guide & Ops Manual', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_3_DEPLOYMENT_OPS_MANUAL.md', current_role, is_master_founder))
-            with st.expander('🤝 [DOC 4]: Service Level Agreement (SLA)', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_4_SLA_COMMITMENT.md', current_role, is_master_founder))
-            with st.expander('⚖️ [DOC 5]: Regulatory & Compliance Checklist', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_5_REGULATORY_COMPLIANCE.md', current_role, is_master_founder))
-            with st.expander('📢 [DOC 6]: Marketing & Sales Collateral', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_6_COMMERCIAL_SALES_DECK.md', current_role, is_master_founder))
-            with st.expander('ℹ️ [DOC 7]: Customer-Facing FAQ', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_7_CUSTOMER_OPERATIONS_FAQ.md', current_role, is_master_founder))
             st.markdown('---')
             st.markdown(f'### 🔍 {theater} Source Code Transparency & Architectural Audit')
             st.info('Enterprise transparency mandates architectural visibility. You are viewing the **Publicly Cleared** source code. Proprietary cryptographic, database schemas, and routing logic have been aggressively redacted by order of the Founder.')
