@@ -297,7 +297,12 @@ current_role = st.session_state.user_session['role']
 # === SOVEREIGN IDENTITY RESOLUTION ===
 current_role = st.session_state.get('current_role', 'GUEST')
 current_name = st.session_state.get('current_name', st.session_state.get('user_name', ''))
-is_master_founder = bool((str(current_name).strip().title() == 'Jeffery Humphrey') and (current_role == 'CEO'))
+is_master_founder = bool(
+    (current_role == 'CEO') or
+    (str(current_user).lower() in ['ceo', 'jhumphrey']) or
+    ('jeffery' in str(current_name).lower()) or
+    ('humphrey' in str(current_name).lower() and current_role == 'CEO')
+)
 # =====================================
 current_cipher = st.session_state.user_session['cipher']
 groq_client = Groq(api_key=GROQ_KEY) if GROQ_KEY else None

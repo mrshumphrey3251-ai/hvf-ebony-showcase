@@ -50,20 +50,20 @@ The Master Operating Console (`ebony_console_GREEN.py`) is engineered to run on 
 [ Bare-Metal Edge Workstation ] ◄──── [ Local Permittivity Sensors ]
    ├── Streamlit Glass (Port 8501)
    ├── Local LLM Core (Ollama Port 11434)
-   └── SQLite Vault ([REDACTED_VAULT_DB] with WAL Mode)
+   └── SQLite Vault (hvf_memory_vault.db with WAL Mode)
 ```
 
 ---
 
 ## 3. CORE ARCHITECTURAL PILLARS & SUBSYSTEMS
 
-### 3.1 Local SQLite Database Architecture (`[REDACTED_VAULT_DB]`)
+### 3.1 Local SQLite Database Architecture (`hvf_memory_vault.db`)
 The platform discards complex, heavy external database engines in favor of high-performance local SQLite operating in Write-Ahead Logging (WAL) mode. This guarantees microsecond read times, zero-configuration operational stability, and absolute file-level portability.
 
 * **Write-Ahead Logging (WAL):** Prevents writer-reader lock contention during high-frequency drone telemetry ingest.
 * **Tables Maintained:**
   * `system_users`: PBKDF2-HMAC hashed authentication credentials with role mapping.
-  * `encrypted_user_comms`: Symmetric [CLASSIFIED_ENCRYPTION]-encrypted messaging records.
+  * `encrypted_user_comms`: Symmetric Fernet-encrypted messaging records.
   * `third_brain_vault`: SHA-256 zero-token cached prompt-response memory.
   * `kinetic_sector_vault`: Persistent physical hardware state locks across 9 industrial theaters.
   * `empire_config`: White-label identity and dynamic operational configurations.
@@ -91,7 +91,7 @@ To bring the sovereign platform online from a completely unpowered state:
 In the event of suspected network tampering, foreign telemetry probing, or external cyber attack:
 1. Disconnect the WAN uplink Ethernet cable from the Master Edge Node.
 2. Open the **🌐 Omni-Industry Matrix** tab on the console.
-3. Enter the Executive Kinetic PIN (`[REDACTED_EXECUTIVE_PIN]`).
+3. Enter the Executive Kinetic PIN (`HVF-OMEGA`).
 4. Click **🛑 HALT AG-OPERATIONS** to automatically trigger the software interlock, seal valves, and ground autonomous UAVs.
 5. The local database will persist the `🔴 HALTED` state safely in `kinetic_sector_vault`.
 
