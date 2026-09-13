@@ -1202,7 +1202,7 @@ elif active_module == '🌐 Omni-Industry Matrix':
 
             import glob
             import os
-            commercial_dir = os.path.join('docs', 'commercial')
+            commercial_dir = os.path.join('docs', 'defense_tactical', 'commercial')
             if not os.path.exists(commercial_dir):
                 st.info("Commercial vault is currently empty.")
             else:
