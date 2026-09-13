@@ -717,19 +717,19 @@ elif active_module == '📖 System Overview':
     st.markdown('---')
     st.markdown(f'### 📖 Sovereign Knowledge Academy & Technical Directory')
     with st.expander(f"🏛️ [PILLAR 1]: The {EMPIRE['FARM_NAME']} Manifesto & Sovereign Architecture", expanded=False):
-        st.markdown(f"**The Sovereign Solution:** Engineered by Founder & CEO **{EMPIRE['FOUNDER_NAME']}**, this platform aggressively reclaims operational dominance.\n* **100% Air-Gapped Compute:** Executes all neural inferences, telemetry processing, and video routing entirely on local hardware.\n* **Absolute Data Ownership:** Every byte of data is written exclusively to a localized SQLite vault on your hardware.")
+        st.markdown(load_manual_doc('pillars', 'PILLAR_1_MANIFESTO_SOVEREIGN_ARCHITECTURE.md', current_role, is_master_founder))
     with st.expander(f"⚡ [PILLAR 2]: {EMPIRE['AI_PERSONA']} - Neural Processing & Predictive Memory", expanded=False):
-        st.markdown(f"**{EMPIRE['AI_PERSONA']}** is a highly specialized, dual-engine agronomic intelligence.\n* **Cloud Fast Link:** `openai/gpt-oss-120b` via Groq LPU for high-speed online inference.\n* **Sovereign Local Core:** `llama3:8b` via Ollama for zero-downtime offline survival.\n* **Persistent Entity Memory:** Dynamically extracts and memorizes agronomic entities.")
+        st.markdown(load_manual_doc('pillars', 'PILLAR_2_EBONY_NEURAL_CORE.md', current_role, is_master_founder))
     with st.expander('🌾 [PILLAR 3]: Universal Drone Computer Vision & Multispectral Analysis', expanded=False):
-        st.markdown('* **Universal RTMP/RTSP Ingest:** Capable of receiving live telemetry from DJI, Autel, Skydio, or PX4 drones.\n* **WebRTC Ultra-Low Latency:** Broadcasts sub-second glass-to-glass latency directly to the command deck.\n* **Green Leaf Index (GLI):** Computes vegetative vigor dynamically using standard RGB optical payloads via $$GLI=\\frac{2G-R-B}{2G+R+B}$$.')
+        st.markdown(load_manual_doc('pillars', 'PILLAR_3_DRONE_SPECTRAL_CV.md', current_role, is_master_founder))
     with st.expander('📡 [PILLAR 4]: IoT Soil Mesh & Capacitance Telemetry', expanded=False):
-        st.markdown('* **Dielectric Permittivity Sensors:** Accurately calculates Volumetric Water Content (VWC %).\n* **Actionable Thresholds:** Monitors Field Capacity and Permanent Wilting Point to manage precision irrigation schedules.\n* **Cryptographic Storage:** Aggregated and locked in the local SQLite vault.')
+        st.markdown(load_manual_doc('pillars', 'PILLAR_4_IOT_SOIL_TELEMETRY.md', current_role, is_master_founder))
     with st.expander('🚨 [PILLAR 5]: NOAA Emergency Radar & Hazard Protocols', expanded=False):
-        st.markdown('* **NEXRAD Doppler Overlay:** Live connection tracking micro-cell storms and severe wind shears.\n* **Hazard Containment:** Instant deterministic safety protocols for critical farm emergencies (ammonia leaks, high-voltage strikes).')
+        st.markdown(load_manual_doc('pillars', 'PILLAR_5_NOAA_EMERGENCY_RADAR.md', current_role, is_master_founder))
     with st.expander('📰 [PILLAR 6]: Executive Broadcast & Thought Leadership Engine', expanded=False):
-        st.markdown(f'* **Zero-Hallucination Dictation:** The LLM is mathematically locked to a Temperature of 0.0 to prevent fabricated metrics.\n* **OAuth 2.0 Integration:** Securely authenticates via LinkedIn UGC API.\n* **Direct Deployment:** Deploy professional market updates seamlessly from the command deck.')
+        st.markdown(load_manual_doc('pillars', 'PILLAR_6_EXECUTIVE_BROADCAST.md', current_role, is_master_founder))
     with st.expander('🔐 [PILLAR 7]: Cryptographic Vault & Security Matrix', expanded=False):
-        st.markdown('* **Key Derivation (PBKDF2):** Passwords hashed using SHA-256 and PBKDF2 with 100,000 iterations.\n* **Symmetric Encryption (Fernet):** All private communications and data are encrypted at rest.\n* **Role-Based Access Control (RBAC):** Strict clearance hierarchy from Guest up to Master CEO.')
+        st.markdown(load_manual_doc('pillars', 'PILLAR_7_CRYPTOGRAPHIC_SECURITY_VAULT.md', current_role, is_master_founder))
     st.divider()
     st.markdown('### 💼 Enterprise Commercial Suite')
     st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
