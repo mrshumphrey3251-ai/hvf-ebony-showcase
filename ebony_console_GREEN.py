@@ -1199,8 +1199,6 @@ elif active_module == '🌐 Omni-Industry Matrix':
             st.markdown('---')
             st.markdown(f'### 💼 {theater.title()} Enterprise Commercial Suite')
             st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
-            with st.expander('📄 [DOC 1]: Product Overview & Value Proposition', expanded=False):
-                st.markdown(load_manual_doc('suite', 'DOC_1_PRODUCT_OVERVIEW.md', current_role, is_master_founder))
             with st.expander('⚙️ [DOC 2]: Technical Specification Sheet', expanded=False):
                 st.markdown(load_manual_doc('suite', 'DOC_2_TECHNICAL_SPECIFICATIONS.md', current_role, is_master_founder))
             with st.expander('🚀 [DOC 3]: Deployment Guide & Ops Manual', expanded=False):
