@@ -717,157 +717,28 @@ elif active_module == '🌾 Drone Diagnostics':
             st.code(mask_secret(RTMP_INGEST_URL, 'IP'), language='bash')
             st.markdown('5. Set bitrate to **2 Mbps** and resolution to **720p/1080p**.\n6. Tap **Start Streaming**.')
 elif active_module == '📖 System Overview':
-    st.subheader('💳 Commercial Subscriptions & Features')
-    feedback_cleared = has_user_submitted_feedback(current_user)
-    is_unlocked = feedback_cleared or current_role in ['CEO', 'SUPER_ADMIN', 'CLIENT_CEO']
-    if not is_unlocked:
-        st.warning('🔒 **COMMERCIAL ACCESS LOCKED:** You must submit field telemetry and a platform review in the **Feedback Hub** (Tab 6) before commercial tier gateways are unlocked.')
-    col_p1, col_p2, col_p3, col_p4 = st.columns(4)
-    with col_p1:
-        st.markdown(f'<div class="pricing-card"><div class="pricing-tier">🌱 PERSONAL</div><div class="pricing-price">$19.99<span style="font-size:0.85rem;color:#8899A6;">/mo</span></div><p style="text-align:left;font-size:0.85rem;line-height:1.5;">✔ Single-User Node<br>✔ Dual-Engine AI<br>✔ Encrypted Vault</p></div>', unsafe_allow_html=True)
-        if is_unlocked:
-            st.link_button('🌱 Personal ($19.99/mo)', STRIPE_PERSONAL_LINK, use_container_width=True)
-        else:
-            st.button('🔒 Locked', disabled=True, key='lock1', use_container_width=True)
-    with col_p2:
-        st.markdown(f'<div class="pricing-card"><div class="pricing-tier">💎 VIP MEMBER</div><div class="pricing-price">$249<span style="font-size:0.85rem;color:#8899A6;">/mo</span></div><p style="text-align:left;font-size:0.85rem;line-height:1.5;">✔ Everything in Personal<br>✔ Drone Spectator<br>✔ GLI Analytics</p></div>', unsafe_allow_html=True)
-        if is_unlocked:
-            st.link_button('💎 VIP ($249/mo)', STRIPE_MONTHLY_LINK, use_container_width=True)
-        else:
-            st.button('🔒 Locked', disabled=True, key='lock2', use_container_width=True)
-    with col_p3:
-        st.markdown(f'<div class="pricing-card" style="border-color:#70FF00;"><div class="pricing-tier">🏛️ ENTERPRISE CEO</div><div class="pricing-price">$2,499<span style="font-size:0.85rem;color:#8899A6;">/yr</span></div><p style="text-align:left;font-size:0.85rem;line-height:1.5;">✔ Client Dashboard<br>✔ Issue Staff Keys<br>✔ Multi-Ranch Yield</p></div>', unsafe_allow_html=True)
-        if is_unlocked:
-            st.link_button('🏛️ Enterprise Annual', STRIPE_ANNUAL_LINK, use_container_width=True)
-        else:
-            st.button('🔒 Locked', disabled=True, key='lock3', use_container_width=True)
-    with col_p4:
-        st.markdown(f'<div class="pricing-card"><div class="pricing-tier">📦 HARDWARE APPLIANCE</div><div class="pricing-price">$4,950<span style="font-size:0.85rem;color:#8899A6;">setup</span></div><p style="text-align:left;font-size:0.85rem;line-height:1.5;">✔ Physical Server<br>✔ 100% Air-Gapped<br>✔ + $299/mo Maint.</p></div>', unsafe_allow_html=True)
-        if is_unlocked:
-            st.link_button('📦 Order Hardware', PAYPAL_PAY_LINK, use_container_width=True)
-        else:
-            st.button('🔒 Locked', disabled=True, key='lock4', use_container_width=True)
-    st.divider()
-    if current_role in ['CEO', 'SUPER_ADMIN']:
-        with st.expander('👑 [MASTER PLATFORM ROOT]: Live Diagnostic Mesh & Summary', expanded=True):
-            st.markdown('#### 🖥️ Master Node Diagnostic Readout')
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            cur.execute('SELECT COUNT(*) FROM system_users')
-            user_count = cur.fetchone()[0]
-            cur.execute('SELECT COUNT(*) FROM member_invite_keys WHERE is_used=0')
-            unused_keys = cur.fetchone()[0]
-            cur.execute('SELECT COUNT(*) FROM encrypted_user_comms')
-            msg_count = cur.fetchone()[0]
-            cur.execute('SELECT COUNT(*) FROM pilot_feedback_vault')
-            feedback_count = cur.fetchone()[0]
-            conn.close()
-            st.code(f"======================= SYSTEM TOPOLOGY =======================\nHost IP (Local LAN)      : {mask_secret(ACTIVE_IP, 'IP')}\nMesh Endpoint (Tailscale): {mask_secret(f'{ACTIVE_IP}:8501', 'IP')}\nMaster Database Vault    : {mask_secret(DB_PATH, 'PATH')}\n---------------------------------------------------------------\nActive Registered Users  : {user_count}\nSubmitted Pilot Reviews  : {feedback_count}\nUnused License Keys      : {unused_keys}\nEncrypted Comm Records   : {msg_count}\n---------------------------------------------------------------\nLocal Neural Engine      : Ollama REST API (Port 11434)\nCloud Fast Link          : Groq API (TLS 1.3)\nUniversal Drone Ingest   : MediaMTX (Port 1935 RTMP)\n===============================================================")
-    st.markdown('### 🚀 Client Quick-Deploy Distribution Link')
-    st.info('Share this 1-click installer link with prospective clients or ranch managers to launch their local 7-Day Pilot:')
-    st.code('https://raw.githubusercontent.com/mrshumphrey3251-ai/hvf-media-matrix-public/main/Deploy_Ebony.bat', language='text')
-    st.markdown('---')
-    st.markdown('### 📱 Mobile Field Uplink Protocol (iOS & Android)')
-    st.info('Heavy neural compute and drone ingest execute on your Master PC. To operate the system in the field, deploy the platform directly to your mobile device as a standalone application:')
-    col_mob1, col_mob2 = st.columns(2)
-    with col_mob1:
-        st.markdown('#### 🍎 Apple iPhone (iOS)')
-        st.markdown('1. Ensure your Master PC is running and Tailscale is active.\n2. Open **Safari** on your iPhone and navigate to your **Mesh Endpoint URL**.\n3. Tap the **Share** button (the square with an upward arrow).\n4. Scroll down and select **"Add to Home Screen"**.\n5. Tap **Add** in the top right.\n\nThe platform will launch as a full-screen native app, bypassing the Apple App Store.')
-    with col_mob2:
-        st.markdown('#### 🤖 Android')
-        st.markdown('1. Ensure your Master PC is running and Tailscale is active.\n2. Open **Google Chrome** on your device and navigate to your **Mesh Endpoint URL**.\n3. Tap the browser menu (**⋮**) in the top right.\n4. Select **"Add to Home screen"**.\n5. Tap **Install**.\n\nThe platform will launch as a full-screen native app, bypassing the Google Play Store.')
-    st.markdown('---')
-    st.markdown(f'### 📖 Sovereign Knowledge Academy & Technical Directory')
-    with st.expander(f"🏛️ [PILLAR 1]: The {EMPIRE['FARM_NAME']} Manifesto & Sovereign Architecture", expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_1_MANIFESTO_SOVEREIGN_ARCHITECTURE.md', current_role, is_master_founder))
-    with st.expander(f"⚡ [PILLAR 2]: {EMPIRE['AI_PERSONA']} - Neural Processing & Predictive Memory", expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_2_EBONY_NEURAL_CORE.md', current_role, is_master_founder))
-    with st.expander('🌾 [PILLAR 3]: Universal Drone Computer Vision & Multispectral Analysis', expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_3_DRONE_SPECTRAL_CV.md', current_role, is_master_founder))
-    with st.expander('📡 [PILLAR 4]: IoT Soil Mesh & Capacitance Telemetry', expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_4_IOT_SOIL_TELEMETRY.md', current_role, is_master_founder))
-    with st.expander('🚨 [PILLAR 5]: NOAA Emergency Radar & Hazard Protocols', expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_5_NOAA_EMERGENCY_RADAR.md', current_role, is_master_founder))
-    with st.expander('📰 [PILLAR 6]: Executive Broadcast & Thought Leadership Engine', expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_6_EXECUTIVE_BROADCAST.md', current_role, is_master_founder))
-    with st.expander('🔐 [PILLAR 7]: Cryptographic Vault & Security Matrix', expanded=False):
-        st.markdown(load_manual_doc('pillars', 'PILLAR_7_CRYPTOGRAPHIC_SECURITY_VAULT.md', current_role, is_master_founder))
-    st.divider()
-    st.markdown('### 💼 Enterprise Commercial Suite')
-    st.info('Complete documentation suite for enterprise deployment, regulatory compliance, and system integration.')
-    with st.expander('📄 [DOC 1]: Product Overview & Value Proposition', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_1_PRODUCT_OVERVIEW.md', current_role, is_master_founder))
-    with st.expander('⚙️ [DOC 2]: Technical Specification Sheet', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_2_TECHNICAL_SPECIFICATIONS.md', current_role, is_master_founder))
-    with st.expander('🚀 [DOC 3]: Deployment Guide & Ops Manual', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_3_DEPLOYMENT_OPS_MANUAL.md', current_role, is_master_founder))
-    with st.expander('🤝 [DOC 4]: Service Level Agreement (SLA)', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_4_SLA_COMMITMENT.md', current_role, is_master_founder))
-    with st.expander('⚖️ [DOC 5]: Regulatory & Compliance Checklist', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_5_REGULATORY_COMPLIANCE.md', current_role, is_master_founder))
-    with st.expander('📢 [DOC 6]: Marketing & Sales Collateral', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_6_COMMERCIAL_SALES_DECK.md', current_role, is_master_founder))
-    with st.expander('ℹ️ [DOC 7]: Customer-Facing FAQ', expanded=False):
-        st.markdown(load_manual_doc('suite', 'DOC_7_CUSTOMER_OPERATIONS_FAQ.md', current_role, is_master_founder))
-    st.divider()
-    st.markdown('### 🏛️ Executive Command Center & Active Frameworks')
-    st.info('Live synchronized deployment of your unredacted sovereign architecture.')
-    cc_path = os.path.join(REPO_DIR, 'src', 'command_center', 'master_registry.md')
-    jv_path = os.path.join(REPO_DIR, 'src', 'compliance', 'commercial_jv_framework.md')
-    if current_role in ['CEO', 'SUPER_ADMIN']:
-        if os.path.exists(cc_path):
-            with st.expander('⚡ [ACTIVE CORE]: Master Command Registry', expanded=True):
-                with open(cc_path, 'r', encoding='utf-8') as f:
-                    st.markdown(f.read())
-        if os.path.exists(jv_path):
-            with st.expander('⚖️ [COMPLIANCE]: Sovereign Commercial JV Framework', expanded=False):
-                with open(jv_path, 'r', encoding='utf-8') as f:
-                    st.markdown(f.read())
+    st.markdown('### 📖 System Overview & Sovereign Architecture')
+    import glob
+    import os
+    pillar_dir = os.path.join('docs', 'pillars')
+    if not os.path.exists(pillar_dir):
+        st.error(f'Directory not found: {pillar_dir}')
     else:
-        st.warning('🔒 Executive Frameworks are restricted to Master CEO clearance.')
-    st.divider()
-    st.markdown('### 🔍 Source Code Transparency & Architectural Audit')
-    is_master_founder = (current_name and current_name.strip().title() == 'Jeffery Humphrey') and (current_role == 'CEO')
-    if is_master_founder:
-        st.markdown('👑 **Master CEO Clearance Acknowledged.** You have unrestricted access to the raw architecture. *(OPSEC Protocol: Sensitive IPs and Paths are masked dynamically if Demo Mode is active).*')
-    elif current_role == 'SUPER_ADMIN':
-        st.markdown('🛡️ **Super Admin Operational Clearance Acknowledged.** You have architectural oversight. Proprietary cryptographic keys, internal database DDL, and internal network IP tables are masked.')
-    else:
-        st.markdown('Enterprise transparency mandates architectural visibility. You are viewing the **Publicly Cleared** source code. Proprietary cryptographic, database schemas, and routing logic have been aggressively redacted by order of the Founder.')
-    target_files = ['ebony_console_GREEN.py', 'Deploy_Ebony.bat', 'requirements.txt', '.gitignore']
-    for file_name in target_files:
-        file_path_item = os.path.join(REPO_DIR, file_name)
-        if os.path.exists(file_path_item):
-            with st.expander(f'📄 Raw Code Review: {file_name}', expanded=False):
+        pillar_files = sorted(glob.glob(os.path.join(pillar_dir, 'PILLAR_*.md')))
+        if not pillar_files:
+            st.info('No Pillar documentation found.')
+        else:
+            for p_path in pillar_files:
                 try:
-                    with open(file_path_item, 'r', encoding='utf-8') as file_read:
-                        raw_content = file_read.read()
-                    if is_master_founder:
-                        if st.session_state.demo_mode:
-                            raw_content = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_LOCAL_IP]', raw_content)
-                            raw_content = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', 'C:\\[REDACTED_VAULT_PATH]', raw_content)
-                            raw_content = raw_content.replace(DEFAULT_LAT, '[REDACTED_LAT]').replace(DEFAULT_LON, '[REDACTED_LON]')
-                    elif current_role == 'SUPER_ADMIN':
-                        raw_content = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_INTERNAL_IP]', raw_content)
-                        raw_content = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', 'C:\\[SECURE_NODE_PATH]', raw_content)
-                        raw_content = raw_content.replace('127.0.0.1', '[LOCAL_HOST]')
-                        raw_content = re.sub(r'CREATE TABLE IF NOT EXISTS [^\)]*\)', '[PROPRIETARY_SCHEMA_INTERNAL]', raw_content)
-                        raw_content = raw_content.replace('Fernet', '[CLASSIFIED_SYMMETRIC_CIPHER]')
-                        raw_content = raw_content.replace('PBKDF2HMAC', '[CLASSIFIED_KDF_ROUTINE]')
-                    else:
-                        raw_content = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_LOCAL_IP]', raw_content)
-                        raw_content = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', 'C:\\[REDACTED_VAULT_PATH]', raw_content)
-                        raw_content = raw_content.replace(DEFAULT_LAT, '[REDACTED_LAT]').replace(DEFAULT_LON, '[REDACTED_LON]')
-                        raw_content = raw_content.replace('127.0.0.1', '[LOCAL_HOST_REDACTED]')
-                        raw_content = re.sub(r'CREATE TABLE IF NOT EXISTS [^\)]*\)', '[DATABASE_SCHEMA_CLASSIFIED]', raw_content)
-                        raw_content = re.sub(r'SELECT [^"]*', 'SELECT [PROPRIETARY_FIELDS_REDACTED] FROM [TABLE_REDACTED] ', raw_content)
-                        raw_content = re.sub(r'INSERT INTO [^"]*', 'INSERT INTO [TABLE_REDACTED] [FIELDS_REDACTED] ', raw_content)
-                        raw_content = raw_content.replace('Fernet', '[CLASSIFIED_CRYPTO_ENGINE]')
-                        raw_content = raw_content.replace('PBKDF2HMAC', '[CLASSIFIED_KEY_DERIVATION]')
-                    lang = 'python' if file_name.endswith('.py') else 'bash' if file_name.endswith('.bat') else 'text'
-                    st.code(raw_content, language=lang)
+                    with open(p_path, 'r', encoding='utf-8') as doc:
+                        raw_text = doc.read()
+                    # Extract the first heading for the expander title
+                    first_line = raw_text.strip().split('\n')[0]
+                    expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(p_path)
+                    with st.expander(expander_title):
+                        st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
                 except Exception as e:
-                    st.error(f'⚠️ Transparency Engine Fault: Cannot parse {file_name}. Reason: {e}')
+                    st.error(f'Failed to load {os.path.basename(p_path)}: {e}')
 elif active_module == '📝 Feedback Hub':
     st.subheader('📝 Open Market Pilot Feedback Hub')
     if current_role in ['CEO', 'SUPER_ADMIN']:
