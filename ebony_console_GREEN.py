@@ -767,31 +767,41 @@ elif active_module == '📖 System Overview':
         st.warning('🔒 Executive Frameworks are restricted to Master CEO clearance.')
     st.divider()
     st.markdown('### 🔍 Source Code Transparency & Architectural Audit')
-    is_master_founder = current_name and current_name.strip().title() == 'Jeffery Humphrey'
+    is_master_founder = (current_name and current_name.strip().title() == 'Jeffery Humphrey') and (current_role == 'CEO')
     if is_master_founder:
         st.markdown('👑 **Master CEO Clearance Acknowledged.** You have unrestricted access to the raw architecture. *(OPSEC Protocol: Sensitive IPs and Paths are masked dynamically if Demo Mode is active).*')
+    elif current_role == 'SUPER_ADMIN':
+        st.markdown('🛡️ **Super Admin Operational Clearance Acknowledged.** You have architectural oversight. Proprietary cryptographic keys, internal database DDL, and internal network IP tables are masked.')
     else:
         st.markdown('Enterprise transparency mandates architectural visibility. You are viewing the **Publicly Cleared** source code. Proprietary cryptographic, database schemas, and routing logic have been aggressively redacted by order of the Founder.')
     target_files = ['ebony_console_GREEN.py', 'Deploy_Ebony.bat', 'requirements.txt', '.gitignore']
     for file_name in target_files:
-        file_path = os.path.join(REPO_DIR, file_name)
-        if os.path.exists(file_path):
+        file_path_item = os.path.join(REPO_DIR, file_name)
+        if os.path.exists(file_path_item):
             with st.expander(f'📄 Raw Code Review: {file_name}', expanded=False):
                 try:
-                    with open(file_path, 'r', encoding='utf-8') as file_read:
+                    with open(file_path_item, 'r', encoding='utf-8') as file_read:
                         raw_content = file_read.read()
-                    if is_master_founder and st.session_state.demo_mode:
-                        raw_content = re.sub('(?:[0-9]{1,3}\\.){3}[0-9]{1,3}', '[REDACTED_LOCAL_IP]', raw_content)
-                        raw_content = re.sub('C:\\\\[^\\n]*HVF_Repos[^\\n]*', 'C:\\[REDACTED_VAULT_PATH]', raw_content)
-                        raw_content = raw_content.replace(DEFAULT_LAT, '[REDACTED_LAT]').replace(DEFAULT_LON, '[REDACTED_LON]')
-                    elif not is_master_founder:
-                        raw_content = re.sub('(?:[0-9]{1,3}\\.){3}[0-9]{1,3}', '[REDACTED_LOCAL_IP]', raw_content)
-                        raw_content = re.sub('C:\\\\[^\\n]*HVF_Repos[^\\n]*', 'C:\\[REDACTED_VAULT_PATH]', raw_content)
+                    if is_master_founder:
+                        if st.session_state.demo_mode:
+                            raw_content = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_LOCAL_IP]', raw_content)
+                            raw_content = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', 'C:\\[REDACTED_VAULT_PATH]', raw_content)
+                            raw_content = raw_content.replace(DEFAULT_LAT, '[REDACTED_LAT]').replace(DEFAULT_LON, '[REDACTED_LON]')
+                    elif current_role == 'SUPER_ADMIN':
+                        raw_content = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_INTERNAL_IP]', raw_content)
+                        raw_content = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', 'C:\\[SECURE_NODE_PATH]', raw_content)
+                        raw_content = raw_content.replace('127.0.0.1', '[LOCAL_HOST]')
+                        raw_content = re.sub(r'CREATE TABLE IF NOT EXISTS [^\)]*\)', '[PROPRIETARY_SCHEMA_INTERNAL]', raw_content)
+                        raw_content = raw_content.replace('Fernet', '[CLASSIFIED_SYMMETRIC_CIPHER]')
+                        raw_content = raw_content.replace('PBKDF2HMAC', '[CLASSIFIED_KDF_ROUTINE]')
+                    else:
+                        raw_content = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_LOCAL_IP]', raw_content)
+                        raw_content = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', 'C:\\[REDACTED_VAULT_PATH]', raw_content)
                         raw_content = raw_content.replace(DEFAULT_LAT, '[REDACTED_LAT]').replace(DEFAULT_LON, '[REDACTED_LON]')
                         raw_content = raw_content.replace('127.0.0.1', '[LOCAL_HOST_REDACTED]')
-                        raw_content = re.sub('CREATE TABLE IF NOT EXISTS [^\\)]*\\)', '[DATABASE_SCHEMA_CLASSIFIED]', raw_content)
-                        raw_content = re.sub('SELECT [^"]*', 'SELECT [PROPRIETARY_FIELDS_REDACTED] FROM [TABLE_REDACTED] ', raw_content)
-                        raw_content = re.sub('INSERT INTO [^"]*', 'INSERT INTO [TABLE_REDACTED] [FIELDS_REDACTED] ', raw_content)
+                        raw_content = re.sub(r'CREATE TABLE IF NOT EXISTS [^\)]*\)', '[DATABASE_SCHEMA_CLASSIFIED]', raw_content)
+                        raw_content = re.sub(r'SELECT [^"]*', 'SELECT [PROPRIETARY_FIELDS_REDACTED] FROM [TABLE_REDACTED] ', raw_content)
+                        raw_content = re.sub(r'INSERT INTO [^"]*', 'INSERT INTO [TABLE_REDACTED] [FIELDS_REDACTED] ', raw_content)
                         raw_content = raw_content.replace('Fernet', '[CLASSIFIED_CRYPTO_ENGINE]')
                         raw_content = raw_content.replace('PBKDF2HMAC', '[CLASSIFIED_KEY_DERIVATION]')
                     lang = 'python' if file_name.endswith('.py') else 'bash' if file_name.endswith('.bat') else 'text'
