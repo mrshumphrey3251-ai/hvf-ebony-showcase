@@ -45,19 +45,6 @@ OLLAMA_CHAT_URL = 'http://127.0.0.1:11434/api/chat'
 CLOUD_MODEL = 'openai/gpt-oss-120b'
 LOCAL_MODEL = 'llama3:8b'
 
-# ==========================================
-# UNRESTRICTED PUBLIC EMERGENCY MODULE
-# ==========================================
-st.error("🚨 **PUBLIC EMERGENCY BROADCAST: ACTIVE EVACUATION PROTOCOLS** 🚨")
-with st.expander("⚠️ ACCESS EMERGENCY EVACUATION & DISASTER INTELLIGENCE (NO LOGIN REQUIRED)", expanded=True):
-    st.markdown("This sovereign sector is unlocked for immediate civilian and agricultural asset protection.")
-    dr_dir = os.path.join(REPO_DIR, 'docs', 'disaster_response', 'pillars')
-    if os.path.exists(dr_dir):
-        for f_name in sorted(os.listdir(dr_dir)):
-            if f_name.endswith('.md'):
-                with open(os.path.join(dr_dir, f_name), 'r', encoding='utf-8') as f_read:
-                    st.markdown(f_read.read())
-st.markdown("---")
 
 
 def get_live_telemetry():
@@ -557,6 +544,18 @@ with st.sidebar:
                     st.error(msg)
     st.divider()
     st.markdown('### 🎛️ Command Modules')
+    # ==========================================
+    # SIDEBAR PUBLIC EMERGENCY MODULE
+    # ==========================================
+    with st.sidebar.expander("🚨 DISASTER RESPONSE (PUBLIC)", expanded=False):
+        st.error("**ACTIVE EVACUATION PROTOCOLS**")
+        dr_dir = os.path.join(REPO_DIR, 'docs', 'disaster_response', 'pillars')
+        if os.path.exists(dr_dir):
+            for f_name in sorted(os.listdir(dr_dir)):
+                if f_name.endswith('.md'):
+                    with open(os.path.join(dr_dir, f_name), 'r', encoding='utf-8') as f_read:
+                        st.markdown(f_read.read())
+    # ==========================================
     active_module = st.radio('Navigation', ['🌐 Omni-Industry Matrix', '💬 Sovereign Command', '📡 LinkedIn Engine', '🚨 NOAA Radar', '🌾 Drone Diagnostics', '📖 System Overview', '📡 Sovereign Comms Deck', '📝 Feedback Hub', '🧪 Sandbox', '⚙️ Empire Config', '⬛ Media Matrix', '🎨 Asset Synthesis'], label_visibility='collapsed')
 st.title(f"⚡ {EMPIRE['FARM_NAME']} Command Deck | {EMPIRE['AI_PERSONA']} AI")
 
