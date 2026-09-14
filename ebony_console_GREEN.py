@@ -1026,6 +1026,8 @@ elif active_module == '🌐 Omni-Industry Matrix':
     tabs = st.tabs(theaters)
     if 'DISASTER RESPONSE' not in theaters:
         theaters.insert(0, 'DISASTER RESPONSE')
+    if 'kinetic_states' not in st.session_state:
+        st.session_state.kinetic_states = {}
     if 'DISASTER RESPONSE' not in st.session_state.kinetic_states:
         st.session_state.kinetic_states['DISASTER RESPONSE'] = '🟢 ONLINE & SECURE'
     for i, theater in enumerate(theaters):
