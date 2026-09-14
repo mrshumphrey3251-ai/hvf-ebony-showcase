@@ -1,17 +1,16 @@
-# 🛰️ PILLAR 2: TACTICAL FLEET TELEMATICS & EMP HARDENING
+# 🛰️ PILLAR 2: EMP-HARDENED HEAVY ARMOR & AUTONOMOUS KINETIC ROUTING
 **Document ID:** HVF-LOG-PLR-002
 **Classification:** Fleet & Heavy Machinery Operations
 
 ---
 
-## 1. SECURE MOBILITY PROTOCOLS
+## 1. SATELLITE-DENIED MOBILITY PROTOCOLS
 
-### 1.1 Asset Hardening
-Agricultural heavy machinery and transport vehicles are critical survival assets. They must be treated as tactical vehicles.
+### 1.1 EMP & CBRN Hardening
+Agricultural heavy machinery constitutes the tactical armor of the HVF Empire.
+*   **Faraday Isolation:** All primary diagnostic modules, backup Engine Control Modules (ECMs), and comms arrays are housed in military-spec grounded Faraday enclosures.
+*   **Inertial Navigation Systems (INS):** In the event of catastrophic GPS spoofing or satellite denial, the fleet auto-switches to localized INS and encrypted 900MHz mesh telemetry, ensuring pinpoint accuracy without cloud dependency.
 
-*   **EMP/CME Shielding:** All critical diagnostic modules, backup ECMs (Engine Control Modules), and comms arrays must be stored in grounded Faraday enclosures when not in active deployment.
-*   **GPS Spoofing Detection:** Onboard edge nodes continuously cross-reference satellite telemetry against localized inertial navigation systems to detect and ignore spoofed coordinates.
-
-### 1.2 Convoy Mesh Networking
-
-*   **P2P Telemetry:** Deployed vehicles automatically form a localized mesh network, transmitting fuel levels, tire pressure, and engine diagnostics back to the Master Console via encrypted 900MHz / MURS frequencies without relying on cellular towers.
+### 1.2 Kinetic Threat Evasion
+*   **Swarm Routing AI:** The master console continuously calculates tertiary extraction and resupply routes, actively avoiding major highways, commercial checkpoints, and predicted thermal/kinetic threat vectors.
+*   **Mesh Convoy Networking:** Deployed vehicles act as mobile Edge Nodes, maintaining a continuous, self-healing encrypted communication loop back to the Master Console.

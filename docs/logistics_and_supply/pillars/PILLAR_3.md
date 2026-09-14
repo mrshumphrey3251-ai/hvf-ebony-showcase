@@ -1,14 +1,13 @@
-# 🚁 PILLAR 3: HEAVY-LIFT UAV FREIGHT & LAST-MILE DROP
+# 🚁 PILLAR 3: LOW-OBSERVABLE HEAVY-LIFT FLEET & PRECISION AERIAL FREIGHT
 **Document ID:** HVF-LOG-PLR-003
 **Classification:** Autonomous Freight Operations
 
 ---
 
-## 1. AIRBORNE LOGISTICS
+## 1. VERTICAL TACTICAL LOGISTICS (VTOL)
 
-### 1.1 Autonomous Resupply
-When ground routes are compromised by thermal events or grid failure, logistics shift vertically. 
-
-*   **Payload Coordination:** Heavy-lift multi-rotors are tasked for high-value, low-weight payload delivery (medical trauma kits, critical hardware parts, specialized biologicals) directly to FOBs (Forward Operating Bases) across the perimeter.
-*   **Dark Flight:** Drones deployed for logistics run 'dark'—transmitting telemetry only via encrypted directional RF, completely invisible to public ADS-B tracking.
-*   **Automated Landing Zones:** Dynamic deployment of infrared markers triggers autonomous descent sequences, securing the drop without human pilot intervention.
+### 1.1 Autonomous Blackout Resupply
+When ground corridors are compromised, logistics shift to the airspace via heavy-lift multi-rotors.
+*   **Acoustic & Thermal Masking:** Logistics drones are deployed utilizing low-observable flight paths, masking acoustic signatures via terrain-following radar algorithms. 
+*   **Dark Flight Telemetry:** All aerial freight operates strictly 'dark.' ADS-B transponders are disabled under executive override, transmitting telemetry exclusively via heavily encrypted, directional millimeter-wave RF.
+*   **Spectral Payload Drops:** Landing zones are designated dynamically by the Master Console using encrypted infrared strobes. Drones execute autonomous descent, uncouple the payload, and exfiltrate the sector in under 45 seconds without human intervention.
