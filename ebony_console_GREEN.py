@@ -45,6 +45,21 @@ OLLAMA_CHAT_URL = 'http://127.0.0.1:11434/api/chat'
 CLOUD_MODEL = 'openai/gpt-oss-120b'
 LOCAL_MODEL = 'llama3:8b'
 
+# ==========================================
+# UNRESTRICTED PUBLIC EMERGENCY MODULE
+# ==========================================
+st.error("🚨 **PUBLIC EMERGENCY BROADCAST: ACTIVE EVACUATION PROTOCOLS** 🚨")
+with st.expander("⚠️ ACCESS EMERGENCY EVACUATION & DISASTER INTELLIGENCE (NO LOGIN REQUIRED)", expanded=True):
+    st.markdown("This sovereign sector is unlocked for immediate civilian and agricultural asset protection.")
+    dr_dir = os.path.join(REPO_DIR, 'docs', 'disaster_response', 'pillars')
+    if os.path.exists(dr_dir):
+        for f_name in sorted(os.listdir(dr_dir)):
+            if f_name.endswith('.md'):
+                with open(os.path.join(dr_dir, f_name), 'r', encoding='utf-8') as f_read:
+                    st.markdown(f_read.read())
+st.markdown("---")
+
+
 def get_live_telemetry():
     """Reads live operational telemetry from local vault or falls back to calibrated baseline."""
     try:
@@ -1024,12 +1039,6 @@ elif active_module == '🌐 Omni-Industry Matrix':
     st.markdown('---')
     theaters = ['AGRICULTURE', 'DEFENSE TACTICAL', 'LOGISTICS & SUPPLY', 'ENERGY & MINING', 'ENTERPRISE FACILITIES', 'COGNITIVE EDUCATION', 'HEALTHCARE TRIAGE', 'SMART CITY GRID', 'LEGAL ARBITRATION']
     tabs = st.tabs(theaters)
-    if 'DISASTER RESPONSE' not in theaters:
-        theaters.insert(0, 'DISASTER RESPONSE')
-    if 'kinetic_states' not in st.session_state:
-        st.session_state.kinetic_states = get_persistent_kinetic_states(theaters)
-    if 'DISASTER RESPONSE' not in st.session_state.kinetic_states:
-        st.session_state.kinetic_states['DISASTER RESPONSE'] = '🟢 ONLINE & SECURE'
     for i, theater in enumerate(theaters):
         with tabs[i]:
             st.markdown(f'## 🛡️ {theater} MASTER NODE')
