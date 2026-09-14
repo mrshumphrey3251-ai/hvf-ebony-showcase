@@ -1315,6 +1315,8 @@ elif active_module == '🌐 Omni-Industry Matrix':
             st.markdown(f'### 📖 {theater.title()} Sovereign Knowledge Academy & Technical Directory')
             t_folder = theater.lower().replace(' ', '_').replace('&', 'and')
             t_base = os.path.join('docs', t_folder)
+            if not os.path.exists(os.path.join(REPO_DIR, t_base)):
+                t_base = 'docs'
             p_dir = os.path.join(t_base, 'pillars')
             if os.path.exists(p_dir):
                 p_files = sorted(glob.glob(os.path.join(p_dir, '*.md')))
