@@ -2,8 +2,20 @@
 **Document ID:** HDT-OPS-PLR-007
 **Classification:** Cyber Hardening & Database Architecture
 
-## 1. LOCAL SQLITE WAL VAULT
-We discard heavy external databases for local SQLite in Write-Ahead Logging (WAL) mode. This prevents writer-reader lock contention during high-frequency telemetry ingest and guarantees microsecond read times.
+## 1. LOCAL SQLITE WAL VAULT CRYPTOGRAPHY
+We discard heavy, vulnerable external database engines for local SQLite. All sensitive credentials, troop movements, and kinetic data are secured strictly on the edge.
+* **Encryption at Rest:** AES-256 block-level encryption on the NVMe drive.
+* **Authentication:** SHA-256 and HMAC hashing for all session states and kinetic overrides.
+* **Concurrency:** Write-Ahead Logging (WAL) ensures zero database locks during massive telemetry ingests.
 
-## 2. EMERGENCY AIR-GAP ISOLATION PROCEDURE
-If cyber tampering is suspected, the commander executes the **HALT TACTICAL OPERATIONS** protocol. The system immediately severs external uplinks, grounds drones, and locks the database state via HMAC-hashed credentials.
+## 2. EMERGENCY AIR-GAP ISOLATION PROCEDURE (ZEROIZE)
+If cyber tampering, perimeter breach, or hardware capture is imminent, the commander executes the **HALT TACTICAL OPERATIONS** protocol.
+
+### 2.1 The Zeroize Execution
+1. Commander enters the Executive PIN into the Console.
+2. Clicks 🛑 **HALT TACTICAL**.
+3. **Automated Interlock Engages:**
+   * Severs all external tailscale connections.
+   * Grounds all autonomous UAVs.
+   * Purges RAM and flushes the SQLite cache vault.
+   * Locks the encrypted NVMe partition, rendering the hardware useless to hostile forces.

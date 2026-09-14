@@ -52,5 +52,5 @@ The platform discards complex, heavy external database engines in favor of high-
 To bring the sovereign platform online from a completely unpowered state:
 1. Power on the Master Edge Node via UPS battery backup.
 2. Ensure the isolated LAN switch or Tailscale mesh link is active.
-3. Open a terminal and run the automated bootstrap loader: Deploy_Ebony.bat
-4. Confirm console deployment on port 8501: streamlit run ebony_console_GREEN.py --server.port 8501
+3. Open a terminal and run the automated bootstrap loader: `Deploy_Ebony.bat`
+4. Confirm console deployment on port 8501: `streamlit run ebony_console_GREEN.py --server.port 8501`
