@@ -1,18 +1,17 @@
-# 🛰️ PILLAR 2: FLEET TELEMATICS & ASSET TRACKING
+# 🛰️ PILLAR 2: TACTICAL FLEET TELEMATICS & EMP HARDENING
 **Document ID:** HVF-LOG-PLR-002
-**Classification:** Fleet Operations
+**Classification:** Fleet & Heavy Machinery Operations
 
 ---
 
-## 1. TRANSPORT LOGISTICS
+## 1. SECURE MOBILITY PROTOCOLS
 
-### 1.1 Predictive Maintenance
-All heavy machinery and transport vehicles are integrated into the master SQLite ledger.
+### 1.1 Asset Hardening
+Agricultural heavy machinery and transport vehicles are critical survival assets. They must be treated as tactical vehicles.
 
-*   **Oil & Fluid Logging:** Automated alerts generated every 5,000 miles or 250 engine hours.
-*   **Tread Wear Monitoring:** Mandatory inspection protocols before cross-state deployment.
+*   **EMP/CME Shielding:** All critical diagnostic modules, backup ECMs (Engine Control Modules), and comms arrays must be stored in grounded Faraday enclosures when not in active deployment.
+*   **GPS Spoofing Detection:** Onboard edge nodes continuously cross-reference satellite telemetry against localized inertial navigation systems to detect and ignore spoofed coordinates.
 
-### 1.2 Off-Grid Telematics
+### 1.2 Convoy Mesh Networking
 
-*   GPS logging falls back to local P2P mesh synchronization when cellular networks fail.
-*   Route manifests are pre-loaded to edge devices prior to departure.
+*   **P2P Telemetry:** Deployed vehicles automatically form a localized mesh network, transmitting fuel levels, tire pressure, and engine diagnostics back to the Master Console via encrypted 900MHz / MURS frequencies without relying on cellular towers.

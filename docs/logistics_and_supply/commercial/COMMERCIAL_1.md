@@ -1,18 +1,13 @@
-# 💼 COMMERCIAL 1: B2B PROCUREMENT & VENDOR INTEGRATION
+# 💼 COMMERCIAL 1: ZERO-TRUST VENDOR PROCUREMENT
 **Document ID:** HVF-LOG-COM-001
-**Classification:** Enterprise Contracts
+**Classification:** Enterprise Contracts & Chain of Custody
 
 ---
 
-## 1. ENTERPRISE ENGAGEMENT
+## 1. VENDOR SANITIZATION
 
-### 1.1 Vendor Qualification
-All third-party vendors must comply with HVF's zero-trust supply standards.
+### 1.1 Cryptographic Escrow & Verification
+HVF operates on a strict zero-trust policy with external suppliers.
 
-*   **Audit Rights:** HVF reserves the right to audit vendor compliance metrics.
-*   **Quality Assurance:** 100% of inbound biological/chemical inputs are subject to on-site testing before silo integration.
-
-### 1.2 Smart Ledger Invoicing
-
-*   Invoices are reconciled against optical scale data and automated drone yield reports.
-*   Discrepancies exceeding 1.5% trigger an automatic executive hold requiring CEO override.
+*   **Biometric Custody:** High-value deliveries require cryptographic handshake or biometric verification at the perimeter gate before entry is permitted.
+*   **Automated Audits:** Inbound biological inputs are immediately subjected to optical and dielectric payload scanning. If the variance exceeds 0.5% from the manifest, the system automatically triggers an executive hold and freezes escrow payments.
