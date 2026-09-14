@@ -863,7 +863,7 @@ elif active_module == '📖 System Overview':
                     first_line = raw_text.strip().split('\n')[0]
                     expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(p_path)
                     with st.expander(expander_title):
-                        body_text = raw_text[len(first_line):].strip()
+                        body_text = raw_text.replace(first_line, '', 1).strip()
                         st.markdown(sanitize_content_for_role(body_text, current_role, is_master_founder))
                 except Exception as e:
                     st.error(f'Failed to load {os.path.basename(p_path)}: {e}')
@@ -1329,7 +1329,7 @@ elif active_module == '🌐 Omni-Industry Matrix':
                             first_line = raw_text.strip().split('\n')[0]
                             expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(p_path)
                             with st.expander(expander_title, expanded=False):
-                                body_text = raw_text[len(first_line):].strip()
+                                body_text = raw_text.replace(first_line, '', 1).strip()
                                 st.markdown(sanitize_content_for_role(body_text, current_role, is_master_founder))
                         except Exception as e:
                             st.error(f'Failed to load {os.path.basename(p_path)}')
@@ -1351,7 +1351,7 @@ elif active_module == '🌐 Omni-Industry Matrix':
                             first_line = raw_text.strip().split('\n')[0]
                             expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(c_path)
                             with st.expander(expander_title, expanded=False):
-                                body_text = raw_text[len(first_line):].strip()
+                                body_text = raw_text.replace(first_line, '', 1).strip()
                                 st.markdown(sanitize_content_for_role(body_text, current_role, is_master_founder))
                         except Exception as e:
                             st.error(f'Failed to load {os.path.basename(c_path)}')

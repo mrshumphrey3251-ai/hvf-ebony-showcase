@@ -1,6 +1,6 @@
 # 🚁 PILLAR 3: LOW-OBSERVABLE HEAVY-LIFT FLEET & PRECISION AERIAL FREIGHT
-**Document ID:** HVF-LOG-PLR-003
 
+**Document ID:** HVF-LOG-PLR-003
 
 **Classification:** Autonomous Freight Operations
 
@@ -10,7 +10,6 @@
 
 ### 1.1 Autonomous Blackout Resupply
 When ground corridors are compromised by kinetic action, flooding, or grid collapse, all critical logistics immediately shift to the airspace via heavy-lift, multi-rotor autonomous platforms.
-
 
 *   **Acoustic & Thermal Masking:** Logistics drones are deployed utilizing terrain-following radar algorithms and nap-of-the-earth (NOE) routing (maintaining altitudes below 50 feet AGL). This minimizes radar cross-sections and acoustic signatures.
 
@@ -23,7 +22,6 @@ When ground corridors are compromised by kinetic action, flooding, or grid colla
 ## 2. PRECISION PAYLOAD DELIVERY
 
 ### 2.1 Automated Exfiltration Drops
-
 *   **Payload Coordination:** High-value, low-weight payloads (medical trauma kits, critical micro-manufacturing parts, specialized biologicals) are prioritized for UAV deployment to Forward Operating Bases (FOBs).
 
 *   **Spectral Landing Zones:** Drop zones are designated dynamically by the Master Console using encrypted, modulated infrared (IR) strobes visible only to the drone's multispectral optical payload. 
