@@ -544,9 +544,6 @@ with st.sidebar:
                     st.error(msg)
     st.divider()
     st.markdown('### 🎛️ Command Modules')
-    # ==========================================
-    # SIDEBAR PUBLIC EMERGENCY MODULE
-    # ==========================================
     with st.sidebar.expander("🚨 DISASTER RESPONSE (PUBLIC)", expanded=False):
         st.error("**ACTIVE EVACUATION PROTOCOLS**")
         dr_dir = os.path.join(REPO_DIR, 'docs', 'disaster_response', 'pillars')
@@ -556,8 +553,18 @@ with st.sidebar:
                     with open(os.path.join(dr_dir, f_name), 'r', encoding='utf-8') as f_read:
                         st.markdown(f_read.read())
     # ==========================================
-    active_module = st.radio('Navigation', ['🌐 Omni-Industry Matrix', '💬 Sovereign Command', '📡 LinkedIn Engine', '🚨 NOAA Radar', '🌾 Drone Diagnostics', '📖 System Overview', '📡 Sovereign Comms Deck', '📝 Feedback Hub', '🧪 Sandbox', '⚙️ Empire Config', '⬛ Media Matrix', '🎨 Asset Synthesis'], label_visibility='collapsed')
+    active_module = st.radio('Navigation', ['🚨 DISASTER RESPONSE (PUBLIC)', '🌐 Omni-Industry Matrix', '💬 Sovereign Command', '📡 LinkedIn Engine', '🚨 NOAA Radar', '🌾 Drone Diagnostics', '📖 System Overview', '📡 Sovereign Comms Deck', '📝 Feedback Hub', '🧪 Sandbox', '⚙️ Empire Config', '⬛ Media Matrix', '🎨 Asset Synthesis'], label_visibility='collapsed')
 st.title(f"⚡ {EMPIRE['FARM_NAME']} Command Deck | {EMPIRE['AI_PERSONA']} AI")
+
+if active_module == '🚨 DISASTER RESPONSE (PUBLIC)':
+    st.error('🚨 **PUBLIC EMERGENCY BROADCAST: ACTIVE EVACUATION PROTOCOLS** 🚨')
+    dr_dir = os.path.join(REPO_DIR, 'docs', 'disaster_response', 'pillars')
+    if os.path.exists(dr_dir):
+        for f_name in sorted(os.listdir(dr_dir)):
+            if f_name.endswith('.md'):
+                with open(os.path.join(dr_dir, f_name), 'r', encoding='utf-8') as f_read:
+                    st.markdown(f_read.read())
+    st.stop()  # Tactical Halt: Prevents the login wall from rendering
 
 # --- SECURE SESSION EXTRACTION OVERRIDE ---
 if 'user_session' in st.session_state and isinstance(st.session_state.user_session, dict):
