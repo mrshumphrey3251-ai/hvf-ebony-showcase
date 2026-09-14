@@ -1,16 +1,15 @@
-# 🛰️ PILLAR 2: EMP-HARDENED HEAVY ARMOR & AUTONOMOUS KINETIC ROUTING
+# 🛰️ PILLAR 2: EMP-HARDENED HEAVY ARMOR & SATELLITE-DENIED ROUTING
 **Document ID:** HVF-LOG-PLR-002
 **Classification:** Fleet & Heavy Machinery Operations
 
 ---
 
-## 1. SATELLITE-DENIED MOBILITY PROTOCOLS
+## 1. TACTICAL MOBILITY & ISOLATION
 
-### 1.1 EMP & CBRN Hardening
+### 1.1 EMP Hardening
 Agricultural heavy machinery constitutes the tactical armor of the HVF Empire.
-*   **Faraday Isolation:** All primary diagnostic modules, backup Engine Control Modules (ECMs), and comms arrays are housed in military-spec grounded Faraday enclosures.
-*   **Inertial Navigation Systems (INS):** In the event of catastrophic GPS spoofing or satellite denial, the fleet auto-switches to localized INS and encrypted 900MHz mesh telemetry, ensuring pinpoint accuracy without cloud dependency.
+*   **Faraday Isolation:** All primary diagnostic modules and Engine Control Modules (ECMs) are housed in military-spec grounded Faraday enclosures. 
+*   **Inertial Navigation Systems (INS):** In the event of catastrophic GPS spoofing, the fleet auto-switches to localized INS and encrypted 900MHz mesh telemetry.
 
 ### 1.2 Kinetic Threat Evasion
-*   **Swarm Routing AI:** The master console continuously calculates tertiary extraction and resupply routes, actively avoiding major highways, commercial checkpoints, and predicted thermal/kinetic threat vectors.
-*   **Mesh Convoy Networking:** Deployed vehicles act as mobile Edge Nodes, maintaining a continuous, self-healing encrypted communication loop back to the Master Console.
+*   **Swarm Routing AI:** The master console continuously calculates tertiary extraction and resupply routes, actively avoiding major highways and AI-predicted kinetic threat vectors.
