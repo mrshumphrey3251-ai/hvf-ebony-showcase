@@ -1,8 +1,9 @@
 # 🚀 DOC 3: FIELD DEPLOYMENT MANUAL
 **Document ID:** HDT-COM-DOC-003
 
-## 1. COLD-START BOOT SEQUENCE
-1. Power on the Master Edge Node via UPS battery backup.
-2. Ensure the isolated LAN switch is active; sever WAN uplinks if operating in a contested zone.
-3. Execute `Deploy_Ebony.bat`.
-4. Confirm console deployment on Port 8501. Connect field terminals via the P2P mesh.
+## 1. RAPID FOB INITIATION
+1. Uncase and power the HDT Master Node.
+2. Establish local LAN via hardened switch. Do NOT connect external WAN.
+3. Deploy sensor arrays and power on UAV swarm.
+4. Execute `Deploy_Ebony.bat` to ignite the C2 interface.
+5. Authenticate via Executive PIN and begin threat aggregation.

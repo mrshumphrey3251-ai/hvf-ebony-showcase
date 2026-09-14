@@ -1,9 +1,12 @@
 # ⚙️ DOC 2: TACTICAL HARDWARE SPECS
 **Document ID:** HDT-COM-DOC-002
 
-## 1. MINIMUM FORWARD OPERATING BASE (FOB) REQUIREMENTS
-* **CPU:** 16 Cores / 32 Threads (AMD Ryzen 9 or equivalent)
-* **GPU:** NVIDIA RTX 4080 / 4090 (16GB-24GB VRAM) for local neural inference.
-* **RAM:** 64 GB - 128 GB DDR5 ECC
-* **Storage:** 2 TB NVMe SSD dedicated to the SQLite WAL Vault.
-* **Network:** Dual Gigabit Ethernet with isolated Drone Telemetry LAN.
+## 1. BARE-METAL EDGE COMPUTING REQUIREMENTS
+Deploying the HDT platform requires strict adherence to physical hardware specifications to guarantee zero-latency performance during hostile engagements.
+
+| Component | Minimum Specification | Recommended Specification |
+| :--- | :--- | :--- |
+| **Processor** | 8-Core x86_64 Architecture | 16+ Core AMD Threadripper |
+| **Neural Core (GPU)** | 12GB VRAM (RTX 3060) | 24GB VRAM (RTX 4090) |
+| **Memory** | 32GB DDR4 | 128GB ECC DDR5 |
+| **Storage** | 1TB NVMe PCIe Gen 4 | 4TB Mirrored NVMe RAID 1 |
