@@ -59,8 +59,123 @@ def get_live_telemetry():
         return {'uav_status': '3/3 ACTIVE (Airborne)', 'mean_gli': '0.84', 'soil_dielectric': '26.1%'}
 
 def ensure_db_schema():
-    # [PROPRIETARY_DATABASE_SCHEMA_REDACTED]
-    pass
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("\n        CREATE TABLE IF NOT EXISTS system_users (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            username TEXT UNIQUE NOT NULL,\n            password_hash TEXT NOT NULL,\n            full_name TEXT NOT NULL,\n            role TEXT NOT NULL DEFAULT 'MEMBER',\n            company_id TEXT DEFAULT 'HVF_MAIN',\n            status TEXT NOT NULL DEFAULT 'APPROVED',\n            trial_expires_at TIMESTAMP,\n            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n        )\n    ")
+    cur.execute('PRAGMA table_info(system_users)')
+    cols = [col[1] for col in cur.fetchall()]
+    if 'company_id' not in cols:
+        cur.execute("ALTER TABLE system_users ADD COLUMN company_id TEXT DEFAULT 'HVF_MAIN'")
+    if 'trial_expires_at' not in cols:
+        cur.execute('ALTER TABLE system_users ADD COLUMN trial_expires_at TIMESTAMP')
+    cur.execute('CREATE TABLE IF NOT EXISTS encrypted_user_comms (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, role TEXT NOT NULL, encrypted_content TEXT NOT NULL, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)')
+    cur.execute("CREATE TABLE IF NOT EXISTS member_invite_keys (id INTEGER PRIMARY KEY AUTOINCREMENT, invite_code TEXT UNIQUE NOT NULL, issued_by TEXT NOT NULL, grant_role TEXT NOT NULL DEFAULT 'MEMBER', is_used INTEGER DEFAULT 0, used_by TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+    cur.execute('CREATE TABLE IF NOT EXISTS pilot_feedback_vault (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, full_name TEXT NOT NULL, rating INTEGER NOT NULL, farm_size_acres TEXT, primary_crops TEXT, feedback_text TEXT NOT NULL, contact_email TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)')
+    cur.execute('CREATE TABLE IF NOT EXISTS conversation_entity_memory (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, topic_key TEXT NOT NULL, entity_summary TEXT NOT NULL, last_context TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(username, topic_key))')
+    cur.execute('CREATE TABLE IF NOT EXISTS empire_config (config_key TEXT PRIMARY KEY, config_value TEXT NOT NULL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS linkedin_broadcast_history (id INTEGER PRIMARY KEY AUTOINCREMENT, post_content TEXT, response_status TEXT, urn_identifier TEXT, triggered_by TEXT, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)')
+    conn.commit()
+    conn.close()
+
+def query_third_brain_cache(prompt: str):
+    if not prompt or len(prompt.strip()) < 3:
+        return None
+    clean_p = prompt.strip().lower()
+    q_hash = hashlib.sha256(clean_p.encode('utf-8')).hexdigest()
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS third_brain_vault (id INTEGER PRIMARY KEY AUTOINCREMENT, query_hash TEXT UNIQUE NOT NULL, prompt_query TEXT NOT NULL, resolved_response TEXT NOT NULL, domain_tag TEXT DEFAULT 'GENERAL', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+        cur.execute('SELECT resolved_response FROM third_brain_vault WHERE query_hash=?', (q_hash,))
+        row = cur.fetchone()
+        conn.close()
+        return row[0] if row else None
+    except Exception:
+        return None
+
+def store_third_brain_cache(prompt: str, response: str, domain: str='GENERAL'):
+    if not prompt or not response:
+        return
+    clean_p = prompt.strip().lower()
+    q_hash = hashlib.sha256(clean_p.encode('utf-8')).hexdigest()
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS third_brain_vault (id INTEGER PRIMARY KEY AUTOINCREMENT, query_hash TEXT UNIQUE NOT NULL, prompt_query TEXT NOT NULL, resolved_response TEXT NOT NULL, domain_tag TEXT DEFAULT 'GENERAL', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+        cur.execute('\n            INSERT INTO third_brain_vault (query_hash, prompt_query, resolved_response, domain_tag)\n            VALUES (?, ?, ?, ?)\n            ON CONFLICT(query_hash) DO UPDATE SET resolved_response=excluded.resolved_response\n        ', (q_hash, prompt.strip(), response.strip(), domain))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+def get_persistent_kinetic_states(theaters):
+    states = {t: '🟢 ONLINE & SECURE' for t in theaters}
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute('CREATE TABLE IF NOT EXISTS kinetic_sector_vault (sector_tag TEXT PRIMARY KEY, sector_status TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)')
+        cur.execute('SELECT sector_tag, sector_status FROM kinetic_sector_vault')
+        for tag, stat in cur.fetchall():
+            if tag in states:
+                states[tag] = stat
+        conn.close()
+    except Exception:
+        pass
+    return states
+
+def set_persistent_kinetic_state(sector_tag, status):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute('CREATE TABLE IF NOT EXISTS kinetic_sector_vault (sector_tag TEXT PRIMARY KEY, sector_status TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)')
+        cur.execute('\n            INSERT INTO kinetic_sector_vault (sector_tag, sector_status, updated_at)\n            VALUES (?, ?, CURRENT_TIMESTAMP)\n            ON CONFLICT(sector_tag) DO UPDATE SET sector_status=excluded.sector_status, updated_at=CURRENT_TIMESTAMP\n        ', (sector_tag, status))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+def sanitize_content_for_role(raw_text: str, role: str, is_founder: bool) -> str:
+    if is_founder and role == 'CEO':
+        return raw_text
+
+    text = raw_text
+    text = re.sub(r'(?:[0-9]{1,3}\.){3}[0-9]{1,3}', '[REDACTED_NODE_IP]', text)
+    text = re.sub(r'C:\\[^\n]*HVF_Repos[^\n]*', r'C:\[SECURE_ENTERPRISE_VAULT]', text)
+    text = text.replace('genesis_archive.txt', '[PROTECTED_HISTORICAL_CORE]')
+    text = text.replace('HVF-OMEGA', '[REDACTED_EXECUTIVE_PIN]')
+
+    if role == 'SUPER_ADMIN':
+        text = text.replace('Fernet', '[CLASSIFIED_SYMMETRIC_CIPHER]')
+        text = text.replace('PBKDF2HMAC', '[CLASSIFIED_KDF_ROUTINE]')
+        text = text.replace('PBKDF2', '[CLASSIFIED_KDF]')
+        text = re.sub(r'CREATE TABLE IF NOT EXISTS [^\)]*\)', '[PROPRIETARY_SCHEMA_INTERNAL]', text, flags=re.IGNORECASE)
+        text = re.sub(r'CREATE TABLE [^\)]*\)', '[PROPRIETARY_SCHEMA_INTERNAL]', text, flags=re.IGNORECASE)
+        return text
+
+    # Guest / Client
+    text = text.replace('hvf_memory_vault.db', '[REDACTED_VAULT_DB]')
+    text = text.replace('third_brain_vault', '[REDACTED_CACHE_VAULT]')
+    text = text.replace('kinetic_sector_vault', '[REDACTED_SECTOR_VAULT]')
+    text = text.replace('conversation_entity_memory', '[REDACTED_ENTITY_CORE]')
+    text = text.replace('Fernet', '[CLASSIFIED_ENCRYPTION]')
+    text = text.replace('PBKDF2HMAC', '[CLASSIFIED_SECURITY_MATRIX]')
+    text = text.replace('PBKDF2', '[CLASSIFIED_SECURITY_MATRIX]')
+    text = re.sub(r'CREATE TABLE IF NOT EXISTS [^\)]*\)', '[DATABASE_SCHEMA_CLASSIFIED]', text, flags=re.IGNORECASE)
+    text = re.sub(r'CREATE TABLE [^\)]*\)', '[DATABASE_SCHEMA_CLASSIFIED]', text, flags=re.IGNORECASE)
+    text = re.sub(r'CREATE TABLE [^;]*;', '[DATABASE_CORE_CLASSIFIED]', text, flags=re.IGNORECASE)
+    text = re.sub(r'SELECT [^"]*', 'SELECT [CONFIDENTIAL] FROM [CORE_TABLE] ', text)
+    text = re.sub(r'INSERT INTO [^"]*', 'INSERT INTO [CORE_TABLE] ', text)
+    return text
+
+def load_manual_doc(category: str, filename: str, role: str = 'GUEST', is_founder: bool = False) -> str:
+    doc_path = os.path.join(REPO_DIR, 'docs', category, filename)
+    if os.path.exists(doc_path):
+        try:
+            with open(doc_path, 'r', encoding='utf-8') as f:
+                raw = f.read()
+            return sanitize_content_for_role(raw, role, is_founder)
+        except Exception as e:
+            return f'⚠️ Error reading {filename}: {e}'
 
 ensure_db_schema()
 
@@ -909,6 +1024,10 @@ elif active_module == '🌐 Omni-Industry Matrix':
     st.markdown('---')
     theaters = ['AGRICULTURE', 'DEFENSE TACTICAL', 'LOGISTICS & SUPPLY', 'ENERGY & MINING', 'ENTERPRISE FACILITIES', 'COGNITIVE EDUCATION', 'HEALTHCARE TRIAGE', 'SMART CITY GRID', 'LEGAL ARBITRATION']
     tabs = st.tabs(theaters)
+    if 'DISASTER RESPONSE' not in theaters:
+        theaters.insert(0, 'DISASTER RESPONSE')
+    if 'DISASTER RESPONSE' not in st.session_state.kinetic_states:
+        st.session_state.kinetic_states['DISASTER RESPONSE'] = '🟢 ONLINE & SECURE'
     for i, theater in enumerate(theaters):
         with tabs[i]:
             st.markdown(f'## 🛡️ {theater} MASTER NODE')
@@ -942,7 +1061,9 @@ elif active_module == '🌐 Omni-Industry Matrix':
                         st.rerun()
                 st.divider()
             elif theater == 'DEFENSE TACTICAL':
-                st.markdown('### 🪖 KINETIC TELEMETRY & COMMAND')
+                t_base = os.path.join('docs', 'defense_tactical')
+            elif theater == 'DISASTER RESPONSE':
+                t_base = os.path.join('docs', 'disaster_response')
                 status_col, telemetry_col = st.columns(2)
                 with status_col:
                     st.metric('Sector Status', st.session_state.kinetic_states[theater])
