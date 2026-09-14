@@ -863,7 +863,8 @@ elif active_module == '📖 System Overview':
                     first_line = raw_text.strip().split('\n')[0]
                     expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(p_path)
                     with st.expander(expander_title):
-                        st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
+                        body_text = raw_text[len(first_line):].strip()
+                        st.markdown(sanitize_content_for_role(body_text, current_role, is_master_founder))
                 except Exception as e:
                     st.error(f'Failed to load {os.path.basename(p_path)}: {e}')
 elif active_module == '📝 Feedback Hub':
@@ -1328,7 +1329,8 @@ elif active_module == '🌐 Omni-Industry Matrix':
                             first_line = raw_text.strip().split('\n')[0]
                             expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(p_path)
                             with st.expander(expander_title, expanded=False):
-                                st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
+                                body_text = raw_text[len(first_line):].strip()
+                                st.markdown(sanitize_content_for_role(body_text, current_role, is_master_founder))
                         except Exception as e:
                             st.error(f'Failed to load {os.path.basename(p_path)}')
                 else:
@@ -1349,7 +1351,8 @@ elif active_module == '🌐 Omni-Industry Matrix':
                             first_line = raw_text.strip().split('\n')[0]
                             expander_title = first_line.replace('#', '').strip() if first_line.startswith('#') else os.path.basename(c_path)
                             with st.expander(expander_title, expanded=False):
-                                st.markdown(sanitize_content_for_role(raw_text, current_role, is_master_founder))
+                                body_text = raw_text[len(first_line):].strip()
+                                st.markdown(sanitize_content_for_role(body_text, current_role, is_master_founder))
                         except Exception as e:
                             st.error(f'Failed to load {os.path.basename(c_path)}')
                 else:
