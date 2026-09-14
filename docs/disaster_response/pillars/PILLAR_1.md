@@ -22,8 +22,8 @@ When digital meshes fail, rely on localized analog RF.
 *   **MURS (Multi-Use Radio Service):** 151.820 MHz (Local Farm Comms)
 
 ### 2.2 Offline Asset & Livestock Evacuation
-*Standard Operating Procedures for high-value agricultural assets.*
+Standard Operating Procedures for high-value agricultural assets.
 
-1.  **Staging:** Pre-position high-capacity transport vehicles facing outbound routes.
-2.  **Tracking:** Log all manifested livestock via the offline SQLite vault before departure.
-3.  **Routing:** Execute deterministic routing avoiding primary thermal vectors and known choke points.
+*   **Staging:** Pre-position high-capacity transport vehicles facing outbound routes.
+*   **Tracking:** Log all manifested livestock via the offline SQLite vault before departure.
+*   **Routing:** Execute deterministic routing avoiding primary thermal vectors and known choke points.
