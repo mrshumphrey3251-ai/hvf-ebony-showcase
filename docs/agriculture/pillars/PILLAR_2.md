@@ -18,8 +18,7 @@ Ebony is architected as an air-gapped, zero-hallucination cognitive assistant op
 *   **Cloud Fast Burst (Online Mode):** Groq LPU endpoint delivering high-throughput inference with TLS 1.3 encryption for complex reasoning.
 *   **Local Air-Gapped Core (Offline Mode):** Quantized `llama3:8b` running directly on bare-metal VRAM via Ollama (Port 11434).
 
-**Deterministic Constraint:** Temperature is strictly locked across both engines to ensure 100% reproducible, factual agronomic telemetry.
-## 2. THIRD BRAIN COGNITIVE CACHE & ZERO-TOKEN VAULT
+**Deterministic Constraint:** Temperature is strictly locked across both engines to ensure 100% reproducible, factual agronomic telemetry.## 2. THIRD BRAIN COGNITIVE CACHE & ZERO-TOKEN VAULT
 
 ### 2.1 SHA-256 Prompt Hashing Mechanics
 To eliminate redundant compute cycles and achieve real-time response speeds, Ebony implements a local SQLite cache vault:
