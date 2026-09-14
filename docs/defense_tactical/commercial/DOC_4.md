@@ -1,7 +1,15 @@
-# 🤝 DOC 4: OPERATIONAL SLA
+# 🤝 DOC 4: OPERATIONAL SLA & METRICS
 **Document ID:** HDT-COM-DOC-004
 
+---
+
 ## 1. SERVICE LEVEL GUARANTEES
-* **Inference Latency:** Guaranteed sub-20ms database read/write speeds under high-frequency drone telemetry ingest.
-* **Uptime:** Local LLM inference via Ollama is guaranteed to execute without external network calls, ensuring 100% uptime regardless of global internet availability or SATCOM jamming.
-* **Data Loss:** Zero byte loss via strict SQLite WAL implementation.
+
+| Metric | Target | Hard Limit |
+| :--- | :--- | :--- |
+| **Local Cache Inference** | < 15ms | < 30ms |
+| **Offline LLM Gen** | ~ 45 tokens/sec | > 25 tokens/sec |
+| **Sensor Telemetry Write** | < 5ms | < 10ms |
+| **Uptime (Air-Gapped)** | 100% | 99.999% |
+
+*Data Loss Guarantee:* Zero byte loss via strict SQLite WAL implementation and atomic commits.
