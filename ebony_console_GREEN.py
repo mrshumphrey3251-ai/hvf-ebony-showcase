@@ -137,6 +137,13 @@ def set_persistent_kinetic_state(sector_tag, status):
         pass
 
 def sanitize_content_for_role(raw_text: str, role: str, is_founder: bool) -> str:
+
+    # [GLOBAL ARCHITECTURE PATCH] - Neutralize UI Math Collisions & Enforce Strict RBAC
+    raw_text: str = raw_text: str.replace('$$', '')
+    if role: str not in ['CEO', 'SUPER_ADMIN']:
+        raw_text: str = raw_text: str.replace('[CLASSIFIED_SECURITY_MATRIX]', '[REDACTED]')
+        raw_text: str = raw_text: str.replace('[CLASSIFIED_ENCRYPTION]', '[REDACTED]')
+        raw_text: str = raw_text: str.replace('(Unredacted)', '')
     if is_founder and role == 'CEO':
         return raw_text
 
