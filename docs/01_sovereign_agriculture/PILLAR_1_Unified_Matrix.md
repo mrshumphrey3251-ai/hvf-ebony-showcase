@@ -31,11 +31,7 @@ For the engineers and auditors: Ebony operates on a zero-latency, mathematically
 *   **Compute Matrix:** Telemetry impacts localized NVIDIA RTX GPU arrays. Ingestion-to-inference latency is strictly `< 500ms`.
 
 ### 2.2 The Algorithmic Engine (NDVI Calculus)
-To determine true vegetative health, Ebony calculates the Normalized Difference Vegetation Index (NDVI) across the sector using tensor calculus. The mathematical law is defined as:
-
-$$NDVI_{tactical} = \frac{(NIR - VIS)}{(NIR + VIS)} + \epsilon_{cal}$$
-
-*(Where NIR is Near-Infrared reflectance, VIS is Visible Red reflectance, and \epsilon_{cal} is the radiometric calibration offset).*
+To determine true vegetative health, Ebony calculates the Normalized Difference Vegetation Index (NDVI) across the sector using tensor calculus. The mathematical law is defined as:*(Where NIR is Near-Infrared reflectance, VIS is Visible Red reflectance, and \epsilon_{cal} is the radiometric calibration offset).*
 
 ### 2.3 Zero-Overflow Execution Code
 Mathematical models fail if the software architecture allows for division-by-zero or integer overflows during massive data ingestion. Below is the audited Python execution script Ebony uses on the bare-metal GPU arrays. Note the `float32` casting and the `1e-6` epsilon injection to guarantee the engine never crashes during a null-sensor read.
@@ -58,6 +54,6 @@ Ebony is designed to run the empire autonomously, but the CEO retains absolute m
 
 1.  **Authenticate:** On the left sidebar of the Master Console, locate the "Executive Override" password box. Enter `HVF2026!` and click **Authenticate**.
 2.  **Navigate to Domain:** Across the top of the platform, click the **🌾 Agriculture** tab.
-3.  **Access the Intelligence:** Click the **PILLAR 1 MULTI-SPECTRAL EDGE TELEMETRY** drop-down to review the exact mathematical thresholds currently active.
-4.  **Execute Override:** Scroll to the bottom of the tab to the "⚠️ TIER-1 KINETIC CONTROLS UNLOCKED" section.
-5.  **Take Command:** Click the **Deploy Local Mesh** button. This action instantly halts Ebony's automated UAV flight paths, placing the swarm into a hover state and transferring manual waypoint control directly to your terminal.
+3.  **Access the Intelligence:** Click the drop-down to review the exact mathematical thresholds currently active.
+4.  **Execute Override:** Scroll to the bottom of the tab to the **🔴 LIVE EXECUTION (BARE-METAL)** section.
+5.  **Take Command:** Click the **🔴 HALT** button. This action instantly severs Ebony's autonomous execution loop, locking the subterranean valves and transferring manual waypoint control directly to your terminal. Clicking **🟢 INITIATE** will return authority to the Edge Node.

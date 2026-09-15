@@ -71,54 +71,63 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                     # --- PUBLIC SIMULATION SANDBOX ---
                     st.markdown("---")
                     st.markdown(f"### 🟡 SIMULATION & TRAINING SANDBOX: {title_clean}")
-                    st.info("PUBLIC ACCESS GRANTED: Adjust the precision dial. Ebony calculates exact GPU loads, drone altitudes, and fluid dynamics for every 0.05 increment.")
+                    st.info("PUBLIC ACCESS GRANTED: Adjust the precision dial. Ebony calculates exact kinetic outputs tailored to this specific industry vertical.")
                     
                     colA, colB = st.columns(2)
                     with colA:
                         st.markdown("**[TELEMETRY INPUT CONTROL]**")
                         sim_input = st.number_input(
-                            "Simulate Input Integrity (Health, Security, Battery)", 
+                            "Simulate Input Integrity Baseline", 
                             min_value=0.0, max_value=1.0, value=1.00, step=0.05, format="%.2f",
                             key=f"dial_{folder_name}_{file}"
                         )
                     with colB:
                         kinetic_response = (1.0 - sim_input) * 100
-                        st.metric("Calculated Kinetic Output (Valve Aperture / Drone Swarm)", f"{kinetic_response:.1f}%")
+                        # Dynamic Output Label based on Vertical
+                        if "agriculture" in folder_name: out_label = "Valve Aperture / Drone Swarm"
+                        elif "logistics" in folder_name: out_label = "Fleet Rerouting / Supply Buffer"
+                        elif "financial" in folder_name: out_label = "Asset Reallocation / Ledger Lock"
+                        else: out_label = "System Actuation / Node Allocation"
+                        
+                        st.metric(f"Calculated Kinetic Output ({out_label})", f"{kinetic_response:.1f}%")
                         st.progress(int(kinetic_response))
                     
                     # --- HYPER-DYNAMIC TACTICAL CALCULUS ---
                     st.markdown("#### 🧠 EBONY'S EXACT PHYSICAL EXECUTION")
                     
-                    # Dynamic physics calculated directly from the dial input
                     integrity_pct = int(sim_input * 100)
                     degradation = 100 - integrity_pct
-                    uav_alt = max(8, int(150 * sim_input)) # Swarm drops lower as threat increases
-                    gpu_load = 12 + int(86 * (1.0 - sim_input)) # Servers run hotter calculating triage
-                    fluid_liters = degradation * 14.7 # Exact mathematical dosage
-                    latency_ms = int(8 + (sim_input * 35)) # System speeds up as threat escalates
+                    gpu_load = 12 + int(86 * (1.0 - sim_input))
+                    latency_ms = int(8 + (sim_input * 35))
                     
-                    if sim_input == 1.00:
-                        st.success(f"**ABSOLUTE PERFECTION ({sim_input:.2f}):** Zero degradation detected. Ebony spins down Master Node tensor cores to idle (**{gpu_load}% load**) to conserve thermal energy. UAV Swarm is ordered to dock and trickle-charge. Zero kinetic routing required.")
-                    elif sim_input >= 0.90:
-                        st.success(f"**PEAK EFFICIENCY ({sim_input:.2f}):** Ebony detects a microscopic **{degradation}%** variance from mathematical perfection. Baseline calibrated. UAVs maintain high-altitude passive overwatch at **{uav_alt}ft**. Subterranean valves remain physically sealed.")
-                    elif sim_input >= 0.75:
-                        st.info(f"**EARLY DEGRADATION TRACKING ({sim_input:.2f}):** Integrity dropped to **{integrity_pct}%**. Ebony proactively spikes Edge Node GPU allocation to **{gpu_load}%** to run predictive threat modeling. No water deployed yet, but target locks are acquired on the exact coordinates.")
-                    elif sim_input >= 0.60:
-                        st.warning(f"**PREEMPTIVE TACTICAL STANCE ({sim_input:.2f}):** Noticeable stress vector detected. Ebony autonomously drops UAV swarm altitude to **{uav_alt}ft** for high-resolution thermal scanning. Underground mainlines are pressurized. Routing execution latency locked at **{latency_ms}ms**.")
-                    elif sim_input >= 0.40:
-                        st.warning(f"**ACTIVE THREAT INTERDICTION ({sim_input:.2f}):** Baseline officially breached. Ebony unilaterally cracks subterranean valves to **{kinetic_response:.1f}%** aperture, mathematically calculating and delivering exactly **{fluid_liters:.1f} liters** of kinetic payload. GPU load spiked to **{gpu_load}%**.")
-                    elif sim_input >= 0.20:
-                        st.error(f"**CRITICAL ASSET STABILIZATION ({sim_input:.2f}):** Severe sector trauma. Ebony opens valves to **{kinetic_response:.1f}%**. Drone swarm deployed in micro-hover (**{uav_alt}ft**) to continuously monitor chemical saturation. Human authorization bypassed to prevent total asset loss.")
-                    elif sim_input > 0.00:
-                        st.error(f"**TIER-1 KINETIC GUILLOTINE ({sim_input:.2f}):** Catastrophic failure impending. Ebony executes maximum resource dump. Valves locked at **{kinetic_response:.1f}%**. GPU matrix running at **{gpu_load}%** load calculating triage vectors in **{latency_ms}ms**. Immediate physical intervention by CEO advised.")
+                    # CONTEXT-AWARE ROUTING
+                    if "agriculture" in folder_name:
+                        uav_alt = max(8, int(150 * sim_input))
+                        fluid_liters = degradation * 14.7
+                        if sim_input == 1.00:
+                            st.success(f"**ABSOLUTE PERFECTION ({sim_input:.2f}):** Zero degradation detected. Master Node tensor cores idle (**{gpu_load}% load**). UAV Swarm docked. Zero kinetic routing required.")
+                        elif sim_input >= 0.75:
+                            st.info(f"**EARLY DEGRADATION ({sim_input:.2f}):** Integrity at **{integrity_pct}%**. GPU allocation spikes to **{gpu_load}%** for threat modeling. Target locks acquired. Subterranean valves sealed.")
+                        elif sim_input >= 0.40:
+                            st.warning(f"**ACTIVE INTERDICTION ({sim_input:.2f}):** Baseline breached. Subterranean valves open to **{kinetic_response:.1f}%** aperture, delivering **{fluid_liters:.1f} liters** of payload. Swarm drops to **{uav_alt}ft**.")
+                        else:
+                            st.error(f"**TIER-1 KINETIC GUILLOTINE ({sim_input:.2f}):** Catastrophic failure. Valves locked at **{kinetic_response:.1f}%**. GPU matrix calculating triage in **{latency_ms}ms**. Sector quarantined.")
                     else:
-                        st.error(f"**SECTOR DEATH - CONTAINMENT PROTOCOL ({sim_input:.2f}):** Asset is mathematically unsalvageable. Ebony has autonomously severed hydration to this grid to protect remaining sovereign reserves. Kinetic Guillotine engaged. Sector quarantined.")
+                        # Generic Universal Engine for remaining verticals until explicitly customized
+                        if sim_input == 1.00:
+                            st.success(f"**ABSOLUTE PERFECTION ({sim_input:.2f}):** Core systems nominal. Tensor cores idle (**{gpu_load}% load**). Autonomous execution loops on standby.")
+                        elif sim_input >= 0.75:
+                            st.info(f"**EARLY VARIANCE DETECTED ({sim_input:.2f}):** Integrity at **{integrity_pct}%**. GPU allocation spikes to **{gpu_load}%** to calculate predictive correction vectors.")
+                        elif sim_input >= 0.40:
+                            st.warning(f"**ACTIVE RECALIBRATION ({sim_input:.2f}):** Baseline breached. System autonomously reallocates resources to **{kinetic_response:.1f}%** capacity to neutralize threat vector.")
+                        else:
+                            st.error(f"**TIER-1 KINETIC GUILLOTINE ({sim_input:.2f}):** Catastrophic failure. Maximum system actuation (**{kinetic_response:.1f}%**). GPU matrix calculating final triage in **{latency_ms}ms**.")
                     
                     # --- CEO LIVE EXECUTION POST ---
                     st.markdown("---")
                     st.markdown(f"### 🔴 LIVE EXECUTION (BARE-METAL): {title_clean}")
                     if st.session_state.role == 'CEO':
-                        st.error("🔌 SENSOR DISCONNECT: Physical hardware not detected on local mesh. Dials and gauges locked at zero to prevent false readings.")
+                        st.error("🔌 SYSTEM DISCONNECT: Physical hardware not detected on local mesh. Execution switches locked to prevent unverified kinetic deployment.")
                         colC, colD = st.columns(2)
                         with colC:
                             st.metric("Live Telemetry Feed (Input)", "NULL", "-100% Signal")
