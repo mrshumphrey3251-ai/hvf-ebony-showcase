@@ -3,26 +3,7 @@ import os
 
 st.set_page_config(page_title="Humphrey Virtual Farm | Ebony Command", page_icon="⚡", layout="wide")
 
-# APEX STANDARD: Force 15-Vertical Matrix Tabs into Multi-Row Layout
-st.markdown("""
-    <style>
-    /* Force Streamlit Tabs to wrap into multiple rows */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-    /* Standardize tab sizing and text wrapping */
-    .stTabs [data-baseweb="tab"] {
-        flex-grow: 1;
-        white-space: pre-wrap;
-        text-align: center;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- RESTORED SIDEBAR: ADA VOICE, OPSEC & ACCESS PORTAL ---
+# --- STABLE SIDEBAR: ADA VOICE, OPSEC & ACCESS PORTAL ---
 st.sidebar.markdown("### 🎙️ ADA Voice Link")
 st.sidebar.button("Tap to speak (Must say 'Ebony')")
 st.sidebar.text("00:00")
@@ -70,10 +51,9 @@ elif choice == "📘 OMNI-INDUSTRY MATRIX":
         ("📦 Warehousing", "15_autonomous_warehousing")
     ]
 
-    # Autonomously generate the 15 multi-row tabs IN THE MAIN BODY
+    # Native Streamlit Tabs (No CSS Hacks)
     tabs = st.tabs([v[0] for v in verticals])
 
-    # Loop through each tab and dynamically load its respective Markdown SITREPs
     for i, tab in enumerate(tabs):
         with tab:
             folder_path = os.path.join("docs", verticals[i][1])
