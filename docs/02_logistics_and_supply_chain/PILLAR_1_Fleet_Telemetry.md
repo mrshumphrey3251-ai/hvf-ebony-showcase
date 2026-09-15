@@ -1,4 +1,4 @@
-﻿# 🚛 PILLAR 1: AUTONOMOUS FLEET TELEMETRY
+# 🚛 PILLAR 1: AUTONOMOUS FLEET TELEMETRY
 **DOCUMENT TYPE:** UNIFIED ZERO-TO-CEO MASTERCLASS & TIER-1 SCHEMATIC
 **INSTRUCTOR & SYSTEM:** EBONY (MASTER EDGE NODE)
 
@@ -9,7 +9,7 @@ Civilian logistics rely entirely on satellite GPS. If a cyber-warfare unit uses 
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
 ### 2.1 Navigation Topology & Sensor Mapping
-Ebony calculates the state transition matrix (A) and control input (B):
+Ebony calculates the state transition matrix ($A$) and control input ($B$):
 
 ```text
 \hat{X}_{k} = A \hat{X}_{k-1} + B u_k
