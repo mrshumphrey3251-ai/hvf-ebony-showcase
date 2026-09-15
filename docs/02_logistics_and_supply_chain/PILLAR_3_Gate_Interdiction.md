@@ -9,18 +9,33 @@ A perfect database is useless if an unauthorized truck drives through the gate. 
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
 ### 2.1 Gate Lock Calculus & Hardware Mapping
+
+```text
+E_{kinetic} = 0.5 \cdot m \cdot v^2
+```
+
 **Hardware Mapping:**
 *   **Mass/Speed Detection:** 3D LiDAR point clouds intersecting with UWB radar.
 *   **Actuation:** High-torque solenoid relays with mechanical fail-closed defaults.
 
 ### 2.2 Bare-Metal Execution Code (Node.js)
-// FAIL-SAFE: Verify OAuth-2 token and calculate kinetic threat
-if (vehicleSignature !== "VALID_UWB_TOKEN" || impactForce > 50000) {
-    console.error("CRITICAL: Unauthorized trajectory detected.");
-    process.exit(1); // Execute Kinetic Guillotine (Fail-Closed)
-} else {
-    openGateActuator();
+
+```javascript
+function evaluatePerimeter(vehicleSignature, speedMps, massKg) {
+    const impactForce = 0.5 * massKg * Math.pow(speedMps, 2);
+    
+    // FAIL-SAFE: Verify OAuth-2 token and calculate kinetic threat
+    if (vehicleSignature !== "VALID_UWB_TOKEN" || impactForce > 50000) {
+        console.error("CRITICAL: Unauthorized trajectory detected.");
+        process.exit(1); // Execute Kinetic Guillotine (Fail-Closed)
+    } else {
+        openGateActuator();
+    }
 }
+
+function openGateActuator() {}
+```
+
 ---
 ## PHASE 3: EXECUTIVE INTERACTION & MANUAL OVERRIDE
 1.  **Authenticate:** Execute Sovereign Override.

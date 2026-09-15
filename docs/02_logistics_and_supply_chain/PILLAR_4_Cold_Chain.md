@@ -9,18 +9,32 @@ Civilian logistics rely on drivers noticing warning lights. We rely on active th
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
 ### 2.1 Thermodynamic Calculus & Hardware Mapping
+
+```text
+Q_{cool} = m \cdot c_p \cdot \frac{dT}{dt} + Q_{leakage}
+```
+
 **Hardware Mapping:**
 *   **Temperature Sensing:** Medical-grade Platinum PT100 RTD sensors inside cargo pods.
 *   **Execution Vector:** Local MQTT bus secured via TLS-PSK.
 
 ### 2.2 Bare-Metal Execution Code (Python)
-# WATCHDOG: Strict 0.5C variance tolerance
-if variance > 0.5:
-    required_kw = (mass_kg * 4.18 * variance) + 1.25
-    actuate_compressor(required_kw)
-    return required_kw
+
+```python
+def regulate_cold_chain(current_temp: float, target_temp: float, mass_kg: float) -> float:
+    variance = abs(current_temp - target_temp)
     
-return 0.0
+    # WATCHDOG: Strict 0.5C variance tolerance
+    if variance > 0.5:
+        required_kw = (mass_kg * 4.18 * variance) + 1.25
+        actuate_compressor(required_kw)
+        return required_kw
+        
+    return 0.0
+
+def actuate_compressor(power_kw):
+    pass
+```
 
 ---
 ## PHASE 3: EXECUTIVE INTERACTION & MANUAL OVERRIDE

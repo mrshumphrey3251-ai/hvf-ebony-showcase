@@ -9,11 +9,33 @@ Moving high-value assets across unstable routes invites physical hijacking. If a
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
 ### 2.1 Route Deviation Calculus & Hardware Mapping
+
+```text
+D_{error} = \| \vec{P}_{current} - \text{proj}_{\vec{v}_{route}} \vec{P}_{current} \|
+```
+
 **Hardware Mapping:**
 *   **Tracking:** U-blox F9P RTK-GPS cross-referenced with onboard IMUs.
 *   **Asset Denial Mechanism:** TPM-triggered cryptographic wipe of local NVMe storage.
 
 ### 2.2 Bare-Metal Execution Code (Go)
+
+```go
+package security
+
+import "fmt"
+
+func MonitorDeviation(deviationMeters float64, overrideProvided bool) {
+    // WATCHDOG: 50-meter strict compliance boundary
+    if deviationMeters > 50.0 && !overrideProvided {
+        fmt.Println("CRITICAL: Unauthorized route deviation. Asset captured.")
+        TriggerAssetDenial()
+    }
+}
+
+func TriggerAssetDenial() {} // Cryptographic wipe via TPM
+```
+
 ---
 ## PHASE 3: EXECUTIVE INTERACTION & MANUAL OVERRIDE
 1.  **Authenticate:** Execute Sovereign Override.

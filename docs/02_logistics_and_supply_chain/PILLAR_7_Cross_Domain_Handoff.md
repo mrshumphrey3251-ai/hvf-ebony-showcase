@@ -9,17 +9,34 @@ The exact millisecond a vehicle switches from our private UWB mesh to the public
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
 ### 2.1 Cryptographic Calculus & Hardware Mapping
+
+```text
+\Delta t_{verify} = t_{ack} - t_{syn} \leq 3.0s
+```
+
 **Hardware Mapping:**
 *   **Encryption Standard:** AES-256 with RSA-4096 handshake signatures.
 *   **Security Protocol:** TPM 2.0 Hardware Root of Trust on the vehicular edge node.
 
 ### 2.2 Bare-Metal Execution Code (Python)
-# FAIL-SAFE: Execute lockdown if latency breaches 3.0 seconds or signature is invalid
-if latency > max_tolerance or not signature_valid:
-    execute_asset_lockdown()
-    return False
+
+```python
+import time
+
+def verify_handoff(syn_time: float, max_tolerance: float, signature_valid: bool):
+    latency = time.time() - syn_time
     
-return True
+    # FAIL-SAFE: Execute lockdown if latency breaches 3.0 seconds or signature is invalid
+    if latency > max_tolerance or not signature_valid:
+        execute_asset_lockdown()
+        return False
+        
+    return True
+
+def execute_asset_lockdown():
+    pass
+```
+
 ---
 ## PHASE 3: EXECUTIVE INTERACTION & MANUAL OVERRIDE
 1.  **Authenticate:** Execute Sovereign Override.

@@ -9,16 +9,31 @@ If a truck leaves with 10,000 lbs and arrives with 9,800 lbs, we have been compr
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
 ### 2.1 Dynamic Mass Calculus & Hardware Mapping
+
+```text
+M_c = k \int (V_s - V_{baseline}) dt
+```
+
 **Hardware Mapping:**
 *   **Mass Sensors:** Heavy-duty piezoelectric load cells integrated into the air suspension.
 *   **Actuation:** Electromagnetic mechanical seals on all cargo bays.
 
 ### 2.2 Bare-Metal Execution Code (Node.js)
-// WATCHDOG: 5.0 lb variance threshold triggers mechanical lock
-if (variance > 5.0) { 
-    console.error(`CRITICAL: Payload delta detected. Missing ${variance} lbs.`);
-    lockCargoDoors();
+
+```javascript
+function verifyPayloadMass(expectedMass, currentMass) {
+    const variance = Math.abs(expectedMass - currentMass);
+    
+    // WATCHDOG: 5.0 lb variance threshold triggers mechanical lock
+    if (variance > 5.0) { 
+        console.error(`CRITICAL: Payload delta detected. Missing ${variance} lbs.`);
+        lockCargoDoors();
+    }
 }
+
+function lockCargoDoors() {}
+```
+
 ---
 ## PHASE 3: EXECUTIVE INTERACTION & MANUAL OVERRIDE
 1.  **Authenticate:** Execute Sovereign Override.
