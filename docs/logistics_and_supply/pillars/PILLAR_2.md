@@ -6,7 +6,7 @@
 
 **Author:** Jeffery Humphrey, CEO
 
-**Version:** 4.1.0 
+**Version:** 4.1.0 (Unredacted)
 
 ---
 

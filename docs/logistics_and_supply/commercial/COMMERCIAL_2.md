@@ -1,10 +1,12 @@
-# 🚨 DOC 2: TOTAL KINETIC RESOURCE SEIZURE (DEFCON 1)
+# 💼 COMMERCIAL 2: TOTAL KINETIC RESOURCE SEIZURE (DEFCON 1)
 
 **Document ID:** HVF-LOG-COM-002
 
 **Classification:** Emergency Operations & Legal Continuity
 
 **Author:** Jeffery Humphrey, CEO
+
+**Version:** 4.0.0 (Unredacted)
 
 ---
 
@@ -17,4 +19,5 @@ In the event of regional grid collapse, systemic supply chain failure, or kineti
 
 ### 1.2 Automated Force Majeure & Legal Severance
 *   **Algorithmic Legal Dispatch:** The system bypasses human legal review. Upon DEFCON 1 activation, the AI Core auto-generates and dispatches legally binding *Force Majeure* declarations to all commercial buyers, vendors, and state entities via encrypted dispatch. 
-*   **Obligation Termination:** This action legally severs all outbound freight obligations and financial penalties in milliseconds.
+
+*   **Obligation Termination:** This action legally severs all outbound freight obligations and financial penalties in milliseconds, protecting the empire from breach-of-contract liabilities during a survival scenario.

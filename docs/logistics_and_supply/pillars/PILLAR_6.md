@@ -2,27 +2,24 @@
 
 **Document ID:** HVF-LOG-PLR-006
 
-**Classification:** Supply Independence & Fabrication ([REDACTED])
+**Classification:** Supply Independence & Fabrication (Tier-1)
 
 **Author:** Jeffery Humphrey, CEO
+
+**Version:** 4.0.0 (Unredacted)
 
 ---
 
 ## 1. ON-SITE COMPONENT REPLICATION
 
 ### 1.1 Severing the Hardware Tether
-HVF does not wait on international shipping, commercial logistics, or foreign manufacturing for critical replacement parts during a supply chain crisis. The empire is self-forging.
-*   **Subtractive Machining (CNC):** Edge nodes integrate directly with off-grid 5-axis CNC mills to carve high-stress linkages from solid billets of 7075-T6 Aerospace Aluminum.
-*   **Additive Forging (3D Printing):** Industrial extrusion systems forge carbon-fiber reinforced nylon and PEEK (Polyetheretherketone) for drone rotors and structural housings. 
+HVF does not wait on commercial logistics for critical replacement parts during a crisis. The empire is self-forging.
 
-### 1.2 Metallurgical Stress Calculus
-Before a forged part is deployed into the heavy machinery fleet, the local AI verifies the structural integrity using Hooke's Law and localized yield stress equations to ensure it will not fail under load:*(Where $\sigma$ is the applied stress, $E$ is Young's Modulus of the forged material, and $\epsilon$ is the strain).*
+*   **Industrial Fabrication:** Edge nodes integrate directly with off-grid CNC mills and industrial 3D printers capable of extruding PEEK, carbon-fiber reinforced nylon, and aerospace-grade aluminum.
 
----
+*   **Tolerance Specifications:** Machining operations are calibrated to maintain tolerances of ± 0.005mm for engine linkages and drone rotors.
 
-## 2. DIGITAL SCHEMATIC VAULT & QUALITY CONTROL
+### 1.2 Digital Schematic Vault & Quality Control
+*   **Air-Gapped CAD Library:** The offline SQLite vault contains thousands of proprietary CAD blueprints.
 
-### 2.1 Air-Gapped CAD Deployment
-The offline SQLite vault ([REDACTED_VAULT_DB]) contains thousands of proprietary and reverse-engineered CAD blueprints. 
-*   **G-Code Air-Gap:** Schematics are translated to G-code natively on the Master Node. The G-code is transferred to the CNC mills via physically hardwired, isolated serial connections.
-*   **Optical QC Scanning:** All freshly forged parts are subjected to an automated 3D optical scan, overlaying the physical product against the digital schematic. Micro-variances exceeding ± 0.005mm result in immediate automated recycling of the part.
+*   **Optical QC Scanning:** Freshly forged parts are subjected to a 3D optical scan, overlaying the physical product against the digital schematic. Variances result in immediate recycling.

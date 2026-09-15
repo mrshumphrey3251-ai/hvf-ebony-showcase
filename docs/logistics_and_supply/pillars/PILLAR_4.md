@@ -2,25 +2,33 @@
 
 **Document ID:** HVF-LOG-PLR-004
 
-**Classification:** Kinetic Perimeter & Freight Security ([REDACTED])
+**Classification:** Kinetic Perimeter & Freight Security (Tier-1)
 
 **Author:** Jeffery Humphrey, CEO
 
+**Version:** 4.0.0 (Unredacted)
+
 ---
 
-## 1. BALLISTIC HARDENING & FLEET OVERWATCH
+## 1. ROUTE SECURITY & VANGUARD OVERWATCH
 
-### 1.1 Armor Plating Specifications
-High-value freight moving beyond the primary hardened perimeter requires active, militarized tactical overwatch and physical shielding. Transport cabs and critical engine bays are retrofitted with AR500 ballistic steel and NIJ Level IV composite ceramics capable of defeating 7.62x51mm armor-piercing rounds.
-*   **Weight Penalty Calculus:** Adding armor degrades acceleration and alters the vehicle's center of gravity. The Master Node dynamically recalculates the convoy's kinetic momentum ($p$) to adjust automated braking thresholds:### 1.2 UAV Vanguard Telemetry
+### 1.1 Tactical Convoy Spacing
+High-value freight moving beyond the primary hardened perimeter requires militarized overwatch.
+
+*   **Algorithmic Spacing:** The AI Core calculates optimal convoy spacing based on velocity and terrain to ensure the entire asset train cannot be trapped in a single choke-point. The stopping distance calculus dictates minimum interval ranges:*(Where $d$ is stopping distance, $v$ is velocity, $\mu$ is the friction coefficient, and $t_r$ is operator reaction time).*
+
+*   **Automated 'Red Zone' Identification:** The matrix pre-identifies bridges and narrow embankments as 'Red Zones.' Convoy speed and spacing are dynamically adjusted.
+
+### 1.2 UAV Vanguard Escort
 *   **Forward Reconnaissance:** Swarm drones equipped with radiometric thermal payloads deploy exactly 2 miles ahead of transport convoys. 
-*   **Algorithmic Threat Recognition:** The CV pipeline scans for localized thermal signatures (human bodies, running engines) hiding in pre-identified 'Red Zones' (bridges, narrow embankments). The bounding box data is transmitted via [CLASSIFIED_ENCRYPTION] to the operator's HUD.
+
+*   **Real-Time HUD Feed:** Threat assessments and barricade detections are fed in real-time directly to the transport operator's HUD.
 
 ---
 
 ## 2. COUNTER-AMBUSH EXECUTION
 
-### 2.1 Kinetic Evasion & Localized Barricading
-If a kinetic threat is detected, the AI Core instantly revokes the standard routing protocol.
-*   **Heavy Machinery Shielding:** Bulldozers and front-end loaders accompanying the convoy immediately act as a localized, mobile barricade. The hydraulic implements are dropped to anchor the vehicles against kinetic ramming.
-*   **Radio Silence Exfiltration:** In a compromised sector, all broad-spectrum RF comms are instantly severed to prevent triangulation. High-speed transport assets revert to pre-programmed rally coordinates using solely offline Inertial Navigation Systems (INS).
+### 2.1 Kinetic Evasion Maneuvers
+*   **Localized Barricading:** If a kinetic threat is detected, heavy machinery accompanying the convoy immediately act as a localized barricade, shielding high-speed transports.
+
+*   **Radio Silence Exfiltration:** All broad-spectrum RF comms are instantly severed to prevent triangulation. Assets revert to rally coordinates using solely offline INS.
