@@ -32,20 +32,29 @@ if choice == "⚡ Command Deck":
 elif choice == "📘 OMNI-INDUSTRY MATRIX":
     st.title("📘 OMNI-INDUSTRY MATRIX")
 
-    # --- NATIVE STREAMLIT TABS (ZERO CSS HACKS) ---
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
-        "🌾 Agriculture", 
-        "🚛 Logistics", 
-        "🚁 Defense", 
-        "⚡ Energy",
-        "🏭 Manufacturing",
-        "📡 Comms",
-        "🏦 Finance",
-        "🏥 Healthcare",
-        "🛰️ Aerospace"
-    ])
+    # --- NATIVE 15-VERTICAL ARRAY ---
+    verticals = [
+        ("🌾 Agriculture", "01_sovereign_agriculture"),
+        ("🚛 Logistics", "02_logistics_and_supply_chain"),
+        ("🚁 Defense", "03_defense_tactical"),
+        ("⚡ Energy", "04_distributed_energy_grid"),
+        ("💧 Hydrology", "05_sovereign_hydrology"),
+        ("🏭 Heavy Industry", "06_heavy_industry"),
+        ("🏥 Biosecurity", "07_biosecurity"),
+        ("🛰️ Aerospace", "08_aerospace"),
+        ("🔐 Crypto Cyber", "09_cryptographic_cyber"),
+        ("🏗️ Civil Eng.", "10_civil_engineering"),
+        ("⛏️ Mining", "11_mining_extraction"),
+        ("🌊 Deep Ocean", "12_deep_ocean"),
+        ("🏦 Sovereign Finance", "13_sovereign_finance"),
+        ("📡 Telecom", "14_sovereign_telecom"),
+        ("📦 Warehousing", "15_autonomous_warehousing")
+    ]
 
-    # Efficient Loader Engine: Prevents code bloat when rendering SITREPs
+    # Generate the 15 tabs natively
+    tabs = st.tabs([v[0] for v in verticals])
+
+    # Efficient Loader Engine
     def load_vertical(folder_name):
         folder_path = os.path.join("docs", folder_name)
         if os.path.exists(folder_path):
@@ -57,17 +66,11 @@ elif choice == "📘 OMNI-INDUSTRY MATRIX":
                         with open(os.path.join(folder_path, md_file), "r", encoding="utf-8") as f:
                             st.markdown(f.read())
             else:
-                st.info(f"Pillars are currently being forged for {folder_name.upper()}.")
+                st.info("Pillars are currently being forged for this Sovereign Vertical.")
         else:
             st.error(f"CRITICAL: Directory missing -> {folder_path}")
 
     # Map the tabs to their physical backend directories
-    with tab1: load_vertical("01_sovereign_agriculture")
-    with tab2: load_vertical("02_logistics_and_supply_chain")
-    with tab3: load_vertical("03_defense_tactical")
-    with tab4: load_vertical("04_distributed_energy_grid")
-    with tab5: load_vertical("05_advanced_manufacturing")
-    with tab6: load_vertical("06_secure_communications")
-    with tab7: load_vertical("07_financial_ledger_autonomy")
-    with tab8: load_vertical("08_edge_healthcare_bio_metrics")
-    with tab9: load_vertical("09_aerospace_perimeter_telemetry")
+    for i, tab in enumerate(tabs):
+        with tab:
+            load_vertical(verticals[i][1])
