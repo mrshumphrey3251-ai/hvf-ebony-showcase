@@ -39,3 +39,5 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                             st.markdown(f.read())
         else:
             st.info("Intelligence matrix indexing...")
+
+
