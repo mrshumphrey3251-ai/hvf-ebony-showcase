@@ -4,16 +4,24 @@
 
 ---
 ## PHASE 1: THE ZERO-TO-CEO OVERVIEW (PLAIN ENGLISH)
-### The Sovereign Glossary
-*   **Dynamic Mass Calibration:** I use suspension sensors to weigh the truck in real-time as it drives. If the mass changes by a single pound, the Ledger is updated and the CEO is notified.
+If a truck leaves with 10,000 lbs and arrives with 9,800 lbs, we have been compromised. I use dynamic suspension sensors to weigh the truck in real-time. If the mass changes by a **variance > 5.0 lbs** while moving, the ledger updates and cargo doors seal.
 
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
-### 2.1 Dynamic Mass Calculus
-$$M_c = k \int (V_s - V_{baseline}) dt$$
+### 2.1 Dynamic Mass Calculus & Hardware Mapping
+**Hardware Mapping:**
+*   **Mass Sensors:** Heavy-duty piezoelectric load cells integrated into the air suspension.
+*   **Actuation:** Electromagnetic mechanical seals on all cargo bays.
 
 ### 2.2 Bare-Metal Execution Code (Node.js)
+// WATCHDOG: 5.0 lb variance threshold triggers mechanical lock
+if (variance > 5.0) { 
+    console.error(`CRITICAL: Payload delta detected. Missing ${variance} lbs.`);
+    lockCargoDoors();
+}
 ---
 ## PHASE 3: EXECUTIVE INTERACTION & MANUAL OVERRIDE
-1.  **Simulate:** Adjust cargo mass variance in the sandbox to execute calibration.
-2.  **Take Command:** Under **🔴 LIVE EXECUTION**, click **🔴 HALT** to seal all fleet cargo doors.
+1.  **Authenticate:** Execute Sovereign Override.
+2.  **Navigate to Domain:** Click the **🚛 Logistics** tab.
+3.  **Simulate and Learn:** Adjust cargo mass variance to execute calibration.
+4.  **Take Command:** Under **🔴 LIVE EXECUTION**, click **🔴 HALT** to seal all fleet cargo doors.
