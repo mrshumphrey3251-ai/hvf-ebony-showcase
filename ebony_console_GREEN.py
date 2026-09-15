@@ -3,14 +3,11 @@ import os
 
 st.set_page_config(page_title="Project Ebony | Master Edge Node", layout="wide")
 
-# --- AUTHENTICATION ENGINE ---
-if 'role' not in st.session_state:
-    st.session_state.role = 'GUEST'
+if 'role' not in st.session_state: st.session_state.role = 'GUEST'
 
 with st.sidebar:
     st.image("https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Wilks_Shield.svg", width=100)
     st.markdown("### SOVEREIGN ACCESS")
-    
     if st.session_state.role == 'GUEST':
         pwd = st.text_input("Executive Override", type="password")
         if st.button("Authenticate"):
@@ -24,11 +21,9 @@ with st.sidebar:
         if st.button("Disengage"):
             st.session_state.role = 'GUEST'
             st.rerun()
-            
     st.markdown("---")
     st.markdown("**STATUS:** System Operational")
 
-# --- HORIZONTAL NAVIGATION ---
 st.markdown("## 🌐 OMNI-INDUSTRY MATRIX")
 st.markdown("---")
 
@@ -36,12 +31,7 @@ verticals = {
     "🌾 Agriculture": "01_sovereign_agriculture",
     "🚛 Logistics": "02_logistics_and_supply_chain",
     "🚁 Defense": "03_defense_tactical",
-    "⚡ Energy": "04_distributed_energy_grid",
-    "🦾 Manufacturing": "05_advanced_manufacturing",
-    "🔐 Comms": "06_secure_communications",
-    "📓 Financial": "07_financial_ledger_autonomy",
-    "🫀 Healthcare": "08_edge_healthcare_bio_metrics",
-    "🛰️ Aerospace": "09_aerospace_perimeter_telemetry"
+    "⚡ Energy": "04_distributed_energy_grid"
 }
 
 tabs = st.tabs(list(verticals.keys()))
@@ -66,99 +56,119 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                 with st.expander(title_clean):
                     st.markdown(content)
                     
-                    # --- DYNAMIC PILLAR ROUTING LOGIC ---
                     is_ag = "agriculture" in folder_name.lower()
-                    if is_ag and "PILLAR_1" in file.upper():
-                        sim_label = "Simulate Crop Health (NDVI)"
-                        out_label = "Chemical Output Request"
-                    elif is_ag and "PILLAR_2" in file.upper():
-                        sim_label = "Simulate Swarm Bandwidth Capacity"
-                        out_label = "Buffer Back-Pressure Applied"
-                    elif is_ag and "PILLAR_3" in file.upper():
-                        sim_label = "Simulate Security/Authorization Integrity"
-                        out_label = "Valve Lockdown Force"
-                    else:
-                        sim_label = "Simulate Input Integrity Baseline"
-                        out_label = "System Actuation"
+                    is_log = "logistics" in folder_name.lower()
+                    
+                    # HARDCODED ROUTING
+                    if is_ag and "PILLAR_1" in file.upper(): sim_label, out_label = "Simulate Crop Health (NDVI)", "Chemical Output Request"
+                    elif is_ag and "PILLAR_2" in file.upper(): sim_label, out_label = "Simulate Swarm Bandwidth", "Buffer Back-Pressure Applied"
+                    elif is_ag and "PILLAR_3" in file.upper(): sim_label, out_label = "Simulate Authorization Integrity", "Valve Lockdown Force"
+                    elif is_ag and "PILLAR_4" in file.upper(): sim_label, out_label = "Simulate Soil Matric Potential", "Emitter Flow Rate (L/min)"
+                    elif is_ag and "PILLAR_5" in file.upper(): sim_label, out_label = "Simulate Pathogen Threat Level", "Eradication Protocol Intensity"
+                    elif is_ag and "PILLAR_6" in file.upper(): sim_label, out_label = "Simulate Biomass Growth", "Predictive Harvest Shift"
+                    elif is_ag and "PILLAR_7" in file.upper(): sim_label, out_label = "Simulate Audit Standard", "Hashing Speed"
+                    elif is_ag and "PILLAR_8" in file.upper(): sim_label, out_label = "Simulate Herd Thermal Health", "Quarantine Gate Actuation"
+                    elif is_ag and "PILLAR_9" in file.upper(): sim_label, out_label = "Simulate Engine Vibration", "Predictive Torque Throttling"
+                    elif is_log and "PILLAR_1" in file.upper(): sim_label, out_label = "Simulate GPS Signal Integrity", "Dead Reckoning Actuation"
+                    elif is_log and "PILLAR_2" in file.upper(): sim_label, out_label = "Simulate Network Write Stability", "Local Shard Fallback"
+                    elif is_log and "PILLAR_3" in file.upper(): sim_label, out_label = "Simulate Perimeter Geo-Fence", "Kinetic Gate Lockdown Force"
+                    elif is_log and "PILLAR_4" in file.upper(): sim_label, out_label = "Simulate Cargo Thermal Variance", "Compressor Actuation (kW)"
+                    elif is_log and "PILLAR_5" in file.upper(): sim_label, out_label = "Simulate Dock Efficiency", "AGV Swarm Reallocation"
+                    elif is_log and "PILLAR_6" in file.upper(): sim_label, out_label = "Simulate Drivetrain Fatigue", "Fleet Throttling / Grounding"
+                    elif is_log and "PILLAR_7" in file.upper(): sim_label, out_label = "Simulate Network Handoff", "Handshake Latency"
+                    elif is_log and "PILLAR_8" in file.upper(): sim_label, out_label = "Simulate Route Hostility", "Asset Denial Protocol"
+                    elif is_log and "PILLAR_9" in file.upper(): sim_label, out_label = "Simulate Cargo Mass Variance", "Payload Calibration"
+                    else: sim_label, out_label = "Simulate Integrity", "System Actuation"
                     
                     st.markdown("---")
                     st.markdown(f"### 🟡 SIMULATION & TRAINING SANDBOX: {title_clean}")
-                    st.info("PUBLIC ACCESS GRANTED: Adjust the precision dial. Ebony calculates exact physical outputs tailored to this specific Pillar's architecture.")
+                    st.info("PUBLIC ACCESS GRANTED: Adjust the precision dial to observe Ebony's mathematical execution.")
                     
                     colA, colB = st.columns(2)
                     with colA:
-                        st.markdown("**[TELEMETRY INPUT CONTROL]**")
-                        sim_input = st.number_input(
-                            sim_label, min_value=0.0, max_value=1.0, value=1.00, step=0.05, format="%.2f", key=f"dial_{folder_name}_{file}"
-                        )
+                        sim_input = st.number_input(sim_label, min_value=0.0, max_value=1.0, value=1.00, step=0.05, format="%.2f", key=f"dial_{folder_name}_{file}")
                     with colB:
                         kinetic_response = (1.0 - sim_input) * 100
-                        st.metric(f"Calculated Kinetic Output ({out_label})", f"{kinetic_response:.1f}%")
+                        st.metric(f"Calculated Output ({out_label})", f"{kinetic_response:.1f}%")
                         st.progress(int(kinetic_response))
                     
-                    # --- HYPER-DYNAMIC TACTICAL CALCULUS ---
                     st.markdown("#### 🧠 EBONY'S EXACT PHYSICAL EXECUTION")
-                    
-                    integrity_pct = int(sim_input * 100)
-                    degradation = 100 - integrity_pct
+                    degradation = 100 - int(sim_input * 100)
                     gpu_load = 12 + int(86 * (1.0 - sim_input))
                     latency_ms = int(8 + (sim_input * 35))
                     
                     if is_ag and "PILLAR_1" in file.upper():
-                        fluid_liters = degradation * 14.7
-                        if sim_input == 1.00:
-                            st.success(f"**CROP VIGOR OPTIMAL ({sim_input:.2f}):** Infrared reflection is perfect. Zero chemicals required. GPU load at {gpu_load}%.")
-                        elif sim_input >= 0.40:
-                            st.warning(f"**CROP STRESS DETECTED ({sim_input:.2f}):** Chlorophyll breakdown measured at {degradation}%. Ebony calculates a {kinetic_response:.1f}% nitrogen injection requirement and routes the payload coordinates to the valve manifold. GPU load: {gpu_load}%.")
-                        else:
-                            st.error(f"**CRITICAL YIELD FAILURE ({sim_input:.2f}):** Sector is dying. Ebony autonomously routes maximum hydration and {fluid_liters:.1f} liters of chemical payload. Human authorization bypassed.")
-                    
+                        if sim_input >= 0.75: st.success("CROP VIGOR OPTIMAL: Infrared reflection perfect.")
+                        else: st.error(f"YIELD COMPROMISED: Ebony routes {degradation * 14.7:.1f}L of chemical payload.")
                     elif is_ag and "PILLAR_2" in file.upper():
-                        if sim_input == 1.00:
-                            st.success(f"**MESH NETWORK CLEAR ({sim_input:.2f}):** 50 UAVs transmitting smoothly. Circular buffer is at 10% capacity. No back-pressure required.")
-                        elif sim_input >= 0.40:
-                            st.warning(f"**BUFFER SATURATION ({sim_input:.2f}):** Video ingestion bottleneck detected. Ebony applies {kinetic_response:.1f}% back-pressure, autonomously commanding the drones to slow data transmission by {latency_ms}ms to prevent frame loss.")
-                        else:
-                            st.error(f"**NETWORK OVERLOAD THREAT ({sim_input:.2f}):** Buffer critically full. Ebony commands {kinetic_response:.1f}% of the UAV swarm to break off and return to base to prevent total core failure.")
-                    
+                        if sim_input >= 0.75: st.success("NETWORK CLEAR: 50 UAVs transmitting.")
+                        else: st.error(f"OVERLOAD: Buffer full. {kinetic_response:.1f}% of UAVs grounded.")
                     elif is_ag and "PILLAR_3" in file.upper():
-                        if sim_input == 1.00:
-                            st.success(f"**ZERO-TRUST SECURED ({sim_input:.2f}):** All temporary digital keys verified and destroyed. Valve pressure nominal. No unauthorized access.")
-                        elif sim_input >= 0.40:
-                            st.warning(f"**ANOMALY DETECTED ({sim_input:.2f}):** Unrecognized login attempt on localized mesh. Ebony generates new encryption keys and prepares to lock down {kinetic_response:.1f}% of the physical water mainlines.")
-                        else:
-                            st.error(f"**KINETIC GUILLOTINE FIRED ({sim_input:.2f}):** Hostile breach detected. Ebony permanently severs the physical network connection to the affected node and blasts the water valves locked at {kinetic_response:.1f}% force. Threat neutralized.")
-                    else:
-                        if sim_input == 1.00:
-                            st.success(f"**ABSOLUTE PERFECTION ({sim_input:.2f}):** Core systems nominal. Tensor cores idle (**{gpu_load}% load**). Autonomous execution loops on standby.")
-                        elif sim_input >= 0.40:
-                            st.warning(f"**ACTIVE RECALIBRATION ({sim_input:.2f}):** Baseline breached. System autonomously reallocates resources to **{kinetic_response:.1f}%** capacity to neutralize threat vector.")
-                        else:
-                            st.error(f"**TIER-1 KINETIC GUILLOTINE ({sim_input:.2f}):** Catastrophic failure. Maximum system actuation (**{kinetic_response:.1f}%**). GPU matrix calculating final triage in **{latency_ms}ms**.")
+                        if sim_input >= 0.75: st.success("ZERO-TRUST SECURED.")
+                        else: st.error("KINETIC GUILLOTINE FIRED: Node severed.")
+                    elif is_ag and "PILLAR_4" in file.upper():
+                        if sim_input >= 0.75: st.success("MOISTURE OPTIMAL.")
+                        else: st.error(f"DROUGHT: Emitters blasting at {degradation * 0.45:.1f} L/min.")
+                    elif is_ag and "PILLAR_5" in file.upper():
+                        if sim_input >= 0.75: st.success("PERIMETER SECURE: Zero pathogens.")
+                        else: st.error("INFESTATION CRITICAL: 100% Kinetic Eradication authorized.")
+                    elif is_ag and "PILLAR_6" in file.upper():
+                        if sim_input >= 0.75: st.success("YIELD TRAJECTORY NOMINAL.")
+                        else: st.error(f"HARVEST COMPROMISED: Yield downgraded by {degradation * 1.8:.1f} tons.")
+                    elif is_ag and "PILLAR_7" in file.upper():
+                        if sim_input >= 0.75: st.success("ATTESTATION PERFECT.")
+                        else: st.error("ATTESTATION FAILURE: Physical machinery halted.")
+                    elif is_ag and "PILLAR_8" in file.upper():
+                        if sim_input >= 0.75: st.success("HERD BIOMETRICS OPTIMAL.")
+                        else: st.error(f"PATHOGEN VECTOR: Fever detected (+{degradation * 0.04:.1f}°C). Quarantine Gates snapped shut.")
+                    elif is_ag and "PILLAR_9" in file.upper():
+                        if sim_input >= 0.75: st.success("RESONANCE NOMINAL.")
+                        else: st.error(f"FAILURE IMMINENT: Hard kill-switch executed. {kinetic_response:.1f}% power cut.")
                     
-                    # --- CEO LIVE EXECUTION POST ---
+                    elif is_log and "PILLAR_1" in file.upper():
+                        if sim_input >= 0.75: st.success(f"GPS OPTIMAL: Drift variance is {degradation * 0.4:.1f}m.")
+                        elif sim_input >= 0.40: st.warning(f"SATELLITE DEGRADATION: Dead Reckoning bias applied. Drift corrected in {latency_ms}ms.")
+                        else: st.error("SIGNAL LOSS: Master Node routing absolute trajectories via Dead Reckoning.")
+                    elif is_log and "PILLAR_2" in file.upper():
+                        if sim_input >= 0.75: st.success("LEDGER SYNC OPTIMAL.")
+                        else: st.error("SYNC FAILURE: Ledger cached to isolated emergency NVMe drives.")
+                    elif is_log and "PILLAR_3" in file.upper():
+                        if sim_input >= 0.75: st.success("PERIMETER SECURE.")
+                        else: st.error(f"KINETIC GATE INTERDICTION: Gates fused shut with {kinetic_response:.1f}% servo torque.")
+                    elif is_log and "PILLAR_4" in file.upper():
+                        if sim_input >= 0.75: st.success("COLD CHAIN NOMINAL.")
+                        else: st.error(f"SPOILAGE THREAT: Emergency cooling units fired at {kinetic_response:.1f}%.")
+                    elif is_log and "PILLAR_5" in file.upper():
+                        if sim_input >= 0.75: st.success("DOCK GRID OPTIMAL.")
+                        else: st.error(f"BOTTLENECK: {kinetic_response:.1f}% of transport fleet placed in holding pattern.")
+                    elif is_log and "PILLAR_6" in file.upper():
+                        if sim_input >= 0.75: st.success("DRIVETRAIN RESILIENCE OPTIMAL.")
+                        else: st.error("PREVENTATIVE GROUNDING: Part fracture probability >98%. Ignition locked.")
+                    elif is_log and "PILLAR_7" in file.upper():
+                        if sim_input >= 0.75: st.success("HANDOFF SECURE.")
+                        else: st.error(f"BLACKOUT TOLERANCE EXCEEDED: Hijack suspected. Engine killed with {kinetic_response:.1f}% force.")
+                    elif is_log and "PILLAR_8" in file.upper():
+                        if sim_input >= 0.75: st.success("ROUTE COMPLIANCE PERFECT.")
+                        else: st.error("HIJACKING: Asset Denial triggered. Local memory wiped.")
+                    elif is_log and "PILLAR_9" in file.upper():
+                        if sim_input >= 0.75: st.success("PAYLOAD MASS VERIFIED.")
+                        else: st.error(f"CRITICAL CARGO LOSS: {degradation * 45.5:.1f} lbs missing. Perimeter swarm deployed.")
+                    
                     st.markdown("---")
                     st.markdown(f"### 🔴 LIVE EXECUTION (BARE-METAL): {title_clean}")
                     if st.session_state.role == 'CEO':
-                        st.error("🔌 SENSOR DISCONNECT: Physical hardware not detected on local mesh. Execution switches locked to prevent unverified kinetic deployment.")
+                        st.error("🔌 SENSOR DISCONNECT: Physical hardware not detected on local mesh.")
                         colC, colD = st.columns(2)
-                        with colC:
-                            st.metric("Live Telemetry Feed (Input)", "NULL")
+                        with colC: st.metric("Live Telemetry Feed (Input)", "NULL")
                         with colD:
                             st.metric("Live Kinetic Actuation (Output)", "0.0%")
                             st.button("🟢 INITIATE (LOCKED)", key=f"lock1_{folder_name}_{file}", disabled=True)
                     else:
                         st.error("🔒 KINETIC CONTROLS LOCKED: Executive clearance required.")
             
-            # --- DROPDOWN: EXHAUSTIVE DOCS ---
             if docs:
                 st.markdown("#### 🗂️ Exhaustive Documents")
                 for file in docs:
-                    file_path = os.path.join(folder_path, file)
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        content = f.read()
-                    title_clean = file.replace(".md", "").replace("_", " ").upper()
-                    with st.expander(title_clean):
-                        st.markdown(content)
-        else:
-            st.info("Intelligence matrix indexing...")
+                    with open(os.path.join(folder_path, file), "r", encoding="utf-8") as f:
+                        with st.expander(file.replace(".md", "").replace("_", " ").upper()):
+                            st.markdown(f.read())
