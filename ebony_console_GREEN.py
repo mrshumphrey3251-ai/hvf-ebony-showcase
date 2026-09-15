@@ -71,11 +71,21 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                     # --- PUBLIC SIMULATION SANDBOX ---
                     st.markdown("---")
                     st.markdown(f"### 🟡 SIMULATION & TRAINING SANDBOX: {title_clean}")
-                    st.info("PUBLIC ACCESS GRANTED: Adjust the telemetry input dial below to observe Ebony's autonomous mathematical calculus and read the exact physical outcome she will execute.")
+                    st.info("PUBLIC ACCESS GRANTED: Use the precision +/- buttons below to adjust the telemetry baseline. Observe Ebony's autonomous mathematical calculus and read the exact physical outcome she will execute.")
                     
                     colA, colB = st.columns(2)
                     with colA:
-                        sim_input = st.slider("Simulate Input Integrity (Health, Security, Battery)", 0.0, 1.0, 0.85, 0.05, key=f"dial_{folder_name}_{file}")
+                        st.markdown("**[TELEMETRY INPUT CONTROL]**")
+                        # Upgraded from slider to precision stepper
+                        sim_input = st.number_input(
+                            "Simulate Input Integrity (Health, Security, Battery)", 
+                            min_value=0.0, 
+                            max_value=1.0, 
+                            value=0.85, 
+                            step=0.05, 
+                            format="%.2f",
+                            key=f"dial_{folder_name}_{file}"
+                        )
                     with colB:
                         kinetic_response = (1.0 - sim_input) * 100
                         st.metric("Calculated Kinetic Output (Valve Aperture / Drone Swarm Deployment)", f"{kinetic_response:.1f}%")
@@ -84,11 +94,11 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                     # DYNAMIC OUTCOME ANALYSIS
                     st.markdown("#### 🧠 EBONY'S KINETIC OUTCOME ANALYSIS")
                     if sim_input >= 0.75:
-                        st.success(f"**STATUS OPTIMAL ({sim_input}):** The localized telemetry is within the Tier-1 acceptable baseline. Ebony passively logs this data to the secure ledger. Zero kinetic resources are deployed, preserving battery reserves and chemical payloads.")
+                        st.success(f"**STATUS OPTIMAL ({sim_input:.2f}):** The localized telemetry is within the Tier-1 acceptable baseline. Ebony passively logs this data to the secure ledger. Zero kinetic resources are deployed, preserving battery reserves and chemical payloads.")
                     elif sim_input >= 0.35:
-                        st.warning(f"**STATUS DEGRADED ({sim_input}):** The integrity metric has fallen below optimal thresholds. Ebony autonomously routes investigative UAVs to the exact GPS coordinates to increase telemetry resolution. Underground hydration valves are primed but not yet opened.")
+                        st.warning(f"**STATUS DEGRADED ({sim_input:.2f}):** The integrity metric has fallen below optimal thresholds. Ebony autonomously routes investigative UAVs to the exact GPS coordinates to increase telemetry resolution. Underground hydration valves are primed but not yet opened.")
                     else:
-                        st.error(f"**CRITICAL FAILURE DETECTED ({sim_input}):** The baseline has been breached. Ebony unilaterally triggers the Kinetic Guillotine protocol. Subterranean valves blast open to {kinetic_response:.1f}% capacity at the exact coordinates, and the defense swarm is scrambled for immediate intervention. Human authorization bypassed.")
+                        st.error(f"**CRITICAL FAILURE DETECTED ({sim_input:.2f}):** The baseline has been breached. Ebony unilaterally triggers the Kinetic Guillotine protocol. Subterranean valves blast open to {kinetic_response:.1f}% capacity at the exact coordinates, and the defense swarm is scrambled for immediate intervention. Human authorization bypassed.")
                     
                     # --- CEO LIVE EXECUTION POST ---
                     st.markdown("---")
