@@ -22,22 +22,35 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- SIDEBAR NAVIGATION ---
-st.sidebar.title("🎛️ Command Modules")
+# --- RESTORED SIDEBAR: ADA VOICE, OPSEC & ACCESS PORTAL ---
+st.sidebar.markdown("### 🎙️ ADA Voice Link")
+st.sidebar.button("Tap to speak (Must say 'Ebony')")
+st.sidebar.text("00:00")
 st.sidebar.markdown("---")
-menu = ["⚡ Command Deck", "📘 OMNI-INDUSTRY MATRIX (MASTERCLASS & BLUEPRINTS)"]
+
+st.sidebar.markdown("### 🛡️ Presentation OPSEC")
+st.sidebar.checkbox("Activate Demo Mode (Mask Secrets)")
+st.sidebar.selectbox("Select Active Engine:", ["👤 Guest Mode", "CEO Clearance"])
+
+st.sidebar.markdown("### Access Portal:")
+st.sidebar.text_input("Username:")
+st.sidebar.text_input("Password:", type="password")
+st.sidebar.markdown("---")
+
+# --- COMMAND MODULES NAVIGATION ---
+st.sidebar.title("🎛️ Command Modules")
+menu = ["⚡ Command Deck", "📘 OMNI-INDUSTRY MATRIX"]
 choice = st.sidebar.radio("Navigate:", menu)
 
-# --- MAIN ROUTING ---
+# --- MAIN SCREEN ROUTING ---
 if choice == "⚡ Command Deck":
     st.title("⚡ Humphrey Virtual Farm Command Deck | Ebony AI")
-    st.markdown("**Active User:** CEO | 🛡️ **Mode:** 🟢 Online (Cloud Fast Link)")
-    st.info("System is operating at Tier-1 Sovereign Capacity.")
+    st.markdown("**Active User:** Public Guest | 🛡️ **Mode:** 🟢 Online (Cloud Fast Link)")
+    st.info("⚡ Welcome to Humphrey Virtual Farm. I am Ebony. Please sign in.")
 
-elif choice == "📘 OMNI-INDUSTRY MATRIX (MASTERCLASS & BLUEPRINTS)":
-    # --- DYNAMIC 15-VERTICAL RENDERING ENGINE ---
-    st.markdown("## 📘 OMNI-INDUSTRY MATRIX (MASTERCLASS & BLUEPRINTS)")
-
+elif choice == "📘 OMNI-INDUSTRY MATRIX":
+    st.title("📘 OMNI-INDUSTRY MATRIX (MASTERCLASS & BLUEPRINTS)")
+    
     # The 15 Sovereign Verticals Array
     verticals = [
         ("🌾 Agriculture", "01_sovereign_agriculture"),
@@ -57,7 +70,7 @@ elif choice == "📘 OMNI-INDUSTRY MATRIX (MASTERCLASS & BLUEPRINTS)":
         ("📦 Warehousing", "15_autonomous_warehousing")
     ]
 
-    # Autonomously generate the 15 multi-row tabs
+    # Autonomously generate the 15 multi-row tabs IN THE MAIN BODY
     tabs = st.tabs([v[0] for v in verticals])
 
     # Loop through each tab and dynamically load its respective Markdown SITREPs
