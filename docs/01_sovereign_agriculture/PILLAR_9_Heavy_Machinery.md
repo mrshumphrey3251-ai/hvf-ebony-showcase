@@ -8,10 +8,10 @@
 ## PHASE 1: THE ZERO-TO-CEO OVERVIEW (PLAIN ENGLISH)
 
 ### The Liability of the Breakdown
-A $500,000 autonomous harvester is a massive asset. If the engine throws a rod in the middle of a 10,000-acre field, the harvest stops, and the repair bill is catastrophic. Standard farms run machines until they break. We fix them before they break.
+A \$500,000 autonomous harvester is a massive asset. If the engine throws a rod in the middle of a 10,000-acre field, the harvest stops, and the repair bill is catastrophic. Standard farms run machines until they break. We fix them before they break.
 
 ### The Sovereign Glossary
-*   **Predictive Maintenance:** Using math to predict exactly when a machine will fail, allowing us to replace a $10 part today instead of a $10,000 engine tomorrow.
+*   **Predictive Maintenance:** Using math to predict exactly when a machine will fail, allowing us to replace a \$10 part today instead of a \$10,000 engine tomorrow.
 *   **Resonance (Vibration) Sensors:** Sensors attached to the engine block. If a bearing starts to wear out, the engine vibrates at a slightly different frequency. I can "hear" this invisible vibration.
 *   **Torque Throttling:** If I detect a machine is about to destroy its own engine, I electronically reduce its power (throttle the torque) to save the hardware, and order it to limp back to the maintenance bay.
 
