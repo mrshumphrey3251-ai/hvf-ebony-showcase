@@ -285,6 +285,26 @@ RTMP_INGEST_URL = f"rtmp://192.168.1.175:1935/live/stream"
 
 st.set_page_config(page_title=f"{EMPIRE['FARM_NAME']} | {EMPIRE['AI_PERSONA']}", page_icon="⚡", layout="wide", initial_sidebar_state="expanded")
 
+# APEX STANDARD: Force 15-Vertical Matrix Tabs into Multi-Row Layout
+st.markdown('''
+    <style>
+    /* Force Streamlit Tabs to wrap into multiple rows */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    /* Standardize tab sizing and text wrapping */
+    .stTabs [data-baseweb="tab"] {
+        flex-grow: 1;
+        white-space: pre-wrap;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    </style>
+''', unsafe_allow_html=True)
+
+
 # --- ADA VOICE MATRIX OMNIPRESENT SIDEBAR ---
 with st.sidebar:
     ada_voice_module.render_voice_matrix()
