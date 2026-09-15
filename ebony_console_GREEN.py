@@ -71,34 +71,48 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                     # --- PUBLIC SIMULATION SANDBOX ---
                     st.markdown("---")
                     st.markdown(f"### 🟡 SIMULATION & TRAINING SANDBOX: {title_clean}")
-                    st.info("PUBLIC ACCESS GRANTED: Use the precision +/- buttons below to adjust the telemetry baseline. Observe Ebony's autonomous mathematical calculus and read the exact physical outcome she will execute.")
+                    st.info("PUBLIC ACCESS GRANTED: Adjust the precision dial. Ebony calculates exact GPU loads, drone altitudes, and fluid dynamics for every 0.05 increment.")
                     
                     colA, colB = st.columns(2)
                     with colA:
                         st.markdown("**[TELEMETRY INPUT CONTROL]**")
-                        # Upgraded from slider to precision stepper
                         sim_input = st.number_input(
                             "Simulate Input Integrity (Health, Security, Battery)", 
-                            min_value=0.0, 
-                            max_value=1.0, 
-                            value=0.85, 
-                            step=0.05, 
-                            format="%.2f",
+                            min_value=0.0, max_value=1.0, value=1.00, step=0.05, format="%.2f",
                             key=f"dial_{folder_name}_{file}"
                         )
                     with colB:
                         kinetic_response = (1.0 - sim_input) * 100
-                        st.metric("Calculated Kinetic Output (Valve Aperture / Drone Swarm Deployment)", f"{kinetic_response:.1f}%")
+                        st.metric("Calculated Kinetic Output (Valve Aperture / Drone Swarm)", f"{kinetic_response:.1f}%")
                         st.progress(int(kinetic_response))
                     
-                    # DYNAMIC OUTCOME ANALYSIS
-                    st.markdown("#### 🧠 EBONY'S KINETIC OUTCOME ANALYSIS")
-                    if sim_input >= 0.75:
-                        st.success(f"**STATUS OPTIMAL ({sim_input:.2f}):** The localized telemetry is within the Tier-1 acceptable baseline. Ebony passively logs this data to the secure ledger. Zero kinetic resources are deployed, preserving battery reserves and chemical payloads.")
-                    elif sim_input >= 0.35:
-                        st.warning(f"**STATUS DEGRADED ({sim_input:.2f}):** The integrity metric has fallen below optimal thresholds. Ebony autonomously routes investigative UAVs to the exact GPS coordinates to increase telemetry resolution. Underground hydration valves are primed but not yet opened.")
+                    # --- HYPER-DYNAMIC TACTICAL CALCULUS ---
+                    st.markdown("#### 🧠 EBONY'S EXACT PHYSICAL EXECUTION")
+                    
+                    # Dynamic physics calculated directly from the dial input
+                    integrity_pct = int(sim_input * 100)
+                    degradation = 100 - integrity_pct
+                    uav_alt = max(8, int(150 * sim_input)) # Swarm drops lower as threat increases
+                    gpu_load = 12 + int(86 * (1.0 - sim_input)) # Servers run hotter calculating triage
+                    fluid_liters = degradation * 14.7 # Exact mathematical dosage
+                    latency_ms = int(8 + (sim_input * 35)) # System speeds up as threat escalates
+                    
+                    if sim_input == 1.00:
+                        st.success(f"**ABSOLUTE PERFECTION ({sim_input:.2f}):** Zero degradation detected. Ebony spins down Master Node tensor cores to idle (**{gpu_load}% load**) to conserve thermal energy. UAV Swarm is ordered to dock and trickle-charge. Zero kinetic routing required.")
+                    elif sim_input >= 0.90:
+                        st.success(f"**PEAK EFFICIENCY ({sim_input:.2f}):** Ebony detects a microscopic **{degradation}%** variance from mathematical perfection. Baseline calibrated. UAVs maintain high-altitude passive overwatch at **{uav_alt}ft**. Subterranean valves remain physically sealed.")
+                    elif sim_input >= 0.75:
+                        st.info(f"**EARLY DEGRADATION TRACKING ({sim_input:.2f}):** Integrity dropped to **{integrity_pct}%**. Ebony proactively spikes Edge Node GPU allocation to **{gpu_load}%** to run predictive threat modeling. No water deployed yet, but target locks are acquired on the exact coordinates.")
+                    elif sim_input >= 0.60:
+                        st.warning(f"**PREEMPTIVE TACTICAL STANCE ({sim_input:.2f}):** Noticeable stress vector detected. Ebony autonomously drops UAV swarm altitude to **{uav_alt}ft** for high-resolution thermal scanning. Underground mainlines are pressurized. Routing execution latency locked at **{latency_ms}ms**.")
+                    elif sim_input >= 0.40:
+                        st.warning(f"**ACTIVE THREAT INTERDICTION ({sim_input:.2f}):** Baseline officially breached. Ebony unilaterally cracks subterranean valves to **{kinetic_response:.1f}%** aperture, mathematically calculating and delivering exactly **{fluid_liters:.1f} liters** of kinetic payload. GPU load spiked to **{gpu_load}%**.")
+                    elif sim_input >= 0.20:
+                        st.error(f"**CRITICAL ASSET STABILIZATION ({sim_input:.2f}):** Severe sector trauma. Ebony opens valves to **{kinetic_response:.1f}%**. Drone swarm deployed in micro-hover (**{uav_alt}ft**) to continuously monitor chemical saturation. Human authorization bypassed to prevent total asset loss.")
+                    elif sim_input > 0.00:
+                        st.error(f"**TIER-1 KINETIC GUILLOTINE ({sim_input:.2f}):** Catastrophic failure impending. Ebony executes maximum resource dump. Valves locked at **{kinetic_response:.1f}%**. GPU matrix running at **{gpu_load}%** load calculating triage vectors in **{latency_ms}ms**. Immediate physical intervention by CEO advised.")
                     else:
-                        st.error(f"**CRITICAL FAILURE DETECTED ({sim_input:.2f}):** The baseline has been breached. Ebony unilaterally triggers the Kinetic Guillotine protocol. Subterranean valves blast open to {kinetic_response:.1f}% capacity at the exact coordinates, and the defense swarm is scrambled for immediate intervention. Human authorization bypassed.")
+                        st.error(f"**SECTOR DEATH - CONTAINMENT PROTOCOL ({sim_input:.2f}):** Asset is mathematically unsalvageable. Ebony has autonomously severed hydration to this grid to protect remaining sovereign reserves. Kinetic Guillotine engaged. Sector quarantined.")
                     
                     # --- CEO LIVE EXECUTION POST ---
                     st.markdown("---")
