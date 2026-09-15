@@ -68,42 +68,41 @@ for idx, (tab_name, folder_name) in enumerate(verticals.items()):
                 with st.expander(title_clean):
                     st.markdown(content)
                     
-                    # --- DYNAMIC KINETIC COMMAND POST (SANDBOX VS LIVE) ---
+                    # --- PUBLIC SIMULATION SANDBOX ---
                     st.markdown("---")
-                    if st.session_state.role == 'CEO':
-                        st.markdown(f"**⚠️ KINETIC COMMAND POST: {title_clean}**")
-                        
-                        mode = st.radio(
-                            "SELECT OPERATIONAL STATE:",
-                            ["🔴 LIVE EXECUTION (BARE-METAL)", "🟡 SIMULATION & TRAINING SANDBOX"],
-                            key=f"mode_{folder_name}_{file}",
-                            horizontal=True
-                        )
-                        
-                        if mode == "🔴 LIVE EXECUTION (BARE-METAL)":
-                            st.error("🔌 SENSOR DISCONNECT: Physical hardware not detected on local mesh. Dials and gauges locked at zero to prevent false readings.")
-                            colA, colB = st.columns(2)
-                            with colA:
-                                st.metric("Live Telemetry Feed (Input)", "NULL", "-100% Signal")
-                            with colB:
-                                st.metric("Live Kinetic Actuation (Output)", "0.0%", "Offline")
-                                st.button("🟢 INITIATE (LOCKED)", key=f"lock1_{folder_name}_{file}", disabled=True)
-                                
-                        else:
-                            st.info("🟡 SIMULATION ACTIVE: Adjust the input dial to observe Ebony's autonomous kinetic calculus in real-time.")
-                            colA, colB = st.columns(2)
-                            with colA:
-                                sim_input = st.slider("Simulate Integrity Level (NDVI, Battery, Security)", 0.0, 1.0, 0.75, 0.05, key=f"dial_{folder_name}_{file}")
-                            with colB:
-                                # Inverse calculus: As integrity drops, kinetic response spikes.
-                                kinetic_response = (1.0 - sim_input) * 100
-                                st.metric("Calculated Kinetic Response (Aperture / Swarm Deployment)", f"{kinetic_response:.1f}%")
-                                st.progress(int(kinetic_response))
-                                
-                            if st.button(f"⚡ EXECUTE SIMULATION", key=f"sim_exec_{folder_name}_{file}"):
-                                st.success(f"Simulation Complete: Autonomous loop engaged with {kinetic_response:.1f}% kinetic deployment.")
+                    st.markdown(f"### 🟡 SIMULATION & TRAINING SANDBOX: {title_clean}")
+                    st.info("PUBLIC ACCESS GRANTED: Adjust the telemetry input dial below to observe Ebony's autonomous mathematical calculus and read the exact physical outcome she will execute.")
+                    
+                    colA, colB = st.columns(2)
+                    with colA:
+                        sim_input = st.slider("Simulate Input Integrity (Health, Security, Battery)", 0.0, 1.0, 0.85, 0.05, key=f"dial_{folder_name}_{file}")
+                    with colB:
+                        kinetic_response = (1.0 - sim_input) * 100
+                        st.metric("Calculated Kinetic Output (Valve Aperture / Drone Swarm Deployment)", f"{kinetic_response:.1f}%")
+                        st.progress(int(kinetic_response))
+                    
+                    # DYNAMIC OUTCOME ANALYSIS
+                    st.markdown("#### 🧠 EBONY'S KINETIC OUTCOME ANALYSIS")
+                    if sim_input >= 0.75:
+                        st.success(f"**STATUS OPTIMAL ({sim_input}):** The localized telemetry is within the Tier-1 acceptable baseline. Ebony passively logs this data to the secure ledger. Zero kinetic resources are deployed, preserving battery reserves and chemical payloads.")
+                    elif sim_input >= 0.35:
+                        st.warning(f"**STATUS DEGRADED ({sim_input}):** The integrity metric has fallen below optimal thresholds. Ebony autonomously routes investigative UAVs to the exact GPS coordinates to increase telemetry resolution. Underground hydration valves are primed but not yet opened.")
                     else:
-                        st.error("🔒 KINETIC CONTROLS LOCKED: Executive clearance required to access dials and gauges.")
+                        st.error(f"**CRITICAL FAILURE DETECTED ({sim_input}):** The baseline has been breached. Ebony unilaterally triggers the Kinetic Guillotine protocol. Subterranean valves blast open to {kinetic_response:.1f}% capacity at the exact coordinates, and the defense swarm is scrambled for immediate intervention. Human authorization bypassed.")
+                    
+                    # --- CEO LIVE EXECUTION POST ---
+                    st.markdown("---")
+                    st.markdown(f"### 🔴 LIVE EXECUTION (BARE-METAL): {title_clean}")
+                    if st.session_state.role == 'CEO':
+                        st.error("🔌 SENSOR DISCONNECT: Physical hardware not detected on local mesh. Dials and gauges locked at zero to prevent false readings.")
+                        colC, colD = st.columns(2)
+                        with colC:
+                            st.metric("Live Telemetry Feed (Input)", "NULL", "-100% Signal")
+                        with colD:
+                            st.metric("Live Kinetic Actuation (Output)", "0.0%", "Offline")
+                            st.button("🟢 INITIATE (LOCKED)", key=f"lock1_{folder_name}_{file}", disabled=True)
+                    else:
+                        st.error("🔒 KINETIC CONTROLS LOCKED: Executive clearance required to access live bare-metal telemetry and execution switches.")
             
             # --- DROPDOWN: EXHAUSTIVE DOCS ---
             if docs:
