@@ -20,6 +20,15 @@ When Humphrey Virtual Farm batteries and flywheels are at 100%, we do not let th
 
 ---
 ## 3. TIER-1 TECHNICAL SCHEMATIC
+### 3.1 System Architecture Diagram
+
+```text
++-------------------+          +-------------------+          +-------------------+
+| API Market Feed   |  Price   |   Edge Node (EB)  |  Sync    | Grid-Tie Inverters|
+| (ISO Node)        |=======>  | (Finance Engine)  |=======>  | (Export Power)    |
++-------------------+  Data    +-------------------+  Cmd     +-------------------+
+```
+
 ### 3.2 Arbitrage Profit Calculus
 Ebony executes trades when the mathematical delta between peak selling price and off-peak generation cost breaches the profit threshold:
 
@@ -46,5 +55,18 @@ func DumpPowerToGrid() {}
 ```
 
 ---
-## 4. EXECUTIVE INTERACTION (SOP)
-Navigate to **⚡ Energy → Power Arbitrage**. Adjust the live grid utility price in the sandbox to watch Ebony autonomously actuate the grid-tie inverters.
+## 4. EXECUTIVE INTERACTION & MANUAL OVERRIDE (SOP)
+
+| Step | Action | System Response | Safety Note |
+| :--- | :--- | :--- | :--- |
+| 1 | Operator logs into Energy Dashboard. | Authenticates via SSO. | Validate external market API. |
+| 2 | Navigate to ⚡ Energy → Power Arbitrage. | Live ISO commodity prices render. | Monitor $/kWh. |
+| 3 | Spike public grid price to $0.50 in sandbox. | Inverters mathematically sync to AC phase. | Watch grid-tie telemetry. |
+| 4 | Click 🔴 LIVE EXECUTION → HALT. | Instantly breaks grid-tie synchronization. | Isolates facility from market. |
+
+---
+## 5. OPERATIONAL CHECKLIST
+### 5.1 Pre-Mission (Finance Audit)
+*   [ ] **API Latency:** Confirm live market pricing stream is arriving in < 10ms.
+*   [ ] **Inverter Sync:** Verify grid-tie inverters are successfully phase-matching public AC.
+*   [ ] **Ledger:** Ensure sub-metering output is writing accurately to the Hyperledger.

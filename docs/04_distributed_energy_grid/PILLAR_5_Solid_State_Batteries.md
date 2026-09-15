@@ -1,27 +1,23 @@
-# 🛡️ PILLAR 5: CRYPTOGRAPHIC ATTESTATION DMZ
+# 🔋 PILLAR 5: SOLID-STATE BATTERY MATRIX
 **DOCUMENT TYPE:** COMPREHENSIVE TRAINING MANUAL & TIER-1 SCHEMATIC
 **INSTRUCTOR & SYSTEM:** EBONY (MASTER EDGE NODE)
 **FORMAT:** SITUATION REPORT (SITREP)
 
 ---
 ## 1. MISSION STATEMENT
-**Objective:** Provide mathematically undeniable proof of operational events to third-party partners (e.g., SignalLink) without exposing a single byte of proprietary internal intelligence.
+**Objective:** Provide high-density, long-term chemical energy storage with zero thermal-runaway risk, supporting the Kinetic Flywheels during sustained autonomous islanding.
 
 **Key Performance Indicators (KPIs):**
 
 | KPI | Target | Measurement Method |
 | :--- | :--- | :--- |
-| **Hash Generation** | < 2ms per event | CPU instruction clocking |
-| **Data Leakage** | 0.00 Bytes | Network packet inspection |
-| **Verification Speed** | < 50ms for external auditors | DMZ API latency logs |
-| **Ledger Integrity** | 100% Immutable | Cryptographic chain validation |
+| **Degradation Rate** | < 2% capacity loss per year | Coulomb counting telemetry |
+| **Charge Efficiency** | > 95% round-trip | Inverter current logs |
+| **Thermal Stability** | Max 45°C under heavy load | Cell-level PT100 sensors |
 
 ---
 ## 2. ZERO-TO-CEO OVERVIEW
-*   **Normal Operation:** Partners require proof that a gate was locked, or a temperature was maintained.
-*   **Threat Scenario:** Opening the internal network to external auditors invites a catastrophic cyber-breach.
-*   **Resilience Layer:** Ebony operates an asynchronous Demilitarized Zone (DMZ). We do not send raw data. We generate an SHA-256 hash (a digital fingerprint) of the event, sign it with our TPM chip, and push *only* the receipt to the public DMZ.
-*   **Result:** Absolute auditability without compromising internal security.
+While Kinetic Flywheels handle millisecond power spikes, we require deep reserves for prolonged grid blackouts. We utilize solid-state lithium matrices, eliminating the flammable liquid electrolytes found in civilian batteries. Ebony mathematically governs the charge cycles to prevent chemical degradation, ensuring the farm can survive indefinitely off-grid.
 
 ---
 ## 3. TIER-1 TECHNICAL SCHEMATIC
@@ -29,43 +25,36 @@
 
 ```text
 +-------------------+          +-------------------+          +-------------------+
-| Internal Matrix   |  Raw     |   Edge Node (EB)  |  Hash    | External DMZ      |
-| (Secret Payload)  |=======>  | (Crypto Engine)   |=======>  | (Public Ledger)   |
-+-------------------+  Data    +-------------------+  Only    +-------------------+
+| Solar/Geothermal  |  DC      |   Edge Node (EB)  |  Cmd     | Solid-State       |
+| (Generation)      |=======>  | (Charge Governor) |=======>  | Battery Matrix    |
++-------------------+  Link    +-------------------+  Sync    +-------------------+
 ```
 
-### 3.2 Attestation Hash Calculus
-Ebony generates a cryptographic receipt utilizing the event payload and exact nanosecond timestamp:
+### 3.2 State of Charge (SoC) Calculus
+Ebony calculates the deterministic SoC for the next time-step, factoring in thermodynamic charging efficiency ($\eta_c$):
 
 ```text
-H(x) = \text{SHA-256}(Event_{data} + Timestamp + TPM_{sig})
+SoC_{t+1} = SoC_t + \left( \frac{\eta_c \cdot P_{charge}}{C_{max}} \right) \Delta t
 ```
 
-### 3.3 Bare-Metal Execution Code (Go Reference)
+### 3.3 Bare-Metal Execution Code (Python Reference)
 
-```go
-package attestation
+```python
+def govern_battery_matrix(current_soc: float, charge_power_kw: float, cell_temp_c: float):
+    # WATCHDOG: Thermal throttling to prevent structural matrix damage
+    if cell_temp_c > 45.0:
+        engage_active_cooling()
+        return 0.0 # Throttle charge current to zero
+        
+    # WATCHDOG: Prevent overcharge degradation
+    if current_soc >= 0.98:
+        route_power_to_flywheels(charge_power_kw)
+        return 0.0
+        
+    return charge_power_kw
 
-import (
-    "crypto/sha256"
-    "fmt"
-    "time"
-)
-
-func PushToDMZ(eventData string, tpmSignature string) string {
-    // WATCHDOG: Ensure no raw data enters the DMZ buffer
-    timestamp := fmt.Sprintf("%d", time.Now().UnixNano())
-    
-    payload := eventData + timestamp + tpmSignature
-    hash := sha256.Sum256([]byte(payload))
-    
-    receipt := fmt.Sprintf("%x", hash)
-    transmit_to_external_api(receipt)
-    
-    return receipt
-}
-
-func transmit_to_external_api(h string) {}
+def engage_active_cooling(): pass
+def route_power_to_flywheels(kw): pass
 ```
 
 ---
@@ -73,13 +62,14 @@ func transmit_to_external_api(h string) {}
 
 | Step | Action | System Response | Safety Note |
 | :--- | :--- | :--- | :--- |
-| 1 | Operator logs into the Defense Dashboard. | Authenticates via SSO. | -- |
-| 2 | Navigate to 🚁 Defense → Cryptographic DMZ. | Live hash-generation streams on screen. | Verify output is strictly hex. |
-| 3 | Trigger manual audit event in sandbox. | Calculates SHA-256 and pushes simulated receipt. | Note the hash value. |
-| 4 | Click 🔴 LIVE EXECUTION → HALT. | Severs the DMZ outbound connection instantly. | Pauses all external reporting. |
+| 1 | Operator logs into Energy Dashboard. | Authenticates via SSO; TPM token generated. | Validate inverter phase sync. |
+| 2 | Navigate to ⚡ Energy → Solid-State Matrix. | Live SoC and thermal matrix renders. | Monitor cell temp baseline. |
+| 3 | Inject a thermal anomaly in sandbox. | Node throttles charge and diverts to flywheels. | Observe heat dissipation. |
+| 4 | Click 🔴 LIVE EXECUTION → HALT. | Physically opens DC contactors, isolating batteries. | Critical loss of base-load reserve. |
 
 ---
 ## 5. OPERATIONAL CHECKLIST
-### 5.1 Pre-Mission (Audit Prep)
-*   [ ] **DMZ Isolation:** Confirm no inbound routing rules exist from the DMZ to the internal mesh.
-*   [ ] **TPM Health:** Verify signing keys are valid and recognized by external partners.
+### 5.1 Pre-Mission (Grid Audit)
+*   [ ] **Cell Balancing:** Verify maximum voltage deviation between cells is < 0.05V.
+*   [ ] **Thermal Sensors:** Confirm PT100 RTDs report accurate ambient baselines.
+*   [ ] **Contactor Integrity:** Test emergency DC disconnect relays.

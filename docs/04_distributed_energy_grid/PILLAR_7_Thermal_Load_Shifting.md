@@ -20,6 +20,15 @@ Running air conditioning during a 100°F day requires massive electricity. We do
 
 ---
 ## 3. TIER-1 TECHNICAL SCHEMATIC
+### 3.1 System Architecture Diagram
+
+```text
++-------------------+          +-------------------+          +-------------------+
+| Off-Peak Grid     |  Temp    |   Edge Node (EB)  |  Freeze  | Subterranean      |
+| (Cheap Power)     |=======>  | (Thermo-Calculus) |=======>  | Ice Bank Tanks    |
++-------------------+  Data    +-------------------+  Cmd     +-------------------+
+```
+
 ### 3.2 Latent Heat Calculus
 Ebony calculates the total stored cooling capacity ($Q_{latent}$) using the mass of the water ($m$) and the latent heat of fusion ($L_f$):
 
@@ -45,3 +54,20 @@ function engageIndustrialChillers() {}
 function shutdownChillers() {}
 function actuateIceBlowerFans() {}
 ```
+
+---
+## 4. EXECUTIVE INTERACTION & MANUAL OVERRIDE (SOP)
+
+| Step | Action | System Response | Safety Note |
+| :--- | :--- | :--- | :--- |
+| 1 | Operator logs into Energy Dashboard. | Authenticates via SSO. | -- |
+| 2 | Navigate to ⚡ Energy → Thermal Load Shifting. | Live ice-tank phase percentage renders. | Monitor off-peak pricing. |
+| 3 | Adjust grid price to peak levels in sandbox. | Node kills chillers and shifts to ice-blowers. | Confirms load shift. |
+| 4 | Click 🔴 LIVE EXECUTION → HALT. | Kills all HVAC blowers and chillers. | Facility temp will rise rapidly. |
+
+---
+## 5. OPERATIONAL CHECKLIST
+### 5.1 Pre-Mission (Thermal Audit)
+*   [ ] **Coolant Integrity:** Confirm industrial chiller glycol levels are nominal.
+*   [ ] **Tank Insulation:** Verify subterranean thermal leakage is < 1% per 24hrs.
+*   [ ] **Blower Fans:** Test air-handler RPM and CFM output.
