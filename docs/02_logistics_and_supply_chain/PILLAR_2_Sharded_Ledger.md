@@ -8,10 +8,15 @@ If the internet goes down, civilian farms utilizing AWS cannot verify inventory.
 
 ---
 ## PHASE 2: TIER-1 TECHNICAL SCHEMATIC (ENGINEERING & CODE)
-### 2.1 Ledger Topology & Hardware Mapping
+### 2.1 Ledger Topology & Sharding Calculus
+Ebony determines the exact physical NVMe drive ($S_{index}$) for every telemetry packet using a deterministic cryptographic sharding algorithm to prevent write-bottlenecks:
+
+```text
+S_{index} = \text{SHA-256}(Asset_{ID} + T_{nano}) \pmod{N_{shards}}
+```
 
 **Hardware Mapping:**
-*   **Storage Medium:** Localized PCIe 4.0 NVMe SSDs in RAID 10 configuration.
+*   **Storage Medium:** Localized PCIe 4.0 NVMe SSDs in RAID 10 configuration ($N_{shards} = 8$).
 *   **Security Protocol:** On-device Hyperledger Fabric signed by TPM 2.0.
 
 ### 2.2 Bare-Metal Execution Code (Go)
