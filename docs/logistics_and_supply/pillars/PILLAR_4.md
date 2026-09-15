@@ -2,7 +2,7 @@
 
 **Document ID:** HVF-LOG-PLR-004
 
-**Classification:** Kinetic Perimeter & Freight Security ([CLASSIFIED_SECURITY_MATRIX])
+**Classification:** Kinetic Perimeter & Freight Security ([REDACTED])
 
 **Author:** Jeffery Humphrey, CEO
 

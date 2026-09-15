@@ -2,7 +2,7 @@
 
 **Document ID:** HVF-LOG-PLR-001
 
-**Classification:** Strategic Operations ([CLASSIFIED_SECURITY_MATRIX])
+**Classification:** Strategic Operations ([REDACTED])
 
 **Author:** Jeffery Humphrey, Founder & CEO
 

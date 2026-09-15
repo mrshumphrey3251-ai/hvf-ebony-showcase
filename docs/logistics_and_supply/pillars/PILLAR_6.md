@@ -2,7 +2,7 @@
 
 **Document ID:** HVF-LOG-PLR-006
 
-**Classification:** Supply Independence & Fabrication ([CLASSIFIED_SECURITY_MATRIX])
+**Classification:** Supply Independence & Fabrication ([REDACTED])
 
 **Author:** Jeffery Humphrey, CEO
 

@@ -2,7 +2,7 @@
 
 **Document ID:** HVF-LOG-PLR-007
 
-**Classification:** Liquid Resource Management ([CLASSIFIED_SECURITY_MATRIX])
+**Classification:** Liquid Resource Management ([REDACTED])
 
 **Author:** Jeffery Humphrey, CEO
 

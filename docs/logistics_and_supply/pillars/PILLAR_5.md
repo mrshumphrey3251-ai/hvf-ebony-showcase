@@ -2,7 +2,7 @@
 
 **Document ID:** HVF-LOG-PLR-005
 
-**Classification:** Bio-Security & Payload Sanitization ([CLASSIFIED_SECURITY_MATRIX])
+**Classification:** Bio-Security & Payload Sanitization ([REDACTED])
 
 **Author:** Jeffery Humphrey, CEO
 
