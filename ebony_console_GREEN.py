@@ -1,6 +1,4 @@
-﻿$target_file = "C:\HVF_Repos\hvf-media-matrix-private\ebony_console_GREEN.py"
-$py_code = @'
-import ada_voice_module
+﻿import ada_voice_module
 import os
 import sys
 import io
@@ -1073,6 +1071,3 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
-'@
-Set-Content -Path $target_file -Value $py_code -Encoding UTF8
-Write-Host "[+] SUCCESS: 15-Vertical Matrix securely injected into master architecture." -ForegroundColor Green
