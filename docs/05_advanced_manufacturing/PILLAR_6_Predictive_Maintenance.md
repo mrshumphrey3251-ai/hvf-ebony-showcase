@@ -17,12 +17,15 @@
 
 ---
 ## 2. ZERO-TO-CEO OVERVIEW
-A CNC spindle spinning at 20,000 RPM will broadcast a specific acoustic signature. When a bearing begins to fail at a microscopic level, that sound changes days before the machine physically breaks. Ebony constantly listens to the manufacturing floor using high-fidelity piezoelectric sensors, running Fast Fourier Transforms (FFT) to isolate destructive frequencies and halting machines for targeted maintenance before catastrophic failure occurs.
+A CNC spindle spinning at 20,000 RPM broadcasts a specific acoustic signature. When a bearing begins to fail at a microscopic level, that sound changes days before the machine physically breaks. Ebony listens to the manufacturing floor using high-fidelity sensors, running Fast Fourier Transforms (FFT) to isolate destructive frequencies and halting machines for targeted maintenance before catastrophic failure occurs.
 
 ---
 ## 3. TIER-1 TECHNICAL SCHEMATIC
 ### 3.1 Fast Fourier Transform (FFT) Calculus
 Ebony converts time-domain vibration signals ($x(t)$) into frequency-domain spectrums ($X(f)$) to isolate anomalous harmonic spikes:
+
+$$X(f) = \int_{-\infty}^{\infty} x(t) e^{-i 2\pi ft} dt$$
+
 ### 3.2 Bare-Metal Execution Code (Python Reference)
 if abs(peak_freq - baseline_frequency) > 15.0:
     halt_cnc_spindle()

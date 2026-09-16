@@ -1,11 +1,33 @@
-# 🏗️ PILLAR 2: ADDITIVE RESOURCE YIELD
+﻿# 🏗️ PILLAR 2: ADDITIVE RESOURCE YIELD (3D PRINTING)
+**DOCUMENT TYPE:** COMPREHENSIVE TRAINING MANUAL & TIER-1 SCHEMATIC
+**INSTRUCTOR & SYSTEM:** EBONY (MASTER EDGE NODE)
+**FORMAT:** SITUATION REPORT (SITREP)
 
-**Classification:** Tier-1 Manufacturing Doctrine
-**Author:** Jeffery Humphrey, Founder & CEO
+---
+## 1. MISSION STATEMENT
+**Objective:** Maintain absolute material efficiency in additive manufacturing by mathematically locking the mass flow rate to the extrusion kinetic velocity.
 
-## 1. Sovereign Extrusion Calculus
-Sovereign manufacturing requires absolute resource efficiency. Additive manufacturing (3D printing) nodes calculate real-time extrusion dynamics to eliminate wasted filament, resin, and polymer composites.
+**Key Performance Indicators (KPIs):**
 
-## 2. Mass Flow Determinism
-The precise mass flow rate (\dot{m}) of the material is mathematically locked to the feed velocity and the nozzle cross-section, ensuring structural integrity at the micron level:
-*(Where \rho is the material density. Deviations in \dot{m} trigger an immediate, automated pause of the manufacturing node to prevent compounding material waste).*
+| KPI | Target | Measurement Method |
+| :--- | :--- | :--- |
+| **Material Waste** | 0% | Spool Weight vs CAD Volume |
+| **Thermal Variance** | < 0.5°C | Nozzle Thermistor |
+| **Structural Integrity** | > 99% | Ultrasonic Testing |
+
+---
+## 2. ZERO-TO-CEO OVERVIEW
+Sovereign manufacturing requires ruthless resource conservation. Additive manufacturing nodes (3D printers) calculate real-time extrusion dynamics to eliminate wasted filament, carbon-fiber, and polymer composites. If the flow rate deviates by a fraction of a gram, Ebony halts the print to prevent cascading structural defects.
+
+---
+## 3. TIER-1 TECHNICAL SCHEMATIC
+### 3.1 Mass Flow Determinism Calculus
+Ebony mathematically locks the precise mass flow rate ($\dot{m}$) based on material density ($\rho$), nozzle cross-sectional area ($A_n$), and feed velocity ($v_f$):
+
+$$\dot{m} = \rho \cdot A_n \cdot v_f$$
+
+### 3.2 Bare-Metal Execution Code (Go Reference)
+if variance > 0.02 || variance < -0.02 {
+    fmt.Println("CRITICAL: Mass flow drift detected. Halting print matrix.")
+    HaltExtruderMotors()
+}

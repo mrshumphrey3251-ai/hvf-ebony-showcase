@@ -5,7 +5,7 @@
 
 ---
 ## 1. MISSION STATEMENT
-**Objective:** Eradicate physical defects in fabricated drone and hardware components using edge-computed optical metrology, operating at sub-millimeter tolerances.
+**Objective:** Eradicate physical defects in fabricated hardware components using edge-computed optical metrology, operating at sub-millimeter tolerances.
 
 **Key Performance Indicators (KPIs):**
 
@@ -21,8 +21,11 @@ A single micro-fracture in a drone rotor can cause catastrophic failure during a
 
 ---
 ## 3. TIER-1 TECHNICAL SCHEMATIC
-### 3.1 Tolerance Calculus (Volumetric Deviation)
-Ebony calculates the acceptable variance ($V_{err}$) by integrating the difference between the scanned physical mesh ($M_p$) and the ideal CAD mesh ($M_c$):
+### 3.1 Volumetric Deviation Calculus
+Ebony calculates the acceptable variance ($V_{err}$) by integrating the volumetric difference between the scanned physical mesh ($M_p$) and the ideal CAD mesh ($M_c$):
+
+$$V_{err} = \iiint \vert{} M_p(x,y,z) - M_c(x,y,z) \vert{} dV$$
+
 ### 3.2 Bare-Metal Execution Code (Python Reference)
 if variance > 0.05:
     actuate_pneumatic_rejector()

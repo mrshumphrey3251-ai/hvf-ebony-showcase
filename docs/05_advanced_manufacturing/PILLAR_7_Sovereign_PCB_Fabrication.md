@@ -13,7 +13,7 @@
 | :--- | :--- | :--- |
 | **Trace Integrity** | 100% Continuity | Automated Optical Inspection (AOI) |
 | **Reflow Variance** | < 1.0°C | Infrared Thermal Profiling |
-| **Component Placer Rate** | > 10,000 CPH | Pick-and-Place Telemetry |
+| **Placer Rate** | > 10,000 CPH | Pick-and-Place Telemetry |
 
 ---
 ## 2. ZERO-TO-CEO OVERVIEW
@@ -23,6 +23,9 @@ If you buy circuit boards from overseas, you inherit their vulnerabilities. HVF 
 ## 3. TIER-1 TECHNICAL SCHEMATIC
 ### 3.1 Thermal Reflow Gradient Calculus (Newton's Law of Cooling)
 Ebony calculates the precise thermal gradient ($\frac{dT}{dt}$) of the reflow oven to ensure perfect solder liquification without incinerating delicate microchips:
+
+$$\frac{dT}{dt} = -k(T_{PCB} - T_{ambient}) + \frac{P_{heater}}{m \cdot C_p}$$
+
 ### 3.2 Bare-Metal Execution Code (Go Reference)
 if rampRate > 3.0 {
     fmt.Println("WARNING: Ramp rate too steep. Throttling IR heaters.")
