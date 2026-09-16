@@ -19,7 +19,7 @@ except ImportError:
 
 st.set_page_config(page_title="EBONY // APEX COMMAND", layout="wide", initial_sidebar_state="expanded")
 
-# --- SOVEREIGN AUTHENTICATION WALL ---
+# --- SOVEREIGN AUTHENTICATION WALL WITH MFA ---
 if "active_identity" not in st.session_state:
     st.markdown("# 🔐 IDENTITY VERIFICATION REQUIRED")
     st.caption("TIER-1 OMNI-MATRIX // SECURE PERIMETER")
@@ -30,10 +30,13 @@ if "active_identity" not in st.session_state:
         st.subheader("SOVEREIGN LOGIN")
         username = st.text_input("Username")
         password = st.text_input("Cryptographic Passphrase", type="password")
+        mfa_token = st.text_input("6-Digit MFA Token (Leave blank if Tier-3)", type="password")
         
         if st.button("AUTHENTICATE", type="primary", use_container_width=True):
-            role = verify_credentials(username, password)
-            if role:
+            role = verify_credentials(username, password, mfa_token)
+            if role == "MFA_FAILED":
+                st.error("ACCESS DENIED. CRYPTOGRAPHIC TOKEN INVALID OR EXPIRED.")
+            elif role:
                 st.session_state.active_identity = role
                 st.rerun()
             else:
@@ -45,14 +48,12 @@ if "active_identity" not in st.session_state:
             st.session_state.active_identity = "👤 Guest Mode (Tier-4 Restricted)"
             st.rerun()
             
-    # HALT ALL RENDERING UNTIL AUTHENTICATED
     st.stop()
 
 # --- MAIN APEX DECK (AUTHENTICATED) ---
 st.markdown("# 🦅 APEX COMMAND DECK")
 st.caption("FUSED NEURAL & KINETIC ENGINE // ABSOLUTE DOMINANCE")
 
-# Display Locked Identity and Logout
 col_id, col_out = st.columns([4, 1])
 with col_id:
     st.success(f"**ACTIVE CLEARANCE:** {st.session_state.active_identity}")
