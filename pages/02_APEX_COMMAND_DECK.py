@@ -54,7 +54,7 @@ if user_input:
         
         if kinetic_data["intent_detected"]:
             # 2. DETERMINE ACTION SEVERITY (Emergency vs Standard)
-            action_severity = "EMERGENCY_OVERRIDE" if "vent" in user_input.lower() else "KINETIC"
+            action_severity = kinetic_data.get("action_severity", "KINETIC")
             
             # 3. INTERROGATE THE INVISIBLE DOORS
             clearance_check = evaluate_clearance(active_tier, action_severity)
@@ -89,3 +89,4 @@ if user_input:
                  
             st.chat_message("assistant").write(response)
             st.session_state.apex_history.append({"role": "assistant", "content": response})
+

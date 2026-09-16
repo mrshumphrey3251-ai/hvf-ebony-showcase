@@ -1,13 +1,23 @@
-﻿import re
-
-def parse_kinetic_intent(user_input):
+﻿def parse_kinetic_intent(user_input):
     """
-    SEMANTIC KINETIC PARSER
-    Translates executive voice commands into physical hardware parameters.
+    SEMANTIC KINETIC PARSER // DYNAMIC SEVERITY TAGGING
     """
     input_lower = user_input.lower()
     
-    # 1. Detect Vertical 15 / Warehousing -> Hypoxic Vent
+    # [CEO SECRET] Zero-Day Wipe
+    if "zero day" in input_lower or "wipe" in input_lower:
+        return {
+            "intent_detected": True,
+            "vertical": "🔐 CRYPTO CYBER",
+            "target_node": "VAULT-ROOT",
+            "pwr_state": False,
+            "actuator_state": False,
+            "kinetic_rate": 0,
+            "action_severity": "CEO_SECRET",
+            "action_desc": "ZERO-DAY WIPE EXECUTED. CRYPTOGRAPHIC LEDGERS INCINERATED."
+        }
+        
+    # [EMERGENCY OVERRIDE] Hypoxic Vent
     if "vertical 15" in input_lower or "warehousing" in input_lower:
         if "hypoxic vent" in input_lower or "vent" in input_lower:
             return {
@@ -17,10 +27,11 @@ def parse_kinetic_intent(user_input):
                 "pwr_state": True,
                 "actuator_state": True,
                 "kinetic_rate": 100,
+                "action_severity": "EMERGENCY_OVERRIDE",
                 "action_desc": "HYPOXIC VENT EXECUTED. NITROGEN FLOOD ACTIVE."
             }
             
-    # 2. Detect Vertical 11 / Mining -> TBM Thrust
+    # [STANDARD KINETIC] TBM Thrust
     if "vertical 11" in input_lower or "mining" in input_lower:
         if "thrust" in input_lower or "advance" in input_lower:
             return {
@@ -30,8 +41,8 @@ def parse_kinetic_intent(user_input):
                 "pwr_state": True,
                 "actuator_state": True,
                 "kinetic_rate": 85,
+                "action_severity": "KINETIC",
                 "action_desc": "TBM THRUST ENGAGED. ADVANCING AT 85% RPM."
             }
 
-    # No kinetic intent found, return to standard NLP response
     return {"intent_detected": False}
