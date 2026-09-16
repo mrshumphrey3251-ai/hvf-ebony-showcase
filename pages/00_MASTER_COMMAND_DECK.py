@@ -64,15 +64,20 @@ def route_view(view): st.session_state.scada_view = view
 # --- STEP-UP MFA GATE ---
 from core.mfa_matrix import verify_mfa_token
 
+def verify_kinetic_callback():
+    token = st.session_state.get("mfa_input_val", "")
+    if verify_mfa_token(token, seed="EBONY_TIER_1_CEO") or verify_mfa_token(token, seed="EBONY_TIER_2_EXEC"):
+        st.session_state.mfa_verified = True
+    else:
+        st.session_state.mfa_error = "ACCESS DENIED. INVALID KINETIC TOKEN."
+
 if not st.session_state.get("mfa_verified", False):
     st.warning("⚠️ KINETIC SCADA OVERRIDE: CRYPTOGRAPHIC TOKEN REQUIRED FOR PHYSICAL ACTUATION.")
-    mfa_input = st.text_input("Enter 6-Digit Sovereign MFA Token", type="password")
-    if st.button("VERIFY KINETIC CLEARANCE", type="primary"):
-        if verify_mfa_token(mfa_input, seed="EBONY_TIER_1_CEO") or verify_mfa_token(mfa_input, seed="EBONY_TIER_2_EXEC"):
-            st.session_state.mfa_verified = True
-            st.rerun()
-        else:
-            st.error("ACCESS DENIED. INVALID KINETIC TOKEN.")
+    st.text_input("Enter 6-Digit Sovereign MFA Token", type="password", key="mfa_input_val")
+    st.button("VERIFY KINETIC CLEARANCE", type="primary", on_click=verify_kinetic_callback)
+    if st.session_state.get("mfa_error"):
+        st.error(st.session_state.mfa_error)
+        del st.session_state.mfa_error
     st.stop()
 
 st.markdown("# 🦅 MASTER COMMAND DECK // SCADA ROUTER")
