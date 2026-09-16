@@ -12,24 +12,60 @@ try:
     from core.hardware_bridge import emit_kinetic_payload
     from core.kinetic_parser import parse_kinetic_intent
     from core.rbac_matrix import evaluate_clearance, map_identity_to_tier
+    from core.auth_matrix import verify_credentials
 except ImportError:
     st.error("CRITICAL: REQUIRED CORE MODULES MISSING.")
     st.stop()
 
 st.set_page_config(page_title="EBONY // APEX COMMAND", layout="wide", initial_sidebar_state="expanded")
 
+# --- SOVEREIGN AUTHENTICATION WALL ---
+if "active_identity" not in st.session_state:
+    st.markdown("# 🔐 IDENTITY VERIFICATION REQUIRED")
+    st.caption("TIER-1 OMNI-MATRIX // SECURE PERIMETER")
+    st.divider()
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        st.subheader("SOVEREIGN LOGIN")
+        username = st.text_input("Username")
+        password = st.text_input("Cryptographic Passphrase", type="password")
+        
+        if st.button("AUTHENTICATE", type="primary", use_container_width=True):
+            role = verify_credentials(username, password)
+            if role:
+                st.session_state.active_identity = role
+                st.rerun()
+            else:
+                st.error("ACCESS DENIED. CREDENTIALS INVALID.")
+    with c2:
+        st.subheader("PUBLIC ACCESS")
+        st.write("Unauthenticated users will be restricted to Tier-4 Guest Mode. All SCADA execution is mathematically locked.")
+        if st.button("CONTINUE AS GUEST", use_container_width=True):
+            st.session_state.active_identity = "👤 Guest Mode (Tier-4 Restricted)"
+            st.rerun()
+            
+    # HALT ALL RENDERING UNTIL AUTHENTICATED
+    st.stop()
+
+# --- MAIN APEX DECK (AUTHENTICATED) ---
 st.markdown("# 🦅 APEX COMMAND DECK")
 st.caption("FUSED NEURAL & KINETIC ENGINE // ABSOLUTE DOMINANCE")
+
+# Display Locked Identity and Logout
+col_id, col_out = st.columns([4, 1])
+with col_id:
+    st.success(f"**ACTIVE CLEARANCE:** {st.session_state.active_identity}")
+with col_out:
+    if st.button("SEVER CONNECTION (LOGOUT)"):
+        del st.session_state.active_identity
+        if "apex_history" in st.session_state:
+            del st.session_state.apex_history
+        st.rerun()
+        
 st.divider()
 
-# --- DYNAMIC IDENTITY ENGINE ---
-identity_selection = st.radio("Select Active Identity:", [
-    "👑 Mr. Humphrey (Tier-1 CEO)", 
-    "🛡️ Drew (Tier-2 Executive)", 
-    "💼 Paid Member (Tier-3 Commercial)", 
-    "👤 Guest Mode (Tier-4 Restricted)"
-])
-active_tier = map_identity_to_tier(identity_selection)
+active_tier = map_identity_to_tier(st.session_state.active_identity)
 
 if "apex_history" not in st.session_state:
     st.session_state.apex_history = []
@@ -49,23 +85,17 @@ if user_input:
     with st.spinner("Evaluating cryptographic clearance doors..."):
         time.sleep(0.5)
         
-        # 1. PARSE FOR KINETIC INTENT
         kinetic_data = parse_kinetic_intent(user_input)
         
         if kinetic_data["intent_detected"]:
-            # 2. DETERMINE ACTION SEVERITY (Emergency vs Standard)
             action_severity = kinetic_data.get("action_severity", "KINETIC")
-            
-            # 3. INTERROGATE THE INVISIBLE DOORS
             clearance_check = evaluate_clearance(active_tier, action_severity)
             
             if clearance_check["access_granted"]:
-                # AUTONOMOUS HARDWARE ACTUATION
                 response = f"**{clearance_check['msg']}**\n\n**EXECUTION:** {kinetic_data['action_desc']}"
                 st.chat_message("assistant").write(response)
                 st.session_state.apex_history.append({"role": "assistant", "content": response})
                 
-                # EMIT PHYSICAL JSON PAYLOAD
                 hardware_payload = emit_kinetic_payload(
                     kinetic_data["vertical"], 
                     kinetic_data["target_node"], 
@@ -76,12 +106,10 @@ if user_input:
                 st.code(hardware_payload, language="json")
                 st.session_state.apex_history.append({"role": "payload", "content": hardware_payload})
             else:
-                # HARD DENIAL AT THE DOOR
                 st.chat_message("assistant").write(f"**{clearance_check['msg']}**")
                 st.session_state.apex_history.append({"role": "assistant", "content": clearance_check["msg"]})
                 
         else:
-            # STANDARD NLP FALLBACK ROUTED THROUGH CLEARANCE
             if active_tier >= 4:
                  response = "ACCESS DENIED. GUEST CLEARANCE INSUFFICIENT FOR SOVEREIGN COMMUNICATION."
             else:
@@ -89,4 +117,3 @@ if user_input:
                  
             st.chat_message("assistant").write(response)
             st.session_state.apex_history.append({"role": "assistant", "content": response})
-
