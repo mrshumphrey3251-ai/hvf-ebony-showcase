@@ -3,59 +3,76 @@ import time
 
 st.set_page_config(page_title="EBONY // OMNI-MATRIX", layout="wide", initial_sidebar_state="expanded")
 
-st.markdown("# 🦅 MASTER COMMAND DECK")
-st.caption("TIER-1 EXECUTIVE OVERRIDE // SOVEREIGN OMNI-MATRIX")
+# --- MODULAR SCADA ROUTER (SESSION STATE) ---
+if "scada_view" not in st.session_state:
+    st.session_state.scada_view = "MACRO"
+
+def route_view(view):
+    st.session_state.scada_view = view
+
+st.markdown("# 🦅 MASTER COMMAND DECK // SCADA ROUTER")
+st.caption("TIER-1 EXECUTIVE OVERRIDE // OMNI-MATRIX COLLECTIVE AND INDIVIDUAL CONTROL")
 st.divider()
 
-# --- 1. GLOBAL TELEMETRY MATRIX ---
-st.subheader("GLOBAL TELEMETRY")
-m1, m2, m3, m4, m5 = st.columns(5)
-m1.metric("OpEx Burn Rate", "$142.50/hr", "-1.2% (Optimized)")
-m2.metric("Sovereign Power", "12.4 MW", "Surplus (Arbitrage)")
-m3.metric("Hydro Reserves", "4.2M Gal", "+12k Gal (Condensation)")
-m4.metric("Swarm Cohesion", "100%", "0 Nodes Offline")
-m5.metric("Crypto Treasury", "$4.2M", "+$150k (Yield)")
-
-st.divider()
-
-# --- 2. 15-VERTICAL KINETIC OVERRIDE VECTORS ---
-st.subheader("OMNI-MATRIX KINETIC OVERRIDES")
-
+# --- DYNAMIC VERTICAL REGISTRY ---
 verticals = {
-    "🌾 AGRICULTURE": [{"label": "ACTUATE PIVOTS", "type": "secondary", "msg": "Center pivots marching to target coordinates."}, {"label": "FERTIGATION", "type": "primary", "msg": "NPK routing active."}],
-    "🚛 LOGISTICS": [{"label": "ROUTING OVERRIDE", "type": "secondary", "msg": "AGV swarm recalculating paths."}, {"label": "LOCK DOWN FLEET", "type": "primary", "msg": "All vehicles immobilized."}],
-    "🚁 DEFENSE": [{"label": "PERIMETER SWEEP", "type": "secondary", "msg": "Patrol drones deployed."}, {"label": "WEAPONS HOT", "type": "primary", "msg": "Lethal countermeasures authorized."}],
-    "⚡ ENERGY": [{"label": "DUMP TO MARKET", "type": "secondary", "msg": "Arbitrage settlement active."}, {"label": "ISLAND GRID", "type": "primary", "msg": "Civilian grid severed."}],
-    "🏭 MANUFACTURING": [{"label": "SPINDLE OVERDRIVE", "type": "secondary", "msg": "CNC production increased."}, {"label": "EMERGENCY QUENCH", "type": "primary", "msg": "Reflow ovens flooded with nitrogen."}],
-    "📡 COMMS": [{"label": "ROTATE TOPOLOGY", "type": "secondary", "msg": "Subnet IP hopping initiated."}, {"label": "VHF FALLBACK", "type": "primary", "msg": "Fiber severed. Analog comms active."}],
-    "🏦 FINANCE": [{"label": "PROCUREMENT", "type": "secondary", "msg": "Smart contracts fired."}, {"label": "FREEZE TREASURY", "type": "primary", "msg": "Assets shifted to cold storage."}],
-    "🏥 HEALTHCARE": [{"label": "MED-EVAC", "type": "secondary", "msg": "Trauma drone dispatched."}, {"label": "BIO-LOCKDOWN", "type": "primary", "msg": "Sectors sealed. UV-C active."}],
-    "🛰️ AEROSPACE": [{"label": "SCRAMBLE RADAR", "type": "secondary", "msg": "Phased array sweeping."}, {"label": "INTERDICT", "type": "primary", "msg": "Hunter-Killer swarm deployed."}],
-    "🏗️ CIVIL ENG": [{"label": "HALT EXTRUSION", "type": "secondary", "msg": "3D printing paused."}, {"label": "ACTUATE DAMPERS", "type": "primary", "msg": "Seismic base isolation locked."}],
-    "⛏️ MINING": [{"label": "BORE ADVANCE", "type": "secondary", "msg": "TBM thrust increased."}, {"label": "ABORT SECTOR", "type": "primary", "msg": "Mine evacuation initiated."}],
-    "🌊 DEEP OCEAN": [{"label": "TURBINE FEATHER", "type": "secondary", "msg": "Tidal blades neutralized."}, {"label": "ACOUSTIC SHOCK", "type": "primary", "msg": "Subaquatic deterrence fired."}],
-    "🔐 CRYPTO CYBER": [{"label": "DEPLOY HONEYPOTS", "type": "secondary", "msg": "Phantom servers online."}, {"label": "ZERO-DAY WIPE", "type": "primary", "msg": "Cryptographic keys incinerated."}],
-    "💧 HYDROLOGY": [{"label": "AWG OVERDRIVE", "type": "secondary", "msg": "Condensation turbines at max."}, {"label": "SEAL AQUIFER", "type": "primary", "msg": "Subterranean valves locked."}],
-    "📦 WAREHOUSING": [{"label": "KITTING PROTOCOL", "type": "secondary", "msg": "ASRS pre-assembling payloads."}, {"label": "HYPOXIC VENT", "type": "primary", "msg": "Nitrogen flooded. Fire impossible."}]
+    "🌾 AGRICULTURE": ["ACTUATE PIVOTS", "FERTIGATION OVERRIDE", "HALT HARVESTERS"],
+    "🚛 LOGISTICS": ["REROUTE SWARM", "LOCK DOWN FLEET", "EMERGENCY CHARGE"],
+    "🚁 DEFENSE": ["PERIMETER SWEEP", "WEAPONS HOT", "SCRAMBLE INTERCEPTORS"],
+    "⚡ ENERGY": ["DUMP TO MARKET", "ISLAND GRID", "SCRAM REACTORS"],
+    "🏭 MANUFACTURING": ["OVERDRIVE SPINDLES", "EMERGENCY QUENCH", "HALT ASSEMBLY"],
+    "📡 COMMS": ["ROTATE TOPOLOGY", "VHF FALLBACK", "BURN ENCRYPTION"],
+    "🏦 FINANCE": ["FIRE PROCUREMENT", "FREEZE TREASURY", "LIQUIDATE TO COLD STORAGE"],
+    "🏥 HEALTHCARE": ["DISPATCH MED-EVAC", "BIO-LOCKDOWN", "PURGE HVAC"],
+    "🛰️ AEROSPACE": ["PULSE PHASED ARRAY", "LAUNCH INTERCEPTOR", "JAMMING OVERRIDE"],
+    "🏗️ CIVIL ENG": ["HALT EXTRUSION", "ACTUATE DAMPERS", "LOCK BLAST DOORS"],
+    "⛏️ MINING": ["THROTTLE TBM", "ABORT SUBTERRANEAN", "VENTILATION OVERDRIVE"],
+    "🌊 DEEP OCEAN": ["FEATHER TURBINES", "FIRE ACOUSTIC SHOCK", "SEAL VAULTS"],
+    "🔐 CRYPTO CYBER": ["DEPLOY HONEYPOTS", "ZERO-DAY WIPE", "LOCKOUT ENCLAVES"],
+    "💧 HYDROLOGY": ["OVERDRIVE AWG", "SEAL AQUIFER", "FLUSH RESERVOIR"],
+    "📦 WAREHOUSING": ["PRE-KIT PAYLOADS", "HYPOXIC VENT", "LOCK KINEMATICS"]
 }
 
-# Dynamically generate the 3x5 command grid
-vert_items = list(verticals.items())
-cols_per_row = 5
+# --- VIEW 1: MACRO (COLLECTIVE MONITORING) ---
+if st.session_state.scada_view == "MACRO":
+    st.subheader("MACRO VIEW // COLLECTIVE MONITORING")
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("OpEx Burn Rate", "$142.50/hr", "-1.2%")
+    m2.metric("Sovereign Power", "12.4 MW", "Surplus")
+    m3.metric("Hydro Reserves", "4.2M Gal", "Optimal")
+    m4.metric("Swarm Cohesion", "100%", "Secure")
+    st.divider()
+    
+    cols = st.columns(5)
+    for idx, (v_name, actions) in enumerate(verticals.items()):
+        with cols[idx % 5]:
+            st.markdown(f"**{v_name}**")
+            st.markdown("STATUS: `ONLINE`")
+            st.button(f"ACCESS COMMAND CENTER", key=f"btn_{v_name}", on_click=route_view, args=(v_name,), use_container_width=True)
+            st.write("---")
 
-for i in range(0, len(vert_items), cols_per_row):
-    cols = st.columns(cols_per_row)
-    for j, col in enumerate(cols):
-        if i + j < len(vert_items):
-            vert_name, controls = vert_items[i + j]
-            with col:
-                st.markdown(f"**{vert_name}**")
-                for ctrl in controls:
-                    if st.button(ctrl["label"], key=f"{vert_name}_{ctrl['label']}", use_container_width=True, type=ctrl["type"]):
-                        with st.spinner('Cryptographic handshake...'):
-                            time.sleep(0.4) 
-                        if ctrl["type"] == "primary":
-                            st.error(f"**EXECUTED:** {ctrl['msg']}")
-                        else:
-                            st.success(f"**EXECUTED:** {ctrl['msg']}")
-    st.write("") 
+# --- VIEW 2: MICRO (INDIVIDUAL MONITORING) ---
+else:
+    v_name = st.session_state.scada_view
+    st.button("◄ RETURN TO MACRO GRID", on_click=route_view, args=("MACRO",))
+    st.divider()
+    
+    st.header(f"MICRO VIEW // {v_name} COMMAND CENTER")
+    
+    # Localized SCADA Telemetry
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Sub-System Status", "NOMINAL", "0 Errors")
+    c2.metric("Node Latency", "4ms", "Optimal")
+    c3.metric("Power Draw", "840 kW", "Stable")
+    
+    st.divider()
+    st.subheader("LOCALIZED KINETIC OVERRIDES")
+    
+    actions = verticals[v_name]
+    a_cols = st.columns(len(actions))
+    for idx, action in enumerate(actions):
+        with a_cols[idx]:
+            if st.button(action, use_container_width=True, type="primary"):
+                with st.spinner('Executing cryptographic handshake...'):
+                    time.sleep(0.5)
+                st.error(f"**EXECUTED:** {action} protocol initiated across {v_name}.")
