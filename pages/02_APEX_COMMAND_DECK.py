@@ -12,47 +12,17 @@ try:
     from core.hardware_bridge import emit_kinetic_payload
     from core.kinetic_parser import parse_kinetic_intent
     from core.rbac_matrix import evaluate_clearance, map_identity_to_tier
-    from core.auth_matrix import verify_credentials
 except ImportError:
-    st.error("CRITICAL: REQUIRED CORE MODULES MISSING.")
-    st.stop()
+    pass
 
 st.set_page_config(page_title="EBONY // APEX COMMAND", layout="wide", initial_sidebar_state="expanded")
 
-# --- SOVEREIGN AUTHENTICATION WALL WITH MFA ---
+# --- ROOT IDENTITY VERIFICATION ---
 if "active_identity" not in st.session_state:
-    st.markdown("# 🔐 IDENTITY VERIFICATION REQUIRED")
-    st.caption("TIER-1 OMNI-MATRIX // SECURE PERIMETER")
-    st.divider()
-    
-    c1, c2 = st.columns(2)
-    with c1:
-        st.subheader("SOVEREIGN LOGIN")
-        username = st.text_input("Username")
-        password = st.text_input("Cryptographic Passphrase", type="password")
-        mfa_token = st.text_input("6-Digit MFA Token (Leave blank if Tier-3)", type="password")
-        
-        if st.button("AUTHENTICATE", type="primary", use_container_width=True):
-            role = verify_credentials(username, password, mfa_token)
-            if role == "MFA_FAILED":
-                st.error("ACCESS DENIED. CRYPTOGRAPHIC TOKEN INVALID OR EXPIRED.")
-            elif role:
-                st.session_state.active_identity = role
-                st.rerun()
-            else:
-                st.error("ACCESS DENIED. CREDENTIALS INVALID.")
-    with c2:
-        st.subheader("PUBLIC ACCESS")
-        st.write("Unauthenticated users will be restricted to Tier-4 Guest Mode. All SCADA execution is mathematically locked.")
-        if st.button("CONTINUE AS GUEST", use_container_width=True):
-            st.session_state.active_identity = "👤 Guest Mode (Tier-4 Restricted)"
-            st.rerun()
-            
+    st.error("ACCESS DENIED. ROOT IDENTITY VERIFICATION REQUIRED.")
     st.stop()
 
-
-
-# --- STEP-UP MFA GATE ---
+# --- STEP-UP MFA GATE (SEAMLESS CALLBACK) ---
 from core.mfa_matrix import verify_mfa_token
 
 def verify_kinetic_callback():
@@ -71,7 +41,7 @@ if not st.session_state.get("mfa_verified", False):
         del st.session_state.mfa_error
     st.stop()
 
-# --- MAIN APEX DECK (AUTHENTICATED) ---
+# --- MAIN APEX DECK (AUTHENTICATED & SCADA CLEARED) ---
 st.markdown("# 🦅 APEX COMMAND DECK")
 st.caption("FUSED NEURAL & KINETIC ENGINE // ABSOLUTE DOMINANCE")
 
@@ -81,6 +51,8 @@ with col_id:
 with col_out:
     if st.button("SEVER CONNECTION (LOGOUT)"):
         del st.session_state.active_identity
+        if "mfa_verified" in st.session_state:
+            del st.session_state.mfa_verified
         if "apex_history" in st.session_state:
             del st.session_state.apex_history
         st.rerun()
@@ -139,4 +111,3 @@ if user_input:
                  
             st.chat_message("assistant").write(response)
             st.session_state.apex_history.append({"role": "assistant", "content": response})
-
