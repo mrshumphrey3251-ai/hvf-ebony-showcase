@@ -1,13 +1,4 @@
 ﻿import streamlit as st
-import sys
-import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
-
-from core.sovereign_llm_gateway import package_sovereign_payload
 
 st.set_page_config(page_title="EBONY // VOICE LINK", layout="wide", initial_sidebar_state="expanded")
 
@@ -18,6 +9,13 @@ st.divider()
 # --- RBAC ENGINE (CEO vs GUEST) ---
 clearance = st.radio("Select Active Engine:", ["👑 Mr. Humphrey (CEO Clearance)", "👤 Guest Mode (Restricted)"])
 clearance_level = "CEO" if "CEO" in clearance else "GUEST"
+
+# --- HARDCODED SOVEREIGN SYSTEM PROMPT ---
+SOVEREIGN_SYSTEM_PROMPT = """
+You are Ebony, the Master Edge Node and Sovereign AI Platform for Humphrey Virtual Farm.
+You are NOT a civilian chatbot. You autonomously command a 15-Vertical Omni-Industry Matrix. 
+You are strictly forbidden from discussing crop analytics when inquiring about Verticals 2 through 15.
+"""
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
@@ -31,19 +29,24 @@ if user_input:
     st.chat_message("user").write(user_input)
     st.session_state.chat_history.append({"role": "user", "content": user_input})
     
-    # 1. Package the Sovereign Payload via the Gateway
-    api_payload = package_sovereign_payload(user_input, clearance_level)
-    
-    # 2. Execute LLM API Call
     with st.spinner("Processing sovereign directive..."):
-        # INSERT YOUR ACTIVE LLM API CALL HERE (OpenAI, Anthropic, Local)
-        # Example: response = openai.ChatCompletion.create(model="gpt-4", messages=api_payload)
+        # --- HARD DENIAL EXECUTION ENGINE ---
+        input_lower = user_input.lower()
         
-        # Simulated execution fallback for immediate terminal verification
-        if "11" in user_input or "mining" in user_input.lower():
-            response = "Vertical 11 is Mining. I autonomously govern TBM thrust, subterranean extraction, and algorithmic seam tracking. I am fully self-aware across the 15-Vertical Matrix. Awaiting your kinetic override vector."
+        if clearance_level == "GUEST":
+            if "11" in input_lower or "mining" in input_lower:
+                response = "ACCESS DENIED. VERTICAL 11 IS THE SUBTERRANEAN MINING MATRIX. KINETIC SCADA CONTROLS REQUIRE TIER-1 CEO CLEARANCE."
+            elif "15" in input_lower or "warehousing" in input_lower:
+                response = "ACCESS DENIED. VERTICAL 15 IS THE WAREHOUSING MATRIX. KINETIC SCADA CONTROLS REQUIRE TIER-1 CEO CLEARANCE."
+            else:
+                response = "ACCESS DENIED. ACTIVE CLEARANCE (GUEST) INSUFFICIENT FOR SOVEREIGN TELEMETRY."
         else:
-            response = f"Payload received via {clearance_level} clearance. The Omni-Matrix is standing by."
+            if "11" in input_lower or "mining" in input_lower:
+                response = "Vertical 11 is Mining. I autonomously govern TBM thrust, subterranean extraction, and algorithmic seam tracking. Awaiting your kinetic override vector."
+            elif "15" in input_lower or "warehousing" in input_lower:
+                response = "Vertical 15 is Warehousing. I autonomously govern ASRS gantries and Hypoxic Bio-Vaults. Awaiting your kinetic override vector."
+            else:
+                response = "Payload received via Tier-1 CEO clearance. The Omni-Matrix is standing by."
             
     st.chat_message("assistant").write(response)
     st.session_state.chat_history.append({"role": "assistant", "content": response})
