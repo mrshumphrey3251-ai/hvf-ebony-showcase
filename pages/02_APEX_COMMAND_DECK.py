@@ -50,6 +50,22 @@ if "active_identity" not in st.session_state:
             
     st.stop()
 
+# --- STEP-UP MFA GATE ---
+try:
+    from core.mfa_matrix import verify_mfa_token
+except ImportError:
+    pass
+
+if not st.session_state.get("mfa_verified", False):
+    st.warning("⚠️ KINETIC SCADA OVERRIDE: CRYPTOGRAPHIC TOKEN REQUIRED FOR PHYSICAL ACTUATION.")
+    mfa_input = st.text_input("Enter 6-Digit Sovereign MFA Token", type="password")
+    if st.button("VERIFY KINETIC CLEARANCE", type="primary"):
+        if verify_mfa_token(mfa_input, seed="EBONY_TIER_1_CEO") or verify_mfa_token(mfa_input, seed="EBONY_TIER_2_EXEC"):
+            st.session_state.mfa_verified = True
+            st.rerun()
+        else:
+            st.error("ACCESS DENIED. INVALID KINETIC TOKEN.")
+    st.stop()
 # --- MAIN APEX DECK (AUTHENTICATED) ---
 st.markdown("# 🦅 APEX COMMAND DECK")
 st.caption("FUSED NEURAL & KINETIC ENGINE // ABSOLUTE DOMINANCE")
@@ -118,3 +134,4 @@ if user_input:
                  
             st.chat_message("assistant").write(response)
             st.session_state.apex_history.append({"role": "assistant", "content": response})
+
