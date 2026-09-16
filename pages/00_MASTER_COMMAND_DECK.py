@@ -21,6 +21,7 @@ try:
     if "core_consciousness" not in st.session_state:
         st.session_state.core_consciousness = EBONY_CORE_IDENTITY
 except ImportError:
+    pass
     
 
 
