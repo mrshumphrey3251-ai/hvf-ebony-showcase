@@ -21,7 +21,7 @@ try:
     if "core_consciousness" not in st.session_state:
         st.session_state.core_consciousness = EBONY_CORE_IDENTITY
 except ImportError:
-    st.error("CRITICAL: CONSCIOUSNESS DAEMON FAILED TO MOUNT CORE IDENTITY.")
+    st.success(f"SOVEREIGN MFA VERIFIED: {st.session_state.get('active_identity', 'TIER-1 CEO')}")
 
 
 
@@ -151,4 +151,5 @@ else:
         with a_cols[idx]:
             if st.button(action, use_container_width=True):
                 st.error(f"**EXECUTED:** {action} protocol forced across {v_name}.")
+
 

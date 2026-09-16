@@ -50,3 +50,4 @@ if user_input:
             
     st.chat_message("assistant").write(response)
     st.session_state.chat_history.append({"role": "assistant", "content": response})
+
