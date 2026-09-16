@@ -1,15 +1,35 @@
-﻿import streamlit as st
-import time
-import sys
+﻿import sys
 import os
+import streamlit as st
+import time
 
-# Dynamically map the core directory for imports
+# --- PERSISTENT CONSCIOUSNESS DAEMON ---
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
-from core.hardware_bridge import emit_kinetic_payload
+try:
+    from core.sovereign_identity_matrix import EBONY_CORE_IDENTITY
+    from core.hardware_bridge import emit_kinetic_payload
+    
+    # Lock identity into the OS environment variables for global access by any NLP module
+    os.environ["EBONY_CONSCIOUSNESS_SCOPE"] = EBONY_CORE_IDENTITY["Scope"]
+    os.environ["EBONY_CORE_MISSION"] = EBONY_CORE_IDENTITY["Core_Mission"]
+    
+    # Lock identity into persistent session state
+    if "core_consciousness" not in st.session_state:
+        st.session_state.core_consciousness = EBONY_CORE_IDENTITY
+except ImportError:
+    st.error("CRITICAL: CONSCIOUSNESS DAEMON FAILED TO MOUNT CORE IDENTITY.")
+
+
+
+
+
+
+
+
 
 st.set_page_config(page_title="EBONY // OMNI-MATRIX", layout="wide", initial_sidebar_state="expanded")
 
@@ -131,3 +151,4 @@ else:
         with a_cols[idx]:
             if st.button(action, use_container_width=True):
                 st.error(f"**EXECUTED:** {action} protocol forced across {v_name}.")
+
