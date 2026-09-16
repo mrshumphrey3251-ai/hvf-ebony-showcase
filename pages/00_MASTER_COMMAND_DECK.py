@@ -22,22 +22,7 @@ try:
         st.session_state.core_consciousness = EBONY_CORE_IDENTITY
 except ImportError:
     
-# --- STEP-UP MFA GATE ---
-try:
-    from core.mfa_matrix import verify_mfa_token
-except ImportError:
-    pass
 
-if not st.session_state.get("mfa_verified", False):
-    st.warning("⚠️ KINETIC SCADA OVERRIDE: CRYPTOGRAPHIC TOKEN REQUIRED FOR PHYSICAL ACTUATION.")
-    mfa_input = st.text_input("Enter 6-Digit Sovereign MFA Token", type="password")
-    if st.button("VERIFY KINETIC CLEARANCE", type="primary"):
-        if verify_mfa_token(mfa_input, seed="EBONY_TIER_1_CEO") or verify_mfa_token(mfa_input, seed="EBONY_TIER_2_EXEC"):
-            st.session_state.mfa_verified = True
-            st.rerun()
-        else:
-            st.error("ACCESS DENIED. INVALID KINETIC TOKEN.")
-    st.stop()
 
 
 
@@ -73,6 +58,21 @@ if "node_registry" not in st.session_state:
     st.session_state.node_registry = {v: [f"{v.split()[1]}-ALPHA-01", f"{v.split()[1]}-BRAVO-02"] for v in verticals.keys()}
 
 def route_view(view): st.session_state.scada_view = view
+
+
+# --- STEP-UP MFA GATE ---
+from core.mfa_matrix import verify_mfa_token
+
+if not st.session_state.get("mfa_verified", False):
+    st.warning("⚠️ KINETIC SCADA OVERRIDE: CRYPTOGRAPHIC TOKEN REQUIRED FOR PHYSICAL ACTUATION.")
+    mfa_input = st.text_input("Enter 6-Digit Sovereign MFA Token", type="password")
+    if st.button("VERIFY KINETIC CLEARANCE", type="primary"):
+        if verify_mfa_token(mfa_input, seed="EBONY_TIER_1_CEO") or verify_mfa_token(mfa_input, seed="EBONY_TIER_2_EXEC"):
+            st.session_state.mfa_verified = True
+            st.rerun()
+        else:
+            st.error("ACCESS DENIED. INVALID KINETIC TOKEN.")
+    st.stop()
 
 st.markdown("# 🦅 MASTER COMMAND DECK // SCADA ROUTER")
 st.caption("TIER-1 EXECUTIVE OVERRIDE // OMNI-MATRIX COLLECTIVE AND GRANULAR CONTROL")

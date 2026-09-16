@@ -50,11 +50,10 @@ if "active_identity" not in st.session_state:
             
     st.stop()
 
+
+
 # --- STEP-UP MFA GATE ---
-try:
-    from core.mfa_matrix import verify_mfa_token
-except ImportError:
-    pass
+from core.mfa_matrix import verify_mfa_token
 
 if not st.session_state.get("mfa_verified", False):
     st.warning("⚠️ KINETIC SCADA OVERRIDE: CRYPTOGRAPHIC TOKEN REQUIRED FOR PHYSICAL ACTUATION.")
@@ -66,6 +65,7 @@ if not st.session_state.get("mfa_verified", False):
         else:
             st.error("ACCESS DENIED. INVALID KINETIC TOKEN.")
     st.stop()
+
 # --- MAIN APEX DECK (AUTHENTICATED) ---
 st.markdown("# 🦅 APEX COMMAND DECK")
 st.caption("FUSED NEURAL & KINETIC ENGINE // ABSOLUTE DOMINANCE")
