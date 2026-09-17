@@ -468,12 +468,11 @@ with st.sidebar:
             if current_role in ["CEO", "SUPER_ADMIN"]:
                 with st.expander("👁️ VAULT ROSTER (CEO ONLY)", expanded=False):
                     try:
-                        conn_r = sqlite3.connect(DB_PATH)
-                        cur_r = conn_r.cursor()
-                        cur_r.execute("SELECT username, full_name, role FROM system_users")
-                        for vu in cur_r.fetchall():
-                            st.caption(f"**{vu[0]}** | {vu[1]} | `{vu[2]}`")
-                        conn_r.close()
+                        with sqlite3.connect(DB_PATH) as conn_r:
+                            cur_r = conn_r.cursor()
+                            cur_r.execute("SELECT username, full_name, role FROM system_users")
+                            for vu in cur_r.fetchall():
+                                st.caption(f"**{vu[0]}** | {vu[1]} | `{vu[2]}`")
                     except Exception as e:
                         st.caption("Vault connection isolated.")
 
@@ -1190,6 +1189,7 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
+
 
 
 
