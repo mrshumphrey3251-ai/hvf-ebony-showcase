@@ -317,22 +317,25 @@ def save_encrypted_message(username: str, role: str, content: str, cipher: Ferne
         conn.commit()
 
 def save_pilot_feedback(username: str, full_name: str, rating: int, acres: str, crops: str, feedback: str, email: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("INSERT INTO pilot_feedback_vault (username, full_name, rating, farm_size_acres, primary_crops, feedback_text, contact_email) VALUES (?, ?, ?, ?, ?, ?, ?)", (username or "anonymous", full_name or "Guest Operator", rating, acres, crops, feedback, email))
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO pilot_feedback_vault (username, full_name, rating, farm_size_acres, primary_crops, feedback_text, contact_email) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (username or "anonymous", full_name or "Guest Operator", rating, acres, crops, feedback, email)
+        )
+        conn.commit()
 
 def has_user_submitted_feedback(username: str) -> bool:
-    if not username: return False
+    if not username:
+        return False
     try:
-        conn = sqlite3.connect(DB_PATH)
-        cur = conn.cursor()
-        cur.execute("SELECT COUNT(*) FROM pilot_feedback_vault WHERE username=?", (username,))
-        count = cur.fetchone()[0]
-        conn.close()
-        return count > 0
-    except: return False
+        with sqlite3.connect(DB_PATH) as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM pilot_feedback_vault WHERE username=?", (username,))
+            row = cur.fetchone()
+            return row[0] > 0 if row else False
+    except Exception:
+        return False
 
 def format_linkedin_urn(raw_urn: str) -> str:
     if not raw_urn: return ""
@@ -1176,4 +1179,5 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
+
 
