@@ -1109,7 +1109,7 @@ elif active_module == "📡 Sovereign Comms Deck":
         st.info("WebRTC Matrix streaming via Sovereign Tailscale Link.")
         # Injecting the live Master Media Router feed directly into the UI
         st.components.v1.html(
-            f'<iframe src="http://100.87.162.117:8889/live/stream" width="100%" height="450" style="border:none;" allow="autoplay; fullscreen"></iframe>',
+            f'<iframe src="http://{ACTIVE_IP}:8889/live/stream" width="100%" height="450" style="border:none;" allow="autoplay; fullscreen"></iframe>',
             height=470
         )
 
@@ -1117,7 +1117,7 @@ elif active_module == "📡 Sovereign Comms Deck":
         st.markdown("### 💬 Encrypted P2P Dispatch")
         
         import json
-        ledger_path = "hvf_comms_ledger.json"
+        ledger_path = os.path.join(REPO_DIR, "hvf_comms_ledger.json")
         if not os.path.exists(ledger_path):
             with open(ledger_path, "w") as f:
                 json.dump([{"sender": "EBONY CORE", "text": "Comms deck online. Autonomous Sync Active."}], f)
