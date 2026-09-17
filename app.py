@@ -759,17 +759,16 @@ elif active_module == "📖 System Overview":
     if current_role in ["CEO", "SUPER_ADMIN"]:
         with st.expander("👑 [MASTER PLATFORM ROOT]: Live Diagnostic Mesh & Summary", expanded=True):
             st.markdown("#### 🖥️ Master Node Diagnostic Readout")
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            cur.execute("SELECT COUNT(*) FROM system_users")
-            user_count = cur.fetchone()[0]
-            cur.execute("SELECT COUNT(*) FROM member_invite_keys WHERE is_used=0")
-            unused_keys = cur.fetchone()[0]
-            cur.execute("SELECT COUNT(*) FROM encrypted_user_comms")
-            msg_count = cur.fetchone()[0]
-            cur.execute("SELECT COUNT(*) FROM pilot_feedback_vault")
-            feedback_count = cur.fetchone()[0]
-            conn.close()
+            with sqlite3.connect(DB_PATH) as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT COUNT(*) FROM system_users")
+                user_count = cur.fetchone()[0]
+                cur.execute("SELECT COUNT(*) FROM member_invite_keys WHERE is_used=0")
+                unused_keys = cur.fetchone()[0]
+                cur.execute("SELECT COUNT(*) FROM encrypted_user_comms")
+                msg_count = cur.fetchone()[0]
+                cur.execute("SELECT COUNT(*) FROM pilot_feedback_vault")
+                feedback_count = cur.fetchone()[0]
 
             st.code(f"""======================= SYSTEM TOPOLOGY =======================
 Host IP (Local LAN)      : {mask_secret("192.168.1.175", "IP")}
@@ -1189,6 +1188,7 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
+
 
 
 
