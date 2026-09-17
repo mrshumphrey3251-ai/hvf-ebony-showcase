@@ -416,10 +416,18 @@ groq_client = Groq(api_key=GROQ_KEY) if GROQ_KEY else None
 
 def query_local_ollama_chat(messages_payload: list) -> str:
     try:
-        res = requests.post(OLLAMA_CHAT_URL, json={"model": LOCAL_MODEL, "messages": messages_payload, "stream": False, "options": {"temperature": 0.0}}, timeout=45)
-        if res.status_code == 200: return sanitize_deterministic_output(res.json().get("message", {}).get("content", ""))
+        res = requests.post(
+            OLLAMA_CHAT_URL, 
+            json={"model": LOCAL_MODEL, "messages": messages_payload, "stream": False, "options": {"temperature": 0.0}}, 
+            timeout=45
+        )
+        if res.status_code == 200: 
+            return sanitize_deterministic_output(res.json().get("message", {}).get("content", ""))
         return f"⚠️ Local Node returned HTTP {res.status_code}."
-    except: return "⚠️ Local Engine fault."
+    except requests.exceptions.RequestException as e:
+        return f"⚠️ Local Engine network fault: {e}"
+    except Exception as e:
+        return f"⚠️ Local Engine internal fault: {e}"
 
 # --- SIDEBAR ---
 with st.sidebar:
@@ -1182,6 +1190,7 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
+
 
 
 
