@@ -359,17 +359,20 @@ def get_tailscale_or_local_ip_cached() -> str:
         ts_path = "C:\\Program Files\\Tailscale\\tailscale.exe"
         if os.path.exists(ts_path):
             ts_proc = subprocess.run([ts_path, "ip", "-4"], capture_output=True, text=True, creationflags=0x08000000)
-            if ts_proc.returncode == 0 and ts_proc.stdout.strip(): return ts_proc.stdout.strip().splitlines()[0]
-    except: pass
+            if ts_proc.returncode == 0 and ts_proc.stdout.strip():
+                return ts_proc.stdout.strip().splitlines()[0]
+    except Exception:
+        pass
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
         return ip
-    except: return "192.168.1.175"
+    except Exception:
+        return "192.168.1.175"
 
-ACTIVE_IP = "100.87.162.117"
+ACTIVE_IP = get_tailscale_or_local_ip_cached()
 UPLINK_URL = f"http://{ACTIVE_IP}:8501"
 WEBRTC_STREAM_URL = f"http://192.168.1.175:8889/live/stream"
 RTMP_INGEST_URL = f"rtmp://192.168.1.175:1935/live/stream"
@@ -1179,5 +1182,6 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
+
 
 
