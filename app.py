@@ -146,25 +146,27 @@ def ensure_db_schema():
 ensure_db_schema()
 
 def get_empire_config():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT config_key, config_value FROM empire_config")
-    rows = cur.fetchall()
-    conn.close()
-    settings = {k: v for k, v in rows}
-    return {
-        "FARM_NAME": settings.get("FARM_NAME", "Humphrey Virtual Farm"),
-        "FOUNDER_NAME": settings.get("FOUNDER_NAME", "Jeffery Humphrey"),
-        "AI_PERSONA": settings.get("AI_PERSONA", "Ebony"),
-        "CONTACT_EMAIL": settings.get("CONTACT_EMAIL", "humphreyvirtualfarm@gmail.com")
-    }
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT config_key, config_value FROM empire_config")
+        rows = cur.fetchall()
+        settings = {k: v for k, v in rows}
+        return {
+            "FARM_NAME": settings.get("FARM_NAME", "Humphrey Virtual Farm"),
+            "FOUNDER_NAME": settings.get("FOUNDER_NAME", "Jeffery Humphrey"),
+            "AI_PERSONA": settings.get("AI_PERSONA", "Ebony"),
+            "CONTACT_EMAIL": settings.get("CONTACT_EMAIL", "humphreyvirtualfarm@gmail.com")
+        }
 
 def update_empire_config(farm_name, founder, persona, email):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.executemany("INSERT INTO empire_config (config_key, config_value) VALUES (?, ?) ON CONFLICT(config_key) DO UPDATE SET config_value=excluded.config_value", [("FARM_NAME", farm_name), ("FOUNDER_NAME", founder), ("AI_PERSONA", persona), ("CONTACT_EMAIL", email)])
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.executemany(
+            "INSERT INTO empire_config (config_key, config_value) VALUES (?, ?) "
+            "ON CONFLICT(config_key) DO UPDATE SET config_value=excluded.config_value",
+            [("FARM_NAME", farm_name), ("FOUNDER_NAME", founder), ("AI_PERSONA", persona), ("CONTACT_EMAIL", email)]
+        )
+        conn.commit()
 
 EMPIRE = get_empire_config()
 
@@ -179,7 +181,8 @@ CRITICAL NON-NEGOTIABLE GROUND TRUTH:
 """
 
 def sanitize_deterministic_output(raw_text: str) -> str:
-    if not raw_text: return raw_text
+    if not raw_text: 
+        return raw_text
     text = raw_text
     for pattern in [r"(?i)\$?\d+(\.\d+)?\s*(M|million|B|billion)\s*(in\s+)?(seed\s*(&|and)\s*)?(series[\s-]?[a-z]|venture\s+capital|funding|investment\s+round)"]:
         text = re.sub(pattern, "sovereign, self-funded agricultural architecture", text)
@@ -190,112 +193,128 @@ def derive_user_cipher(password: str, username: str) -> Fernet:
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=100000)
     return Fernet(base64.urlsafe_b64encode(kdf.derive(password.encode("utf-8"))))
 
-def hash_password(pwd: str) -> str: return hashlib.sha256(pwd.encode('utf-8')).hexdigest()
+def hash_password(pwd: str) -> str: 
+    return hashlib.sha256(pwd.encode('utf-8')).hexdigest()
 
 def verify_user(username: str, pwd_raw: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT username, full_name, role, status, trial_expires_at FROM system_users WHERE username=? AND password_hash=?", (username.strip().lower(), hash_password(pwd_raw)))
-    user = cur.fetchone()
-    conn.close()
-    if not user: return None, "Invalid Username or Password."
-    if user[2] == "TRIAL_MEMBER" and user[4]:
-        try:
-            if datetime.now() > datetime.strptime(user[4], "%Y-%m-%d %H:%M:%S"): return user, "TRIAL_EXPIRED"
-        except: pass
-    return user, "OK"
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT username, full_name, role, status, trial_expires_at FROM system_users WHERE username=? AND password_hash=?",
+            (username.strip().lower(), hash_password(pwd_raw))
+        )
+        user = cur.fetchone()
+        if not user: 
+            return None, "Invalid Username or Password."
+        if user[2] == "TRIAL_MEMBER" and user[4]:
+            try:
+                if datetime.now() > datetime.strptime(user[4], "%Y-%m-%d %H:%M:%S"): 
+                    return user, "TRIAL_EXPIRED"
+            except (ValueError, TypeError): 
+                pass
+        return user, "OK"
 
 def register_7day_trial(username: str, pwd_raw: str, full_name: str, farm_info: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT id FROM system_users WHERE username=?", (username.strip().lower(),))
-    if cur.fetchone():
-        conn.close()
-        return False, "Username already registered."
-    expires_at = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d %H:%M:%S")
-    try:
-        cur.execute("INSERT INTO system_users (username, password_hash, full_name, role, company_id, status, trial_expires_at) VALUES (?, ?, ?, 'TRIAL_MEMBER', ?, 'APPROVED', ?)", (username.strip().lower(), hash_password(pwd_raw), full_name.strip(), farm_info.strip(), expires_at))
-        conn.commit()
-        conn.close()
-        return True, f"🎉 Pilot Activated! Full member access granted until {expires_at}."
-    except Exception as e:
-        conn.close()
-        return False, str(e)
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM system_users WHERE username=?", (username.strip().lower(),))
+        if cur.fetchone():
+            return False, "Username already registered."
+        expires_at = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            cur.execute(
+                "INSERT INTO system_users (username, password_hash, full_name, role, company_id, status, trial_expires_at) VALUES (?, ?, ?, 'TRIAL_MEMBER', ?, 'APPROVED', ?)",
+                (username.strip().lower(), hash_password(pwd_raw), full_name.strip(), farm_info.strip(), expires_at)
+            )
+            conn.commit()
+            return True, f"🎉 Pilot Activated! Full member access granted until {expires_at}."
+        except Exception as e:
+            return False, str(e)
 
 def register_user_with_invite(username: str, pwd_raw: str, full_name: str, invite_code: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT id, grant_role, is_used FROM member_invite_keys WHERE invite_code=?", (invite_code.strip().upper(),))
-    token_row = cur.fetchone()
-    if not token_row: return False, "Invalid Invite Code."
-    if token_row[2] == 1: return False, "Invite code already used."
-    assigned_role = token_row[1] if token_row[1] else "MEMBER"
-    try:
-        cur.execute("INSERT INTO system_users (username, password_hash, full_name, role, status) VALUES (?, ?, ?, ?, 'APPROVED')", (username.strip().lower(), hash_password(pwd_raw), full_name.strip(), assigned_role))
-        cur.execute("UPDATE member_invite_keys SET is_used=1, used_by=? WHERE id=?", (username.strip().lower(), token_row[0]))
-        conn.commit()
-        conn.close()
-        return True, f"Registration successful! Role: {assigned_role} granted."
-    except Exception as e:
-        conn.close()
-        return False, str(e)
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT id, grant_role, is_used FROM member_invite_keys WHERE invite_code=?", (invite_code.strip().upper(),))
+        token_row = cur.fetchone()
+        if not token_row: 
+            return False, "Invalid Invite Code."
+        if token_row[2] == 1: 
+            return False, "Invite code already used."
+        assigned_role = token_row[1] if token_row[1] else "MEMBER"
+        try:
+            cur.execute(
+                "INSERT INTO system_users (username, password_hash, full_name, role, status) VALUES (?, ?, ?, ?, 'APPROVED')",
+                (username.strip().lower(), hash_password(pwd_raw), full_name.strip(), assigned_role)
+            )
+            cur.execute("UPDATE member_invite_keys SET is_used=1, used_by=? WHERE id=?", (username.strip().lower(), token_row[0]))
+            conn.commit()
+            return True, f"Registration successful! Role: {assigned_role} granted."
+        except Exception as e:
+            return False, str(e)
 
 def generate_invite_token(issued_by: str, target_role: str = "MEMBER") -> str:
     token = f"{'EMP-CORP' if target_role == 'CLIENT_CEO' else 'EMP-VIP'}-{secrets.token_hex(3).upper()}"
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("INSERT INTO member_invite_keys (invite_code, issued_by, grant_role, is_used) VALUES (?, ?, ?, 0)", (token, issued_by, target_role))
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("INSERT INTO member_invite_keys (invite_code, issued_by, grant_role, is_used) VALUES (?, ?, ?, 0)", (token, issued_by, target_role))
+        conn.commit()
     return token
 
 def load_all_entity_memories(username: str) -> str:
-    if not username: return ""
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT topic_key, entity_summary, last_context FROM conversation_entity_memory WHERE username=? ORDER BY updated_at DESC LIMIT 8", (username,))
-    rows = cur.fetchall()
-    conn.close()
-    if not rows: return ""
-    return "\n[PERSISTENT KNOWLEDGE BASE]:\n" + "".join([f"- Topic: {r[0]} | Key Facts: {r[1]} | Context: {r[2]}\n" for r in rows])
+    if not username: 
+        return ""
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT topic_key, entity_summary, last_context FROM conversation_entity_memory WHERE username=? ORDER BY updated_at DESC LIMIT 8", (username,))
+        rows = cur.fetchall()
+        if not rows: 
+            return ""
+        return "\n[PERSISTENT KNOWLEDGE BASE]:\n" + "".join([f"- Topic: {r[0]} | Key Facts: {r[1]} | Context: {r[2]}\n" for r in rows])
 
 def store_entity_memory_async(username: str, user_prompt: str, bot_response: str):
-    if not username or len(user_prompt.strip()) < 5: return
+    if not username or len(user_prompt.strip()) < 5: 
+        return
     words = [w.strip(".,!?:;\"'()[]{}") for w in user_prompt.lower().split() if len(w) > 3]
     stopwords = {"what", "whats", "where", "when", "which", "about", "there", "their", "please", "could", "would", "should", "tell", "explain", "that", "this", "with", "from", "have", "been"}
     keywords = [w for w in words if w not in stopwords]
-    if not keywords: return
+    if not keywords: 
+        return
     topic_key = " ".join(keywords[:4]).title()
     try:
-        conn = sqlite3.connect(DB_PATH)
-        cur = conn.cursor()
-        cur.execute("INSERT INTO conversation_entity_memory (username, topic_key, entity_summary, last_context, updated_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) ON CONFLICT(username, topic_key) DO UPDATE SET entity_summary = excluded.entity_summary, last_context = excluded.last_context, updated_at = CURRENT_TIMESTAMP", (username, topic_key, user_prompt.strip()[:180], bot_response.strip()[:240].replace("\n", " ")))
-        conn.commit()
-        conn.close()
-    except: pass
+        with sqlite3.connect(DB_PATH) as conn:
+            cur = conn.cursor()
+            cur.execute(
+                "INSERT INTO conversation_entity_memory (username, topic_key, entity_summary, last_context, updated_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) "
+                "ON CONFLICT(username, topic_key) DO UPDATE SET entity_summary = excluded.entity_summary, last_context = excluded.last_context, updated_at = CURRENT_TIMESTAMP",
+                (username, topic_key, user_prompt.strip()[:180], bot_response.strip()[:240].replace("\n", " "))
+            )
+            conn.commit()
+    except Exception:
+        pass
 
 def load_encrypted_messages(username: str, cipher: Fernet):
-    if not username or not cipher: return []
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT role, encrypted_content FROM encrypted_user_comms WHERE username=? ORDER BY id ASC", (username,))
-    rows = cur.fetchall()
-    conn.close()
-    decrypted = []
-    for r in rows:
-        try:
-            decrypted.append({"role": r[0], "content": sanitize_deterministic_output(cipher.decrypt(r[1].encode("utf-8")).decode("utf-8"))})
-        except: pass
-    return decrypted
+    if not username or not cipher: 
+        return []
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT role, encrypted_content FROM encrypted_user_comms WHERE username=? ORDER BY id ASC", (username,))
+        rows = cur.fetchall()
+        decrypted = []
+        for r in rows:
+            try:
+                decrypted.append({"role": r[0], "content": sanitize_deterministic_output(cipher.decrypt(r[1].encode("utf-8")).decode("utf-8"))})
+            except Exception:
+                pass
+        return decrypted
 
 def save_encrypted_message(username: str, role: str, content: str, cipher: Fernet):
-    if not username or not cipher: return
+    if not username or not cipher: 
+        return
     blob = cipher.encrypt(sanitize_deterministic_output(content).encode("utf-8")).decode("utf-8")
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("INSERT INTO encrypted_user_comms (username, role, encrypted_content) VALUES (?, ?, ?)", (username, role, blob))
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("INSERT INTO encrypted_user_comms (username, role, encrypted_content) VALUES (?, ?, ?)", (username, role, blob))
+        conn.commit()
 
 def save_pilot_feedback(username: str, full_name: str, rating: int, acres: str, crops: str, feedback: str, email: str):
     conn = sqlite3.connect(DB_PATH)
@@ -1157,3 +1176,4 @@ elif active_module == "📘 Omni-Industry Matrix":
     for i, tab in enumerate(tabs):
         with tab:
             load_vertical(verticals[i][1])
+
