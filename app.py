@@ -969,14 +969,16 @@ elif active_module == "📝 Feedback Hub":
             cur.execute("SELECT full_name, username, rating, feedback_text FROM pilot_feedback_vault ORDER BY id DESC")
             reviews = cur.fetchall()
         if reviews:
-        if reviews:
-            for r in reviews: st.info(f"**{r[0]} ({r[1]}) - {r[2]}/5 Stars**\n\n{r[3]}")
-        else: st.caption("No reviews yet.")
+            for r in reviews:
+                st.info(f"**{r[0]} ({r[1]}) - {r[2]}/5 Stars**\n\n{r[3]}")
+        else:
+            st.caption("No reviews yet.")
     else:
         fb_rating = st.slider("Rating:", 1, 5, 5)
         fb_text = st.text_area("Feedback (Required to unlock commercial tiers):")
         if st.button("Submit Review & Unlock Platform"):
-            if not fb_text.strip(): st.warning("Feedback text is required.")
+            if not fb_text.strip():
+                st.warning("Feedback text is required.")
             else:
                 save_pilot_feedback(current_user, current_name, fb_rating, "", "", fb_text, "")
                 st.success("Review Submitted. Commercial tiers unlocked in Tab 5.")
