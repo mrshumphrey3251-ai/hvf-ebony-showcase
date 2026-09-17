@@ -964,11 +964,11 @@ A: Starts at $1.99/acre/month (Basic). Pro adds multispectral for $2.99/acre/mon
 elif active_module == "📝 Feedback Hub":
     st.subheader("📝 Open Market Pilot Feedback Hub")
     if current_role in ["CEO", "SUPER_ADMIN"]:
-        conn = sqlite3.connect(DB_PATH)
-        cur = conn.cursor()
-        cur.execute("SELECT full_name, username, rating, feedback_text FROM pilot_feedback_vault ORDER BY id DESC")
-        reviews = cur.fetchall()
-        conn.close()
+        with sqlite3.connect(DB_PATH) as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT full_name, username, rating, feedback_text FROM pilot_feedback_vault ORDER BY id DESC")
+            reviews = cur.fetchall()
+        if reviews:
         if reviews:
             for r in reviews: st.info(f"**{r[0]} ({r[1]}) - {r[2]}/5 Stars**\n\n{r[3]}")
         else: st.caption("No reviews yet.")
@@ -1029,15 +1029,15 @@ elif active_module == "⬛ Media Matrix":
             st.success("🔓 MFA VERIFIED: Tier-1 CEO Clearance Active.")
             if st.button("🚀 [ IGNITE AUTONOMOUS ENGINE ]", use_container_width=True):
                 with st.spinner("Arming Predict-and-Act loop..."):
-                try:
-                    res = requests.post("http://localhost:8000/autonomous/engage", headers={"x-auth-token": "CEO_OVERRIDE"})
-                    if res.status_code == 200:
-                        payload = res.json()
-                        st.success(f"✅ STATUS: {payload.get('status').upper()} | {payload.get('message')}")
-                    else:
-                        st.error(f"⚠️ Backend rejected command (HTTP {res.status_code}). Check matrix logs.")
-                except Exception as e:
-                    st.error(f"⚠️ Matrix connection failed. Is the backend offline? Error: {e}")
+                    try:
+                        res = requests.post("http://localhost:8000/autonomous/engage", headers={"x-auth-token": "CEO_OVERRIDE"})
+                        if res.status_code == 200:
+                            payload = res.json()
+                            st.success(f"✅ STATUS: {payload.get('status').upper()} | {payload.get('message')}")
+                        else:
+                            st.error(f"⚠️ Backend rejected command (HTTP {res.status_code}). Check matrix logs.")
+                    except Exception as e:
+                        st.error(f"⚠️ Matrix connection failed. Is the backend offline? Error: {e}")
 
         st.divider()
 
