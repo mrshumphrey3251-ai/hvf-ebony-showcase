@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Humphrey Dynamics - Dual-Layer Sovereign Crest</title>
+    <style>
+        /* =========================================
+           CEO COLOR CONTROL CENTER 
+           ========================================= */
+        :root {
+            /* Primary Layer (Cyan) */
+            --brand-primary: #00ffcc;    
+            --brand-glow: rgba(0, 255, 204, 0.8);
+            
+            /* Shadow Layer (Crimson Ruby) */
+            --shadow-primary: #ff0055;
+            --shadow-glow: rgba(255, 0, 85, 0.8);
+            
+            /* Environment */
+            --bg-center: #00110a;        
+            --bg-edge: #000000;          
+            --text-color: #ffffff;       
+        }
+
+        body { 
+            background: radial-gradient(circle at center, var(--bg-center) 0%, var(--bg-edge) 100%); 
+            overflow: hidden; display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; perspective: 1200px;
+        }
+        
+        .scene-tilt { 
+            transform: rotateX(15deg) rotateY(-15deg); 
+            transform-style: preserve-3d; 
+        }
+
+        .matrix-world { 
+            position: relative; transform-style: preserve-3d; 
+            animation: worldSpin 20s linear infinite; 
+        }
+        
+        /* The Core Frames */
+        .h-core { position: absolute; width: 160px; height: 200px; transform-style: preserve-3d; top: -100px; left: -80px; }
+        
+        /* Offset the Shadow Layer physically by 1 block (40px) right, down, and back */
+        .shadow-layer { transform: translate3d(40px, 40px, -60px); }
+        .primary-layer { transform: translate3d(0, 0, 20px); }
+        
+        /* TRUE 6-SIDED CUBE ARCHITECTURE */
+        .cube { 
+            position: absolute; width: 40px; height: 40px; 
+            transform-style: preserve-3d; opacity: 0; 
+        }
+        
+        .face {
+            position: absolute; width: 40px; height: 40px;
+            backface-visibility: visible;
+        }
+        
+        /* Primary Layer Colors */
+        .primary-layer .face {
+            background: rgba(0, 255, 204, 0.15); 
+            border: 2px solid var(--brand-primary);
+            box-shadow: inset 0 0 12px var(--brand-glow);
+        }
+        .primary-layer .face.back, .primary-layer .face.bottom, .primary-layer .face.left { background: rgba(0, 150, 150, 0.3); }
+
+        /* Shadow Layer Colors */
+        .shadow-layer .face {
+            background: rgba(255, 0, 85, 0.15); 
+            border: 2px solid var(--shadow-primary);
+            box-shadow: inset 0 0 12px var(--shadow-glow);
+        }
+        .shadow-layer .face.back, .shadow-layer .face.bottom, .shadow-layer .face.left { background: rgba(150, 0, 50, 0.3); }
+
+        /* Mathematical 3D Axis Alignment for a 40px block */
+        .front  { transform: translateZ(20px); }
+        .back   { transform: rotateY(180deg) translateZ(20px); }
+        .right  { transform: rotateY(90deg) translateZ(20px); }
+        .left   { transform: rotateY(-90deg) translateZ(20px); }
+        .top    { transform: rotateX(90deg) translateZ(20px); }
+        .bottom { transform: rotateX(-90deg) translateZ(20px); }
+
+        /* TIMELINE ANIMATIONS */
+        @keyframes worldSpin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        @keyframes pulseBase { 0%, 100% { opacity: 0.8; box-shadow: 0 0 30px rgba(0,0,0,1); } 50% { opacity: 1; box-shadow: 0 0 50px var(--brand-glow); } }
+
+        /* Sequential Build (Bottom Up) */
+        .l-block5, .r-block5 { animation: buildRow5 15s infinite; }
+        .l-block4, .r-block4 { animation: buildRow4 15s infinite; }
+        .l-block3, .r-block3 { animation: buildRow3 15s infinite; }
+        .l-block2, .r-block2 { animation: buildRow2 15s infinite; }
+        .l-block1, .r-block1 { animation: buildRow1 15s infinite; }
+        
+        .f1 { animation: slamFragLeft 15s infinite; }
+        .f2 { animation: slamFragRight 15s infinite; }
+
+        /* Build Keyframes */
+        @keyframes buildRow5 { 0%, 5% { transform: translateY(400px); opacity: 0; } 10%, 90% { transform: translateY(0); opacity: 1; } 95%, 100% { transform: translateY(400px); opacity: 0; } }
+        @keyframes buildRow4 { 0%, 8% { transform: translateY(400px); opacity: 0; } 13%, 90% { transform: translateY(0); opacity: 1; } 95%, 100% { transform: translateY(400px); opacity: 0; } }
+        @keyframes buildRow3 { 0%, 11% { transform: translateY(400px); opacity: 0; } 16%, 90% { transform: translateY(0); opacity: 1; } 95%, 100% { transform: translateY(400px); opacity: 0; } }
+        @keyframes buildRow2 { 0%, 14% { transform: translateY(400px); opacity: 0; } 19%, 90% { transform: translateY(0); opacity: 1; } 95%, 100% { transform: translateY(400px); opacity: 0; } }
+        @keyframes buildRow1 { 0%, 17% { transform: translateY(400px); opacity: 0; } 22%, 90% { transform: translateY(0); opacity: 1; } 95%, 100% { transform: translateY(400px); opacity: 0; } }
+
+        @keyframes slamFragLeft { 0%, 25% { transform: translateX(-400px) rotateY(180deg); opacity: 0; } 30%, 90% { transform: translateX(0) rotateY(0deg); opacity: 1; } 95%, 100% { transform: translateX(-400px); opacity: 0; } }
+        @keyframes slamFragRight { 0%, 25% { transform: translateX(400px) rotateY(-180deg); opacity: 0; } 30%, 90% { transform: translateX(0) rotateY(0deg); opacity: 1; } 95%, 100% { transform: translateX(400px); opacity: 0; } }
+
+        /* Anchor Plate - Old English */
+        .h-text-container {
+            position: absolute; bottom: -200px; left: 0; width: 100%;
+            display: flex; justify-content: center;
+            transform-style: preserve-3d;
+        }
+        .h-text {
+            transform: translateZ(40px);
+            font-family: "Old English Text MT", "UnifrakturMaguntia", "Blackletter", serif; 
+            font-size: 32px; /* Upscaled for regal readability */
+            letter-spacing: 4px; color: var(--text-color);
+            text-shadow: 0 0 10px var(--text-color), 0 0 20px var(--brand-primary);
+            background: rgba(0, 0, 0, 0.85); padding: 12px 25px 12px 25px;
+            border-top: 2px solid var(--brand-primary); border-bottom: 2px solid var(--brand-primary);
+            white-space: nowrap; box-shadow: 0 0 40px rgba(0,0,0,1);
+            animation: pulseBase 15s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="scene-tilt">
+        <div class="matrix-world">
+            
+            <!-- SHADOW LAYER (Crimson Ruby, Offset by 1 Block) -->
+            <div class="h-core shadow-layer">
+                
+                <!-- Left Pillar -->
+                
+                <div class="cube l-block5" style="left: 0px; top: 160px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block4" style="left: 0px; top: 120px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block3" style="left: 0px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block2" style="left: 0px; top: 40px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block1" style="left: 0px; top: 0px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <!-- Right Pillar -->
+                
+                <div class="cube r-block5" style="left: 120px; top: 160px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block4" style="left: 120px; top: 120px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block3" style="left: 120px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block2" style="left: 120px; top: 40px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block1" style="left: 120px; top: 0px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <!-- Crossbeam Fragments -->
+                
+                <div class="cube f1" style="left: 40px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube f2" style="left: 80px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+    
+            </div>
+
+            <!-- PRIMARY LAYER (Cyan) -->
+            <div class="h-core primary-layer">
+                
+                <!-- Left Pillar -->
+                
+                <div class="cube l-block5" style="left: 0px; top: 160px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block4" style="left: 0px; top: 120px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block3" style="left: 0px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block2" style="left: 0px; top: 40px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube l-block1" style="left: 0px; top: 0px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <!-- Right Pillar -->
+                
+                <div class="cube r-block5" style="left: 120px; top: 160px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block4" style="left: 120px; top: 120px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block3" style="left: 120px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block2" style="left: 120px; top: 40px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube r-block1" style="left: 120px; top: 0px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <!-- Crossbeam Fragments -->
+                
+                <div class="cube f1" style="left: 40px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+                
+                <div class="cube f2" style="left: 80px; top: 80px;">
+                    <div class="face front"></div><div class="face back"></div>
+                    <div class="face right"></div><div class="face left"></div>
+                    <div class="face top"></div><div class="face bottom"></div>
+                </div>
+    
+            </div>
+            
+            <!-- Anchor Plate -->
+            <div class="h-text-container">
+                <div class="h-text">Humphrey Dynamics</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

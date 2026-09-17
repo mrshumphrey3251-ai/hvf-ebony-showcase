@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sovereign 3D Crest</title>
+    <style>
+        body { 
+            background: radial-gradient(circle at center, #112211 0%, #020202 100%); 
+            overflow: hidden; display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; font-family: monospace; perspective: 1200px; color: #00ffcc; 
+        }
+        .scene { 
+            position: relative; transform-style: preserve-3d; 
+            animation: rotateScene 15s infinite linear; 
+        }
+        /* 3D Old English H */
+        .h-crest { 
+            font-family: "Old English Text MT", "UnifrakturMaguntia", "Blackletter", serif; 
+            font-size: 280px; position: absolute; top: -160px; left: -110px;
+            color: #00ffcc;
+            text-shadow: 
+                1px 1px 0 #005544, 2px 2px 0 #005544, 3px 3px 0 #005544, 
+                4px 4px 0 #005544, 5px 5px 0 #005544, 6px 6px 0 #003322, 
+                7px 7px 0 #003322, 0 0 40px rgba(0, 255, 204, 0.8); 
+            transform-style: preserve-3d; 
+        }
+        
+        /* Orbiting Code Rings */
+        .orbit { position: absolute; transform-style: preserve-3d; top: 0; left: 0; }
+        .ring-y { animation: spinY 8s infinite linear; }
+        .ring-x { animation: spinX 12s infinite linear; }
+        .ring-z { animation: spinZ 10s infinite linear; }
+        
+        .code-snippet { 
+            position: absolute; font-size: 15px; opacity: 0.9; white-space: nowrap; 
+            text-shadow: 0 0 8px #00ffcc; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px;
+        }
+        
+        /* Coordinate plotting for the orbit */
+        .c1 { transform: rotateY(0deg) translateZ(220px); }
+        .c2 { transform: rotateY(120deg) translateZ(220px); }
+        .c3 { transform: rotateY(240deg) translateZ(220px); }
+        .c4 { transform: rotateX(90deg) rotateY(0deg) translateZ(260px); }
+        .c5 { transform: rotateX(90deg) rotateY(180deg) translateZ(260px); }
+        .c6 { transform: rotateZ(90deg) rotateX(90deg) translateZ(240px); }
+        .c7 { transform: rotateZ(270deg) rotateX(90deg) translateZ(240px); }
+
+        @keyframes rotateScene { 0% { transform: rotateY(0deg) rotateX(15deg); } 100% { transform: rotateY(360deg) rotateX(15deg); } }
+        @keyframes spinY { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        @keyframes spinX { 0% { transform: rotateX(0deg) rotateY(45deg); } 100% { transform: rotateX(360deg) rotateY(45deg); } }
+        @keyframes spinZ { 0% { transform: rotateZ(0deg) rotateX(45deg); } 100% { transform: rotateZ(360deg) rotateX(45deg); } }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="h-crest">H</div>
+        
+        <!-- Y-Axis Code Ring -->
+        <div class="orbit ring-y">
+            <div class="code-snippet c1">def execute_matrix():</div>
+            <div class="code-snippet c2">yield sovereign_node</div>
+            <div class="code-snippet c3">sys.stdout.write(DOMINANCE)</div>
+        </div>
+        
+        <!-- X-Axis Code Ring -->
+        <div class="orbit ring-x">
+            <div class="code-snippet c4">{ "status": "200 OK", "vault": "locked" }</div>
+            <div class="code-snippet c5">[ENCRYPTED UPLINK ESTABLISHED]</div>
+        </div>
+        
+        <!-- Z-Axis Code Ring -->
+        <div class="orbit ring-z">
+            <div class="code-snippet c6">await WAF_bypass(stealth=True)</div>
+            <div class="code-snippet c7">01001000 01010110 01000110</div>
+        </div>
+    </div>
+</body>
+</html>

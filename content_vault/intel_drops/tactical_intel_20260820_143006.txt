@@ -1,0 +1,5 @@
+/// LIVE MARKET & THREAT INTELLIGENCE ///
+
+- Isolated-vm Flaw Lets Sandboxed JavaScript Escape to Host for Potential RCE (Thu, 20 Aug 2026 19:18:24 +0530)
+- Critical NetScaler Flaw Can Bypass Authentication on Certain Gateway and AAA Servers (Thu, 20 Aug 2026 19:05:13 +0530)
+- Attackers Exploit Zimbra SNMP Flaw for Unauthenticated Remote Code Execution (Thu, 20 Aug 2026 18:54:28 +0530)

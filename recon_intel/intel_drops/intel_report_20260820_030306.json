@@ -1,0 +1,14 @@
+[
+    {
+        "signal_type": "FEDERAL_PROCUREMENT",
+        "keyword": "Zero-Trust",
+        "urgency": "HIGH",
+        "summary": "New DoD mandate requires edge-based AI verification by Q3."
+    },
+    {
+        "signal_type": "INDUSTRY_TREND",
+        "keyword": "Sovereign Compute",
+        "urgency": "MEDIUM",
+        "summary": "Competitors are moving away from cloud dependencies due to recent data breaches."
+    }
+]
