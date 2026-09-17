@@ -21,12 +21,17 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-# 1. Environment & Vault Ingestion
+# ==========================================
+# 1. ENVIRONMENT & VAULT INGESTION
+# ==========================================
 load_dotenv(override=True)
+
 GROQ_KEY = os.getenv("GROQ_API_KEY")
 LINKEDIN_TOKEN = os.getenv("LINKEDIN_ACCESS_TOKEN")
 LINKEDIN_URN = os.getenv("LINKEDIN_AUTHOR_URN")
-REPO_DIR = os.path.abspath(r"C:\HVF_Repos\hvf-media-matrix-private")
+
+# DYNAMIC PATHING: Immune to environment changes
+REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(REPO_DIR, "hvf_memory_vault.db")
 
 DEFAULT_LAT = os.getenv("HVF_LATITUDE", "35.47")
@@ -42,38 +47,102 @@ CLOUD_MODEL = "openai/gpt-oss-120b"
 LOCAL_MODEL = "llama3:8b"
 
 # ==========================================
-# DATABASE & WHITE-LABEL EMPIRE ENGINE
+# 2. DATABASE & WHITE-LABEL EMPIRE ENGINE
 # ==========================================
 def ensure_db_schema():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS system_users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            full_name TEXT NOT NULL,
-            role TEXT NOT NULL DEFAULT 'MEMBER',
-            company_id TEXT DEFAULT 'HVF_MAIN',
-            status TEXT NOT NULL DEFAULT 'APPROVED',
-            trial_expires_at TIMESTAMP,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    cur.execute("PRAGMA table_info(system_users)")
-    cols = [col[1] for col in cur.fetchall()]
-    if "company_id" not in cols: cur.execute("ALTER TABLE system_users ADD COLUMN company_id TEXT DEFAULT 'HVF_MAIN'")
-    if "trial_expires_at" not in cols: cur.execute("ALTER TABLE system_users ADD COLUMN trial_expires_at TIMESTAMP")
+    """Bootstraps the master SQLite vault. Uses context managers to prevent DB locks."""
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS system_users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                full_name TEXT NOT NULL,
+                role TEXT NOT NULL DEFAULT 'MEMBER',
+                company_id TEXT DEFAULT 'HVF_MAIN',
+                status TEXT NOT NULL DEFAULT 'APPROVED',
+                trial_expires_at TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        # Dynamic Schema Upgrades
+        cur.execute("PRAGMA table_info(system_users)")
+        cols = [col[1] for col in cur.fetchall()]
+        if "company_id" not in cols: 
+            cur.execute("ALTER TABLE system_users ADD COLUMN company_id TEXT DEFAULT 'HVF_MAIN'")
+        if "trial_expires_at" not in cols: 
+            cur.execute("ALTER TABLE system_users ADD COLUMN trial_expires_at TIMESTAMP")
 
-    cur.execute("CREATE TABLE IF NOT EXISTS encrypted_user_comms (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, role TEXT NOT NULL, encrypted_content TEXT NOT NULL, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
-    cur.execute("CREATE TABLE IF NOT EXISTS member_invite_keys (id INTEGER PRIMARY KEY AUTOINCREMENT, invite_code TEXT UNIQUE NOT NULL, issued_by TEXT NOT NULL, grant_role TEXT NOT NULL DEFAULT 'MEMBER', is_used INTEGER DEFAULT 0, used_by TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
-    cur.execute("CREATE TABLE IF NOT EXISTS pilot_feedback_vault (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, full_name TEXT NOT NULL, rating INTEGER NOT NULL, farm_size_acres TEXT, primary_crops TEXT, feedback_text TEXT NOT NULL, contact_email TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
-    cur.execute("CREATE TABLE IF NOT EXISTS conversation_entity_memory (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, topic_key TEXT NOT NULL, entity_summary TEXT NOT NULL, last_context TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(username, topic_key))")
-    cur.execute("CREATE TABLE IF NOT EXISTS empire_config (config_key TEXT PRIMARY KEY, config_value TEXT NOT NULL)")
-    cur.execute("CREATE TABLE IF NOT EXISTS linkedin_broadcast_history (id INTEGER PRIMARY KEY AUTOINCREMENT, post_content TEXT, response_status TEXT, urn_identifier TEXT, triggered_by TEXT, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
-    conn.commit()
-    conn.close()
-
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS encrypted_user_comms (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                username TEXT NOT NULL, 
+                role TEXT NOT NULL, 
+                encrypted_content TEXT NOT NULL, 
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS member_invite_keys (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                invite_code TEXT UNIQUE NOT NULL, 
+                issued_by TEXT NOT NULL, 
+                grant_role TEXT NOT NULL DEFAULT 'MEMBER', 
+                is_used INTEGER DEFAULT 0, 
+                used_by TEXT, 
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS pilot_feedback_vault (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                username TEXT NOT NULL, 
+                full_name TEXT NOT NULL, 
+                rating INTEGER NOT NULL, 
+                farm_size_acres TEXT, 
+                primary_crops TEXT, 
+                feedback_text TEXT NOT NULL, 
+                contact_email TEXT, 
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS conversation_entity_memory (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                username TEXT NOT NULL, 
+                topic_key TEXT NOT NULL, 
+                entity_summary TEXT NOT NULL, 
+                last_context TEXT NOT NULL, 
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                UNIQUE(username, topic_key)
+            )
+        """)
+        
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS empire_config (
+                config_key TEXT PRIMARY KEY, 
+                config_value TEXT NOT NULL
+            )
+        """)
+        
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS linkedin_broadcast_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                post_content TEXT, 
+                response_status TEXT, 
+                urn_identifier TEXT, 
+                triggered_by TEXT, 
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        conn.commit()
 ensure_db_schema()
 
 def get_empire_config():
